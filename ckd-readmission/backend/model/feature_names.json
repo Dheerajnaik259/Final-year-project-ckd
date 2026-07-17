@@ -1,0 +1,15 @@
+[
+  "age",
+  "gender",
+  "blood_pressure_systolic",
+  "blood_pressure_diastolic",
+  "serum_creatinine",
+  "egfr",
+  "hemoglobin",
+  "diabetes",
+  "hypertension",
+  "prior_admissions",
+  "length_of_stay",
+  "comorbidity_count",
+  "ckd_stage"
+]

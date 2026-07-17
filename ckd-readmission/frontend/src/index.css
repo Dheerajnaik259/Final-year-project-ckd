@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --bg-page: #eef4ef;
+  --bg-surface: rgba(255, 255, 255, 0.82);
+  --bg-surface-strong: #ffffff;
+  --text-primary: #132822;
+  --text-secondary: #5c7168;
+  --text-faint: #7a8f86;
+  --accent-primary: #0f7665;
+  --accent-secondary: #13967f;
+  --border-color: rgba(19, 40, 34, 0.12);
+  --line-muted: rgba(19, 40, 34, 0.09);
+  --glow-color: rgba(15, 118, 101, 0.13);
+  --ring-track: rgba(19, 40, 34, 0.10);
+  --shadow-soft: 0 24px 64px rgba(18, 39, 32, 0.08);
+  --shadow-lift: 0 12px 28px rgba(18, 39, 32, 0.06);
+  --shadow-tight: 0 10px 22px rgba(18, 39, 32, 0.10);
+  --shadow-pop: 0 22px 60px rgba(18, 39, 32, 0.16);
+}
+
+html[data-theme="dark"] {
+  --bg-page: #070d0c;
+  --bg-surface: rgba(15, 23, 21, 0.78);
+  --bg-surface-strong: rgba(12, 18, 17, 0.96);
+  --text-primary: #e9f3ef;
+  --text-secondary: rgba(233, 243, 239, 0.68);
+  --text-faint: rgba(233, 243, 239, 0.52);
+  --accent-primary: #33c3a8;
+  --accent-secondary: #44ddbf;
+  --border-color: rgba(233, 243, 239, 0.10);
+  --line-muted: rgba(233, 243, 239, 0.08);
+  --glow-color: rgba(51, 195, 168, 0.16);
+  --ring-track: rgba(233, 243, 239, 0.10);
+  --shadow-soft: 0 30px 90px rgba(0, 0, 0, 0.55);
+  --shadow-lift: 0 18px 46px rgba(0, 0, 0, 0.45);
+  --shadow-tight: 0 12px 30px rgba(0, 0, 0, 0.55);
+  --shadow-pop: 0 24px 70px rgba(0, 0, 0, 0.62);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, #f7fbf8 0%, #eef4ef 50%, #edf1ec 100%);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+html[data-theme="dark"] body {
+  background: radial-gradient(circle at 12% 18%, rgba(51, 195, 168, 0.12), transparent 52%),
+    radial-gradient(circle at 82% 16%, rgba(68, 221, 191, 0.10), transparent 45%),
+    linear-gradient(180deg, #070d0c 0%, #050a09 60%, #070d0c 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

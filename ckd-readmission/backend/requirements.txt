@@ -1,0 +1,11 @@
+flask
+flask-cors
+python-dotenv
+groq
+scikit-learn
+pandas
+numpy
+requests
+xgboost
+shap
+imbalanced-learn

@@ -1,0 +1,14 @@
+feature,importance
+prior_admissions,0.8363993
+comorbidity_count,0.52563673
+serum_creatinine,0.46807465
+age,0.37636158
+hemoglobin,0.36125705
+length_of_stay,0.33567414
+hypertension,0.33348298
+ckd_stage,0.29463065
+diabetes,0.2669129
+blood_pressure_diastolic,0.21362957
+egfr,0.1887755
+blood_pressure_systolic,0.12654649
+gender,0.11126054
