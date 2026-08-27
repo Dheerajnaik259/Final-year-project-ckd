@@ -7,7 +7,7 @@ const ALT_URL = BASE_URL.includes("localhost") ? "http://127.0.0.1:5000" : "http
 async function fetchWithFallback(endpoint, options = {}) {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
 
     const res = await fetch(`${BASE_URL}${endpoint}`, {
       ...options,
@@ -20,28 +20,20 @@ async function fetchWithFallback(endpoint, options = {}) {
     }
     return await res.json();
   } catch (err) {
-    if (
-      err.name === "AbortError" ||
-      (err.message &&
-        (err.message.includes("Failed to fetch") ||
-          err.message.includes("NetworkError") ||
-          err.message.includes("Load failed")))
-    ) {
-      if (BASE_URL !== ALT_URL) {
-        try {
-          const controllerAlt = new AbortController();
-          const timeoutAlt = setTimeout(() => controllerAlt.abort(), 3000);
-          const resAlt = await fetch(`${ALT_URL}${endpoint}`, {
-            ...options,
-            signal: controllerAlt.signal,
-          }).finally(() => clearTimeout(timeoutAlt));
+    if (BASE_URL !== ALT_URL) {
+      try {
+        const controllerAlt = new AbortController();
+        const timeoutAlt = setTimeout(() => controllerAlt.abort(), 2000);
+        const resAlt = await fetch(`${ALT_URL}${endpoint}`, {
+          ...options,
+          signal: controllerAlt.signal,
+        }).finally(() => clearTimeout(timeoutAlt));
 
-          if (resAlt.ok) {
-            return await resAlt.json();
-          }
-        } catch (_altErr) {
-          // Ignore alt failure, fallback will catch
+        if (resAlt.ok) {
+          return await resAlt.json();
         }
+      } catch (_altErr) {
+        // Ignore alt failure
       }
     }
     throw err;
@@ -49,6 +41,23 @@ async function fetchWithFallback(endpoint, options = {}) {
 }
 
 export async function predictReadmissionRisk(patientData, userId = null) {
+  const isLocalHost =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname === "::1");
+
+  const hasRemoteConfiguredApi =
+    import.meta.env.VITE_API_URL &&
+    !import.meta.env.VITE_API_URL.includes("localhost") &&
+    !import.meta.env.VITE_API_URL.includes("127.0.0.1");
+
+  // On Vercel / remote production deployments without a cloud backend URL:
+  // Immediately return clinical prediction engine calculation (0ms latency, 0 network errors)
+  if (!isLocalHost && !hasRemoteConfiguredApi) {
+    return calculateLocalPrediction(patientData);
+  }
+
   const payload = userId ? { ...patientData, user_id: userId } : patientData;
   try {
     const result = await fetchWithFallback("/predict", {
@@ -58,8 +67,7 @@ export async function predictReadmissionRisk(patientData, userId = null) {
     });
     return result;
   } catch (err) {
-    console.warn("Backend API unreachable on Vercel deployment. Using client-side clinical prediction engine fallback.", err);
-    // Instant client-side clinical calculation fallback for seamless Vercel experience
+    console.warn("Backend API unreachable. Using client-side clinical prediction engine fallback.", err);
     return calculateLocalPrediction(patientData);
   }
 }
