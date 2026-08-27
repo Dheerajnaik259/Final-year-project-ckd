@@ -1,278 +1,257 @@
 /* ═══════════════════════════════════════════════
-   RiskCharts – Visual analytics for predictions
+   RiskCharts Styling (Clinical Analytics & Grid)
    ═══════════════════════════════════════════════ */
 
-.charts-section {
-  border: 1px solid var(--border-color);
-  border-radius: 1.75rem;
-  background: var(--bg-surface);
-  box-shadow: var(--shadow-soft);
-  padding: 1.55rem;
-}
-
-.charts-heading {
-  margin-bottom: 1.35rem;
-}
-
-.charts-grid {
+.clinical-analytics-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 1.5rem 0;
 }
 
-/* ── Shared card surface ── */
-.chart-gauge,
-.chart-shap,
-.chart-kfre,
-.chart-severity {
-  border: 1px solid var(--border-color);
-  border-radius: 1.2rem;
-  padding: 1.1rem;
-  background: rgba(255, 255, 255, 0.62);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+.chart-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
 }
 
-html[data-theme="dark"] .chart-gauge,
-html[data-theme="dark"] .chart-shap,
-html[data-theme="dark"] .chart-kfre,
-html[data-theme="dark"] .chart-severity {
-  background: rgba(12, 18, 17, 0.92);
-  border-color: rgba(233, 243, 239, 0.10);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .chart-gauge:hover,
-  .chart-shap:hover,
-  .chart-kfre:hover,
-  .chart-severity:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-pop);
-    border-color: rgba(68, 221, 191, 0.24);
-  }
-}
-
-.chart-inner-header {
-  margin-bottom: 0.9rem;
-}
-
-.chart-label {
-  color: var(--text-primary);
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.chart-sub {
-  color: var(--text-faint);
-  font-size: 0.78rem;
+.chart-heading {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  color: var(--text-primary);
 }
 
-/* ── Risk Gauge ── */
-.gauge-svg {
-  display: block;
-  width: 100%;
-  max-width: 240px;
-  margin: 0.5rem auto 0.25rem;
+.chart-mono-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  background: var(--bg-page);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
 }
 
-.gauge-arc {
-  transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+/* ── 1. KDIGO Heatmap Grid ── */
+.kdigo-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-hairline);
 }
 
-.gauge-pct {
-  fill: var(--text-primary);
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+.kdigo-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(3, 1fr);
+  gap: 3px;
+  background: var(--border-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.gauge-risk {
-  fill: var(--text-faint);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* ── SHAP Bar Chart ── */
-.shap-bars {
+.kdigo-cell {
+  background: #ffffff;
+  padding: 0.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  position: relative;
+  min-height: 38px;
+}
+
+.header-cell, .row-label-cell {
+  background: var(--bg-page);
+  color: var(--text-secondary);
+}
+
+.header-cell strong, .row-label-cell strong {
+  color: var(--text-primary);
+}
+
+.header-cell small, .row-label-cell small {
+  font-size: 0.65rem;
+  color: var(--text-faint);
+}
+
+/* KDIGO Standard Heatmap Cell Tints */
+.cell-green { background: #eef7ee; color: #2e5c2d; }
+.cell-yellow { background: #fdf8e7; color: #7a5410; }
+.cell-orange { background: #fdf0e6; color: #8c3f10; }
+.cell-red { background: #fceceb; color: #7a1f1f; }
+
+.dimmed-cell {
+  opacity: 0.45;
+}
+
+.selected-cell {
+  opacity: 1 !important;
+  outline: 2px solid #16241f;
+  outline-offset: -2px;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.patient-dot {
+  width: 6px;
+  height: 6px;
+  background: #16241f;
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.kdigo-caption {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.6rem;
+}
+
+/* ── 2. Severity Meter ── */
+.severity-meter-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-hairline);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.meter-track {
+  height: 12px;
+  background: var(--bg-page);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+}
+
+.meter-fill {
+  height: 100%;
+  transition: width 400ms ease;
+  border-radius: 2px;
+}
+
+.meter-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+/* ── 3. SHAP Feature Chart ── */
+.shap-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-hairline);
+}
+
+.shap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
 .shap-row {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) 50px;
+  grid-template-columns: 130px 1fr 70px;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
+  font-size: 0.78rem;
 }
 
-.shap-feature {
+.shap-label {
   color: var(--text-secondary);
-  font-size: 0.82rem;
-  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .shap-track {
-  height: 22px;
-  border-radius: 6px;
-  background: rgba(68, 221, 191, 0.08);
+  height: 8px;
+  background: var(--bg-page);
+  border-radius: 2px;
   overflow: hidden;
 }
 
-html[data-theme="dark"] .shap-track {
-  background: rgba(68, 221, 191, 0.06);
-}
-
-.shap-fill {
+.shap-bar {
   height: 100%;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #2e8a57 0%, #44ddbf 100%);
-  width: 0%;
-  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--accent-primary);
+  transition: width 300ms ease;
 }
 
-.shap-fill.animate {
-  /* width is set inline */
-}
-
-.shap-value {
+.shap-val {
   color: var(--text-primary);
-  font-size: 0.82rem;
-  font-weight: 700;
   text-align: right;
+  font-weight: 500;
 }
 
-/* ── KFRE Chart ── */
-.kfre-bars {
+/* ── 4. KFRE Outlook ── */
+.kfre-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-hairline);
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  margin-bottom: 0.7rem;
-}
-
-.kfre-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.kfre-info {
-  display: flex;
   justify-content: space-between;
-  align-items: baseline;
 }
 
-.kfre-period {
+.kfre-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.kfre-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 50px;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.kfre-label {
   color: var(--text-secondary);
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.kfre-pct {
-  color: var(--text-primary);
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
 }
 
 .kfre-track {
-  height: 18px;
-  border-radius: 6px;
-  background: rgba(68, 221, 191, 0.08);
+  height: 8px;
+  background: var(--bg-page);
+  border-radius: 2px;
   overflow: hidden;
 }
 
-html[data-theme="dark"] .kfre-track {
-  background: rgba(68, 221, 191, 0.06);
-}
-
-.kfre-fill {
+.kfre-bar {
   height: 100%;
-  border-radius: 6px;
-  width: 0%;
-  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 300ms ease;
 }
 
-.kfre-fill.two-yr {
-  background: linear-gradient(90deg, #bf7d2e 0%, #e6a84d 100%);
-}
-
-.kfre-fill.five-yr {
-  background: linear-gradient(90deg, #c45443 0%, #e87a6b 100%);
-}
-
-.kfre-fill.animate {
-  /* width is set inline */
-}
-
-.kfre-note {
-  color: var(--text-faint);
-  font-size: 0.76rem;
-  line-height: 1.5;
-  display: block;
-}
-
-/* ── Severity Meter ── */
-.severity-visual {
-  padding: 0.5rem 0;
-}
-
-.severity-bar-row {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 0.55rem;
-}
-
-.severity-seg {
-  flex: 1;
-  height: 26px;
-  border-radius: 4px;
-  background: var(--seg-empty, rgba(68, 221, 191, 0.08));
-  transition: background-color 0.5s ease;
-}
-
-html[data-theme="dark"] .severity-seg {
-  --seg-empty: rgba(68, 221, 191, 0.06);
-}
-
-.severity-seg.animate {
-  /* color is set inline */
-}
-
-.severity-numbers {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--text-faint);
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-.severity-current {
+.kfre-val {
   color: var(--text-primary);
-  font-size: 0.9rem;
-  font-weight: 800;
+  font-weight: 600;
+  text-align: right;
 }
 
-/* ── Responsive ── */
-@media (max-width: 760px) {
-  .charts-grid {
+.kfre-citation {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 800px) {
+  .clinical-analytics-grid {
     grid-template-columns: 1fr;
-  }
-
-  .charts-section {
-    border-radius: 1.4rem;
-  }
-
-  .shap-row {
-    grid-template-columns: 90px minmax(0, 1fr) 44px;
   }
 }

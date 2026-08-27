@@ -9,11 +9,6 @@ export default function App() {
   // page: "home" | "results" | "history"
   const [page, setPage] = useState("home");
   const [result, setResult] = useState(null);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = "dark";
-  }, []);
 
   const handleResultsReady = (data) => {
     setResult(data);
@@ -30,33 +25,27 @@ export default function App() {
   };
 
   const handleViewDetail = async (predictionId) => {
-    setLoadingDetail(true);
     try {
       const data = await fetchPredictionDetail(predictionId);
       setResult(data);
       setPage("results");
     } catch (err) {
       alert("Failed to load historical prediction detail: " + err.message);
-    } finally {
-      setLoadingDetail(false);
     }
   };
 
   return (
     <div className="app-shell">
-      <div className="bg-grid" aria-hidden="true" />
-      <div className="bg-glow" aria-hidden="true" />
-
       <header className="app-topbar">
         <div className="brand-lockup" onClick={handleReset} style={{ cursor: "pointer" }}>
           <div className="brand-mark">CKD</div>
           <div>
-            <p className="brand-kicker">Renal review workspace</p>
-            <p className="brand-name">Readmission Predictor</p>
+            <p className="brand-kicker">Nephrology · Readmission Review</p>
+            <p className="brand-name">Clinical Risk Calculator</p>
           </div>
         </div>
 
-        <div className="topbar-actions">
+        <nav className="topbar-actions">
           <button
             className={`nav-btn ${page === "home" || page === "results" ? "active" : ""}`}
             onClick={handleReset}
@@ -69,7 +58,7 @@ export default function App() {
           >
             History
           </button>
-        </div>
+        </nav>
       </header>
 
       <main className="app-main">
@@ -84,7 +73,7 @@ export default function App() {
 
       <footer className="app-footer">
         <span>CKD Readmission Predictor</span>
-        <span>Final year project build</span>
+        <span>Decision Support System · Non-diagnostic Reference</span>
       </footer>
     </div>
   );
