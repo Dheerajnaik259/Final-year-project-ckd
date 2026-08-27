@@ -12,7 +12,16 @@ import { fetchPredictionDetail } from "./services/api";
 // Icons for Topbar Tabs & User Dropdown
 function NavHomeIcon() {
   return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
       <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
@@ -21,7 +30,16 @@ function NavHomeIcon() {
 
 function NavPredictIcon() {
   return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
     </svg>
   );
@@ -29,7 +47,16 @@ function NavPredictIcon() {
 
 function NavHistoryIcon() {
   return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
       <line x1="16" y1="2" x2="16" y2="6" />
       <line x1="8" y1="2" x2="8" y2="6" />
@@ -40,7 +67,16 @@ function NavHistoryIcon() {
 
 function UserIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
     </svg>
@@ -49,7 +85,16 @@ function UserIcon() {
 
 function SignOutIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
       <polyline points="16 17 21 12 16 7" />
       <line x1="21" y1="12" x2="9" y2="12" />
@@ -59,7 +104,16 @@ function SignOutIcon() {
 
 function ChevronDownIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="m6 9 6 6 6-6" />
     </svg>
   );
@@ -68,7 +122,7 @@ function ChevronDownIcon() {
 export default function App() {
   const [session, setSession] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
-  
+
   // Unauthenticated navigation state: "public" | "auth"
   const [unauthMode, setUnauthMode] = useState("public");
   const [initialRegister, setInitialRegister] = useState(true);
@@ -108,29 +162,34 @@ export default function App() {
 
   const handleResultsReady = (data) => {
     setResult(data);
-    
-    // Immediately persist to local history snapshot
+
+    // Immediately persist to user-scoped local history snapshot
     if (data) {
       try {
-        const existing = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+        const storageKey = session?.user?.id
+          ? `ckd_history_${session.user.id}`
+          : "ckd_local_prediction_history";
+        const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
         const recordId = data.prediction_id || `pred_${Date.now()}`;
         const newRecord = {
           id: recordId,
+          user_id: session?.user?.id,
           created_at: new Date().toISOString(),
           patient_age: data.patient_data?.Age || data.patient_data?.age || 50,
           patient_gender: data.patient_data?.Gender || data.patient_data?.gender || 1,
           risk_level: data.risk_level,
           probability: data.probability,
-          ckd_stage: typeof data.clinical_assessment?.ckd_stage === "object"
-            ? data.clinical_assessment?.ckd_stage?.code
-            : data.clinical_assessment?.ckd_stage || "G2",
+          ckd_stage:
+            typeof data.clinical_assessment?.ckd_stage === "object"
+              ? data.clinical_assessment?.ckd_stage?.code
+              : data.clinical_assessment?.ckd_stage || "G2",
           kdigo_risk: data.clinical_assessment?.kdigo_risk || "Moderate",
           severity_score: data.clinical_assessment?.severity_score || 0,
           patient_data: data.patient_data,
           full_result: data,
         };
         const updatedHistory = [newRecord, ...existing.filter((item) => item.id !== recordId)];
-        localStorage.setItem("ckd_local_prediction_history", JSON.stringify(updatedHistory));
+        localStorage.setItem(storageKey, JSON.stringify(updatedHistory));
       } catch (err) {
         console.error("Failed to save local prediction history:", err);
       }
@@ -153,23 +212,85 @@ export default function App() {
     setPage("history");
   };
 
-  const handleViewDetail = async (predictionId) => {
+  const handleViewDetail = async (predictionArg) => {
     try {
-      const data = await fetchPredictionDetail(predictionId);
-      setResult(data);
-      setPage("results");
-    } catch (err) {
-      try {
-        const localHistory = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
-        const found = localHistory.find((item) => item.id === predictionId);
-        if (found && found.full_result) {
-          setResult(found.full_result);
+      // 1. If an object with full_result or prediction result fields is passed directly
+      if (predictionArg && typeof predictionArg === "object") {
+        if (predictionArg.full_result) {
+          setResult(predictionArg.full_result);
           setPage("results");
           return;
         }
-      } catch (e) {
-        // Fall through to alert
+        if (predictionArg.risk_level && predictionArg.probability) {
+          setResult(predictionArg);
+          setPage("results");
+          return;
+        }
       }
+
+      const predictionId = typeof predictionArg === "object" ? predictionArg?.id : predictionArg;
+
+      // 2. Check local user-scoped storage for immediate snapshot match
+      const userStorageKey = session?.user?.id
+        ? `ckd_history_${session.user.id}`
+        : "ckd_local_prediction_history";
+
+      let localHistory = [];
+      try {
+        localHistory = JSON.parse(localStorage.getItem(userStorageKey) || "[]");
+      } catch (_e) {
+        localHistory = [];
+      }
+
+      try {
+        const fallbackHistory = JSON.parse(
+          localStorage.getItem("ckd_local_prediction_history") || "[]"
+        );
+        localHistory = [...localHistory, ...fallbackHistory];
+      } catch (_e) {
+        // Ignore fallback parse error
+      }
+
+      const foundLocal = localHistory.find(
+        (item) => item && (item.id === predictionId || item.prediction_id === predictionId)
+      );
+
+      if (foundLocal) {
+        if (foundLocal.full_result) {
+          setResult(foundLocal.full_result);
+          setPage("results");
+          return;
+        }
+        if (foundLocal.risk_level && foundLocal.probability) {
+          setResult(foundLocal);
+          setPage("results");
+          return;
+        }
+      }
+
+      // 3. Query remote backend API if non-local ID
+      if (predictionId && !String(predictionId).startsWith("pred_")) {
+        try {
+          const data = await fetchPredictionDetail(predictionId);
+          if (data && !data.error) {
+            setResult(data);
+            setPage("results");
+            return;
+          }
+        } catch (_err) {
+          console.warn("Backend detail fetch note:", _err);
+        }
+      }
+
+      // 4. Fallback: if prediction object was provided
+      if (predictionArg && typeof predictionArg === "object") {
+        setResult(predictionArg);
+        setPage("results");
+        return;
+      }
+
+      throw new Error("Prediction record details not found");
+    } catch (err) {
       alert("Failed to load historical prediction detail: " + err.message);
     }
   };
@@ -236,11 +357,7 @@ export default function App() {
 
       {/* Topbar matching reference screenshots */}
       <header className="app-topbar">
-        <div
-          className="brand-lockup"
-          onClick={handleReset}
-          style={{ cursor: "pointer" }}
-        >
+        <div className="brand-lockup" onClick={handleReset} style={{ cursor: "pointer" }}>
           <img src="/logo.png" alt="CKD Logo" className="app-logo-img" />
           <div>
             <span className="brand-name">
@@ -306,10 +423,7 @@ export default function App() {
                   </div>
                 </button>
 
-                <button
-                  className="dropdown-action-row danger"
-                  onClick={handleSignOut}
-                >
+                <button className="dropdown-action-row danger" onClick={handleSignOut}>
                   <div className="dropdown-icon-wrap">
                     <SignOutIcon />
                   </div>
@@ -332,15 +446,8 @@ export default function App() {
             onViewDetail={handleViewDetail}
           />
         )}
-        {page === "predict" && (
-          <Home
-            user={user}
-            onResultsReady={handleResultsReady}
-          />
-        )}
-        {page === "results" && result && (
-          <Results result={result} onReset={handleGoPredict} />
-        )}
+        {page === "predict" && <Home user={user} onResultsReady={handleResultsReady} />}
+        {page === "results" && result && <Results result={result} onReset={handleGoPredict} />}
         {page === "history" && (
           <History
             user={user}

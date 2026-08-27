@@ -217,7 +217,9 @@
   border: 1px solid rgba(233, 243, 239, 0.12);
   border-radius: 10px;
   overflow: hidden;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .field-input-box-wrap:focus-within {
@@ -564,7 +566,8 @@ select.styled-dark-input option {
 }
 
 @media (max-width: 640px) {
-  .entry-form-card, .whats-next-card {
+  .entry-form-card,
+  .whats-next-card {
     padding: 1.1rem;
     border-radius: 12px;
   }
@@ -590,7 +593,8 @@ select.styled-dark-input option {
     width: 100%;
     justify-content: space-between;
   }
-  .btn-next-gradient, .btn-signin-outline {
+  .btn-next-gradient,
+  .btn-signin-outline {
     flex: 1;
     justify-content: center;
   }

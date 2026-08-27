@@ -6,7 +6,16 @@ import RiskCharts from "./RiskCharts";
 // SVG Icons matching reference design
 function ShieldIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <path d="m9 12 2 2 4-4" />
     </svg>
@@ -15,7 +24,16 @@ function ShieldIcon() {
 
 function HeartIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
@@ -23,7 +41,16 @@ function HeartIcon() {
 
 function DocumentIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
       <polyline points="14 2 14 8 20 8" />
       <line x1="16" y1="13" x2="8" y2="13" />
@@ -34,26 +61,37 @@ function DocumentIcon() {
 
 function KidneyIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 35 20 C 15 20 10 42 20 65 C 26 78 38 88 50 88 C 56 88 53 70 48 60 C 43 50 43 36 50 28 C 54 22 50 20 35 20 Z" fill="currentColor" />
-      <path d="M 65 20 C 85 20 90 42 80 65 C 74 78 62 88 50 88 C 44 88 47 70 52 60 C 57 50 57 36 50 28 C 46 22 50 20 65 20 Z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function UrineIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 2h8v4H8z" />
-      <path d="M6 6h12v12a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V6z" />
-      <path d="M9 13a3 3 0 0 0 6 0" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M 35 20 C 15 20 10 42 20 65 C 26 78 38 88 50 88 C 56 88 53 70 48 60 C 43 50 43 36 50 28 C 54 22 50 20 35 20 Z"
+        fill="currentColor"
+      />
+      <path
+        d="M 65 20 C 85 20 90 42 80 65 C 74 78 62 88 50 88 C 44 88 47 70 52 60 C 57 50 57 36 50 28 C 46 22 50 20 65 20 Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
 
 function BpMonitorIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="3" y="4" width="18" height="12" rx="2" />
       <line x1="7" y1="20" x2="17" y2="20" />
       <line x1="12" y1="16" x2="12" y2="20" />
@@ -65,7 +103,16 @@ function BpMonitorIcon() {
 
 function DropletIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
     </svg>
   );
@@ -73,7 +120,16 @@ function DropletIcon() {
 
 function SaltIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M9 3h6l1 4H8l1-4z" />
       <path d="M6 8h12l1 12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L6 8z" />
       <circle cx="10" cy="13" r="0.5" fill="currentColor" />
@@ -85,7 +141,16 @@ function SaltIcon() {
 
 function ActivityIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M13 4v16M17 8v8M9 9v6M5 12v0" />
     </svg>
   );
@@ -93,7 +158,16 @@ function ActivityIcon() {
 
 function WaterIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
     </svg>
   );
@@ -101,7 +175,16 @@ function WaterIcon() {
 
 function CalendarIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
       <line x1="16" y1="2" x2="16" y2="6" />
       <line x1="8" y1="2" x2="8" y2="6" />
@@ -112,7 +195,16 @@ function CalendarIcon() {
 
 function DownloadIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
       <polyline points="7 10 12 15 17 10" />
       <line x1="12" y1="15" x2="12" y2="3" />
@@ -122,7 +214,16 @@ function DownloadIcon() {
 
 function ArrowLeftIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="19" y1="12" x2="5" y2="12" />
       <polyline points="12 19 5 12 12 5" />
     </svg>
@@ -199,20 +300,38 @@ export default function ResultCard({ result, onReset }) {
   const egfr = patientData.GFR || patientData.gfr || 60;
   const sysBp = patientData.SystolicBP || patientData.systolic_bp || 130;
   const diaBp = patientData.DiastolicBP || patientData.diastolic_bp || 85;
-  const acrCode = typeof assessment.albuminuria === "object" ? assessment.albuminuria?.code : assessment.albuminuria || "A2";
-  const ckdStageCode = typeof assessment.ckd_stage === "object" ? assessment.ckd_stage?.code : assessment.ckd_stage || "G2";
+  const acrCode =
+    typeof assessment.albuminuria === "object"
+      ? assessment.albuminuria?.code
+      : assessment.albuminuria || "A2";
+  const ckdStageCode =
+    typeof assessment.ckd_stage === "object"
+      ? assessment.ckd_stage?.code
+      : assessment.ckd_stage || "G2";
 
   // Determine badges dynamically
-  const egfrBadge = egfr >= 90 ? "Normal" : egfr >= 60 ? "Mildly decreased" : egfr >= 30 ? "Moderately decreased" : "Severely decreased";
+  const egfrBadge =
+    egfr >= 90
+      ? "Normal"
+      : egfr >= 60
+        ? "Mildly decreased"
+        : egfr >= 30
+          ? "Moderately decreased"
+          : "Severely decreased";
   const egfrBadgeClass = egfr >= 90 ? "normal" : egfr >= 60 ? "mild" : "warning";
 
-  const acrBadge = acrCode === "A1" ? "Normal" : acrCode === "A2" ? "Moderately increased" : "Severely increased";
+  const acrBadge =
+    acrCode === "A1" ? "Normal" : acrCode === "A2" ? "Moderately increased" : "Severely increased";
   const acrBadgeClass = acrCode === "A1" ? "normal" : "warning";
 
-  const bpBadge = (sysBp > 120 || diaBp > 80) ? "Above target" : "Optimal";
-  const bpBadgeClass = (sysBp > 120 || diaBp > 80) ? "warning" : "normal";
+  const bpBadge = sysBp > 120 || diaBp > 80 ? "Above target" : "Optimal";
+  const bpBadgeClass = sysBp > 120 || diaBp > 80 ? "warning" : "normal";
 
-  const ckdBadge = ckdStageCode.startsWith("G1") ? "Normal" : ckdStageCode.startsWith("G2") ? "Mild" : "Moderate";
+  const ckdBadge = ckdStageCode.startsWith("G1")
+    ? "Normal"
+    : ckdStageCode.startsWith("G2")
+      ? "Mild"
+      : "Moderate";
 
   const handlePrintSave = () => {
     window.print();
@@ -229,7 +348,8 @@ export default function ResultCard({ result, onReset }) {
           </button>
           <h1 className="summary-main-title">Your Kidney Health Summary</h1>
           <p className="summary-sub-desc">
-            Here is your risk of hospital readmission within the next 30 days and what you can do to stay healthy.
+            Here is your risk of hospital readmission within the next 30 days and what you can do to
+            stay healthy.
           </p>
         </div>
 
@@ -248,13 +368,22 @@ export default function ResultCard({ result, onReset }) {
       {/* Optional Blank Defaults Warning Banner */}
       {result.has_blank_defaults && (
         <div className="summary-blank-notice-bar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
             <line x1="12" y1="9" x2="12" y2="13" />
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
           <span>
-            <strong>Clinical Note:</strong> Optional lab fields left blank were filled using standard baseline population reference values. Readmission risk estimates may vary if actual lab values differ.
+            <strong>Clinical Note:</strong> Optional lab fields left blank were filled using
+            standard baseline population reference values. Readmission risk estimates may vary if
+            actual lab values differ.
           </span>
         </div>
       )}
@@ -297,11 +426,12 @@ export default function ResultCard({ result, onReset }) {
               {isHigh
                 ? "Your results indicate a high chance of hospital readmission within the next 30 days. Close medical supervision and immediate follow-up with your nephrology team are strongly advised."
                 : isMod
-                ? "Your results suggest a moderate chance of being readmitted to the hospital in the next 30 days."
-                : "Your results indicate a low chance of hospital readmission in the next 30 days. Maintain your current care regimen and continue regular health check-ups."}
+                  ? "Your results suggest a moderate chance of being readmitted to the hospital in the next 30 days."
+                  : "Your results indicate a low chance of hospital readmission in the next 30 days. Maintain your current care regimen and continue regular health check-ups."}
             </p>
             <p className="meaning-sub-text">
-              Following your treatment plan, taking medicines regularly, and making healthy lifestyle choices can help improve your outcomes.
+              Following your treatment plan, taking medicines regularly, and making healthy
+              lifestyle choices can help improve your outcomes.
             </p>
           </div>
         </div>
@@ -311,9 +441,7 @@ export default function ResultCard({ result, onReset }) {
       <section className="numbers-attention-grid">
         {/* Left: Key Health Numbers Grid */}
         <div className="key-numbers-card">
-          <h3 className="section-card-title">
-            Key Health Numbers ⓘ
-          </h3>
+          <h3 className="section-card-title">Key Health Numbers ⓘ</h3>
           <div className="numbers-sub-grid">
             {/* 1. Kidney Function */}
             <div className="number-stat-box">
@@ -340,7 +468,9 @@ export default function ResultCard({ result, onReset }) {
               <div className="stat-head-label">
                 <span>Blood Pressure ⓘ</span>
               </div>
-              <span className="stat-large-val red">{sysBp}/{diaBp}</span>
+              <span className="stat-large-val red">
+                {sysBp}/{diaBp}
+              </span>
               <span className="stat-unit-text">mmHg</span>
               <span className={`stat-status-pill ${bpBadgeClass}`}>{bpBadge}</span>
             </div>
@@ -393,7 +523,14 @@ export default function ResultCard({ result, onReset }) {
           </div>
 
           <div className="attention-footer-note">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="16" x2="12" y2="12" />
               <line x1="12" y1="8" x2="12.01" y2="8" />
@@ -406,7 +543,9 @@ export default function ResultCard({ result, onReset }) {
       {/* What You Can Do Section (5 Actionable Cards) */}
       <section className="what-you-can-do-card">
         <h3 className="section-card-title">What You Can Do</h3>
-        <p className="card-sub-intro">Simple steps that can help you feel better and lower your risk.</p>
+        <p className="card-sub-intro">
+          Simple steps that can help you feel better and lower your risk.
+        </p>
 
         <div className="actionable-tiles-row">
           {/* Tile 1 */}
@@ -435,7 +574,9 @@ export default function ResultCard({ result, onReset }) {
               <KidneyIcon />
             </div>
             <strong className="action-tile-heading">Follow Kidney-Friendly Diet</strong>
-            <span className="action-tile-desc">Eat balanced meals. Limit potassium if advised.</span>
+            <span className="action-tile-desc">
+              Eat balanced meals. Limit potassium if advised.
+            </span>
             <span className="action-pill-target teal">Eat smart</span>
           </div>
 
@@ -455,7 +596,9 @@ export default function ResultCard({ result, onReset }) {
               <WaterIcon />
             </div>
             <strong className="action-tile-heading">Stay Hydrated</strong>
-            <span className="action-tile-desc">Drink enough water unless restricted by your doctor.</span>
+            <span className="action-tile-desc">
+              Drink enough water unless restricted by your doctor.
+            </span>
             <span className="action-pill-target blue">Stay hydrated</span>
           </div>
         </div>
@@ -471,7 +614,8 @@ export default function ResultCard({ result, onReset }) {
           <div className="banner-text-content">
             <h4 className="banner-title">Small changes today, better health tomorrow.</h4>
             <p className="banner-desc">
-              Working together with your healthcare team can help you stay healthy and avoid complications.
+              Working together with your healthcare team can help you stay healthy and avoid
+              complications.
             </p>
           </div>
         </div>
@@ -483,9 +627,7 @@ export default function ResultCard({ result, onReset }) {
           </div>
           <div className="banner-text-content">
             <h4 className="banner-title">Keep Your Follow-up Appointments</h4>
-            <p className="banner-desc">
-              Regular check-ups and tests help catch problems early.
-            </p>
+            <p className="banner-desc">Regular check-ups and tests help catch problems early.</p>
           </div>
         </div>
       </section>
@@ -497,7 +639,9 @@ export default function ResultCard({ result, onReset }) {
           className="btn-toggle-advanced"
           onClick={() => setShowAdvanced((prev) => !prev)}
         >
-          {showAdvanced ? "Hide Institutional Clinical Analytics" : "View Institutional Clinical Analytics & KDIGO Matrix"}
+          {showAdvanced
+            ? "Hide Institutional Clinical Analytics"
+            : "View Institutional Clinical Analytics & KDIGO Matrix"}
         </button>
       </div>
 
@@ -523,7 +667,10 @@ export default function ResultCard({ result, onReset }) {
       </footer>
 
       <div className="disclaimer-bottom-note">
-        <p>This prediction is based on the information provided and is not a replacement for medical advice. Always consult your nephrologist for personalized care.</p>
+        <p>
+          This prediction is based on the information provided and is not a replacement for medical
+          advice. Always consult your nephrologist for personalized care.
+        </p>
       </div>
     </div>
   );

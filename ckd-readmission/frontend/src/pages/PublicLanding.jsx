@@ -4,7 +4,16 @@ import "./PublicLanding.css";
 // SVG Icons
 function ArrowRightIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M5 12h14" />
       <path d="m12 5 7 7-7 7" />
     </svg>
@@ -13,7 +22,16 @@ function ArrowRightIcon() {
 
 function ShieldCheckIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <path d="m9 12 2 2 4-4" />
     </svg>
@@ -22,7 +40,16 @@ function ShieldCheckIcon() {
 
 function BrainIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
       <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 1 1 2.526 5.77 4 4 0 1 1-.556 6.588A4 4 0 1 1 12 18Z" />
       <path d="M12 5v13" />
@@ -32,7 +59,16 @@ function BrainIcon() {
 
 function AnalyticsIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="18" y1="20" x2="18" y2="10" />
       <line x1="12" y1="20" x2="12" y2="4" />
       <line x1="6" y1="20" x2="6" y2="14" />
@@ -42,7 +78,16 @@ function AnalyticsIcon() {
 
 function ClockHistoryIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
       <path d="M3 3v5h5" />
       <path d="M12 7v5l4 2" />
@@ -52,7 +97,16 @@ function ClockHistoryIcon() {
 
 function PrivacyShieldIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <path d="m9 12 2 2 4-4" />
     </svg>
@@ -61,7 +115,16 @@ function PrivacyShieldIcon() {
 
 function ClinicianUserGroupIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
       <circle cx="9" cy="7" r="4" />
       <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
@@ -72,16 +135,37 @@ function ClinicianUserGroupIcon() {
 
 function KidneyIcon() {
   return (
-    <svg width="56" height="56" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 35 20 C 15 20 10 42 20 65 C 26 78 38 88 50 88 C 56 88 53 70 48 60 C 43 50 43 36 50 28 C 54 22 50 20 35 20 Z" fill="#33c3a8" />
-      <path d="M 65 20 C 85 20 90 42 80 65 C 74 78 62 88 50 88 C 44 88 47 70 52 60 C 57 50 57 36 50 28 C 46 22 50 20 65 20 Z" fill="#33c3a8" />
+    <svg
+      width="56"
+      height="56"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M 35 20 C 15 20 10 42 20 65 C 26 78 38 88 50 88 C 56 88 53 70 48 60 C 43 50 43 36 50 28 C 54 22 50 20 35 20 Z"
+        fill="#33c3a8"
+      />
+      <path
+        d="M 65 20 C 85 20 90 42 80 65 C 74 78 62 88 50 88 C 44 88 47 70 52 60 C 57 50 57 36 50 28 C 46 22 50 20 65 20 Z"
+        fill="#33c3a8"
+      />
     </svg>
   );
 }
 
 function PlusIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="12" y1="5" x2="12" y2="19" />
       <line x1="5" y1="12" x2="19" y2="12" />
     </svg>
@@ -106,10 +190,16 @@ export default function PublicLanding({ onSignIn, onCreateAccount }) {
 
       {/* Topbar Header */}
       <header className="public-topbar">
-        <div className="brand-lockup" onClick={() => handleNavClick("Home", null)} style={{ cursor: "pointer" }}>
+        <div
+          className="brand-lockup"
+          onClick={() => handleNavClick("Home", null)}
+          style={{ cursor: "pointer" }}
+        >
           <img src="/logo.png" alt="CKD Logo" className="app-logo-img" />
           <div>
-            <span className="brand-name">CKD <span style={{ color: "var(--accent-primary)" }}>Readmission Predictor</span></span>
+            <span className="brand-name">
+              CKD <span style={{ color: "var(--accent-primary)" }}>Readmission Predictor</span>
+            </span>
           </div>
         </div>
 
@@ -161,9 +251,7 @@ export default function PublicLanding({ onSignIn, onCreateAccount }) {
         {/* Hero Section */}
         <section className="hero-grid-split">
           <div className="hero-left-column">
-            <div className="hero-pill-tag">
-              AI-Powered • Data-Driven • Clinically Intelligent
-            </div>
+            <div className="hero-pill-tag">AI-Powered • Data-Driven • Clinically Intelligent</div>
 
             <h1 className="hero-title-main">
               Predict. Prevent.
@@ -171,7 +259,8 @@ export default function PublicLanding({ onSignIn, onCreateAccount }) {
             </h1>
 
             <p className="hero-subtitle-desc">
-              CKD Readmission Predictor uses advanced machine learning to identify high-risk patients and help clinicians reduce readmissions and improve patient care.
+              CKD Readmission Predictor uses advanced machine learning to identify high-risk
+              patients and help clinicians reduce readmissions and improve patient care.
             </p>
 
             <div className="hero-cta-buttons">
@@ -179,7 +268,10 @@ export default function PublicLanding({ onSignIn, onCreateAccount }) {
                 <span>Start Prediction</span>
                 <ArrowRightIcon />
               </button>
-              <button className="btn-hero-secondary" onClick={() => handleNavClick("Features", "why-choose-section")}>
+              <button
+                className="btn-hero-secondary"
+                onClick={() => handleNavClick("Features", "why-choose-section")}
+              >
                 Learn More
               </button>
             </div>

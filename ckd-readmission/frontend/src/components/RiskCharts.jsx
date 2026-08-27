@@ -4,7 +4,6 @@ import "./RiskCharts.css";
 const COLOR_SAGE = "#5b8c5a";
 const COLOR_OCHRE = "#c98a3a";
 const COLOR_BRICK = "#b23a2e";
-const COLOR_SPRUCE = "#0f5c53";
 
 /* ═══════════════════════════════════════════════
    1. KDIGO Heatmap Staging Grid (Signature Element)
@@ -44,7 +43,9 @@ export function KDIGOHeatmapGrid({ ckdStage = "G3a", albuminuriaCode = "A2" }) {
     <div className="kdigo-container">
       <div className="chart-title-row">
         <span className="chart-heading">KDIGO Clinical Staging Grid</span>
-        <span className="chart-mono-tag">{gCode} / {aCode}</span>
+        <span className="chart-mono-tag">
+          {gCode} / {aCode}
+        </span>
       </div>
 
       <div className="kdigo-grid">
@@ -76,7 +77,9 @@ export function KDIGOHeatmapGrid({ ckdStage = "G3a", albuminuriaCode = "A2" }) {
                   className={`kdigo-cell ${tintClass} ${isMatch ? "selected-cell" : "dimmed-cell"}`}
                 >
                   {isMatch && <span className="patient-dot" />}
-                  <span className="cell-code">{row.code}-{col.code}</span>
+                  <span className="cell-code">
+                    {row.code}-{col.code}
+                  </span>
                 </div>
               );
             })}
@@ -108,7 +111,9 @@ export function SeverityMeter({ score = 4 }) {
     <div className="severity-meter-box">
       <div className="chart-title-row">
         <span className="chart-heading">Clinical Severity Index</span>
-        <span className="chart-mono-tag">{score} / {maxScore} pts</span>
+        <span className="chart-mono-tag">
+          {score} / {maxScore} pts
+        </span>
       </div>
 
       <div className="meter-track">
@@ -176,7 +181,9 @@ export function SHAPBarChart({ factors = [] }) {
               <div className="shap-track">
                 <div className="shap-bar" style={{ width: `${widthPct}%` }} />
               </div>
-              <span className="shap-val mono">{item.value !== undefined ? item.value : `${item.impact}`}</span>
+              <span className="shap-val mono">
+                {item.value !== undefined ? item.value : `${item.impact}`}
+              </span>
             </div>
           );
         })}
@@ -212,7 +219,10 @@ export function KFREChart({ kfreData }) {
         <div className="kfre-row">
           <span className="kfre-label mono">2-Year Progression</span>
           <div className="kfre-track">
-            <div className="kfre-bar" style={{ width: `${risk2y}%`, backgroundColor: COLOR_OCHRE }} />
+            <div
+              className="kfre-bar"
+              style={{ width: `${risk2y}%`, backgroundColor: COLOR_OCHRE }}
+            />
           </div>
           <span className="kfre-val mono">{risk2y}%</span>
         </div>
@@ -220,7 +230,10 @@ export function KFREChart({ kfreData }) {
         <div className="kfre-row">
           <span className="kfre-label mono">5-Year Progression</span>
           <div className="kfre-track">
-            <div className="kfre-bar" style={{ width: `${risk5y}%`, backgroundColor: COLOR_BRICK }} />
+            <div
+              className="kfre-bar"
+              style={{ width: `${risk5y}%`, backgroundColor: COLOR_BRICK }}
+            />
           </div>
           <span className="kfre-val mono">{risk5y}%</span>
         </div>

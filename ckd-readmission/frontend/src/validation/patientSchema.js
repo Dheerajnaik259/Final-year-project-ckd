@@ -34,20 +34,12 @@ const numberField = (key) => {
 };
 
 // Only fields rendered and required in the intake form steps
-export const requiredFields = [
-  "Age",
-  "SystolicBP",
-  "DiastolicBP",
-  "SerumCreatinine",
-  "GFR",
-];
+export const requiredFields = ["Age", "SystolicBP", "DiastolicBP", "SerumCreatinine", "GFR"];
 
 const shape = Object.fromEntries(
   requiredFields.map((key) => [
     key,
-    key === "Hypertension"
-      ? z.coerce.number().min(0).max(1)
-      : numberField(key),
+    key === "Hypertension" ? z.coerce.number().min(0).max(1) : numberField(key),
   ])
 );
 
@@ -81,5 +73,9 @@ export function validateFields(form, keys) {
 }
 
 export function validatePatientForm(form) {
-  return validateFields(form, requiredFields);
+  const presentKeys = Object.keys(form).filter(
+    (key) => form[key] !== "" && form[key] !== null && form[key] !== undefined
+  );
+  const keysToValidate = Array.from(new Set([...requiredFields, ...presentKeys]));
+  return validateFields(form, keysToValidate);
 }

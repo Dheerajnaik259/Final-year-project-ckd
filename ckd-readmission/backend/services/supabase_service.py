@@ -84,8 +84,8 @@ def save_prediction(patient_data: Dict, result: Dict, user_id: Optional[str] = N
 
 def get_predictions(limit: int = 20, offset: int = 0, user_id: Optional[str] = None) -> List[Dict]:
     """
-    Fetch recent predictions, newest first, optionally filtered by user_id.
-    Returns empty list if Supabase is unavailable.
+    Fetch recent predictions, newest first, filtered strictly by user_id if provided.
+    Returns empty list if Supabase is unavailable or no matching user predictions exist.
     """
     client = _get_client()
     if client is None:
@@ -96,29 +96,13 @@ def get_predictions(limit: int = 20, offset: int = 0, user_id: Optional[str] = N
             client.table("predictions")
             .select(
                 "id, created_at, patient_age, patient_gender, "
-                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data"
+                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data, full_result, user_id"
             )
         )
         if user_id:
-            user_query = client.table("predictions").select(
-                "id, created_at, patient_age, patient_gender, "
-                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data"
-            ).eq("user_id", user_id).order("created_at", desc=True).range(offset, offset + limit - 1)
-            response = user_query.execute()
-            if response.data and len(response.data) > 0:
-                return response.data
+            query = query.eq("user_id", user_id)
 
-        # General query fallback if user_id is None or user_id query returns no items
-        fallback_query = (
-            client.table("predictions")
-            .select(
-                "id, created_at, patient_age, patient_gender, "
-                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data"
-            )
-            .order("created_at", desc=True)
-            .range(offset, offset + limit - 1)
-        )
-        response = fallback_query.execute()
+        response = query.order("created_at", desc=True).range(offset, offset + limit - 1).execute()
         return response.data or []
 
     except Exception as exc:

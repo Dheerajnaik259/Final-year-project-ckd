@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validatePatientForm } from "../src/validation/patientSchema";
+import { validatePatientForm } from "./patientSchema";
 
 const validForm = {
   Age: "68",

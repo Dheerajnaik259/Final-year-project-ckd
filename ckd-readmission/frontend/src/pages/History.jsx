@@ -2,18 +2,18 @@ import { useState, useEffect, useMemo } from "react";
 import "./History.css";
 
 // SVG Icons
-function SearchIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  );
-}
-
 function FilterIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
     </svg>
   );
@@ -21,7 +21,16 @@ function FilterIcon() {
 
 function EyeIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
@@ -30,7 +39,17 @@ function EyeIcon() {
 
 function SortIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6 }}>
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ opacity: 0.6 }}
+    >
       <path d="m7 15 5 5 5-5" />
       <path d="m7 9 5-5 5 5" />
     </svg>
@@ -73,7 +92,20 @@ function formatDateFormatted(isoStr) {
   const d = new Date(isoStr);
   if (isNaN(d.getTime())) return { date: "Recent", time: "10:00 AM" };
 
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const day = d.getDate().toString().padStart(2, "0");
   const month = months[d.getMonth()];
   const year = d.getFullYear();
@@ -90,21 +122,9 @@ function formatDateFormatted(isoStr) {
   };
 }
 
-// Generate realistic patient names for history display
-const patientDemoList = [
-  { name: "Priya Sharma", id: "CKD-84521", avatar: "PS" },
-  { name: "Ramesh Kumar", id: "CKD-73412", avatar: "RK" },
-  { name: "Anita Singh", id: "CKD-62911", avatar: "AS" },
-  { name: "Mohit Gupta", id: "CKD-51523", avatar: "MG" },
-  { name: "Sunita Chawla", id: "CKD-48219", avatar: "SC" },
-  { name: "Vikram Bansal", id: "CKD-40117", avatar: "VB" },
-  { name: "Neha Desai", id: "CKD-38105", avatar: "ND" },
-];
-
 export default function History({ user, onBack, onNewPredict, onViewDetail }) {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
   const [filterRisk, setFilterRisk] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -129,15 +149,19 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
 
       let localRecords = [];
       try {
-        localRecords = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
-      } catch (err) {
-        localRecords = [];
+        const storageKey = user?.id ? `ckd_history_${user.id}` : "ckd_local_prediction_history";
+        localRecords = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      } catch (_err) {
+        // Fallback to empty array
       }
 
       const mergedMap = new Map();
       [...serverRecords, ...localRecords].forEach((item) => {
         if (item && item.id && !mergedMap.has(item.id)) {
-          mergedMap.set(item.id, item);
+          // Verify user isolation if user_id tag is present on record
+          if (!user?.id || !item.user_id || item.user_id === user.id) {
+            mergedMap.set(item.id, item);
+          }
         }
       });
 
@@ -154,7 +178,9 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
 
   // Statistics calculation
   const totalCount = predictions.length;
-  const modCount = predictions.filter((p) => p.risk_level === "Medium" || p.risk_level === "Moderate").length;
+  const modCount = predictions.filter(
+    (p) => p.risk_level === "Medium" || p.risk_level === "Moderate"
+  ).length;
   const highCount = predictions.filter((p) => p.risk_level === "High").length;
   const lowCount = predictions.filter((p) => p.risk_level === "Low").length;
 
@@ -162,14 +188,9 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
   const filteredPredictions = useMemo(() => {
     return predictions.filter((item) => {
       if (filterRisk !== "ALL" && item.risk_level !== filterRisk) return false;
-      if (!searchTerm) return true;
-      const term = searchTerm.toLowerCase();
-      const pData = item.patient_data || {};
-      const name = pData.name || pData.PatientName || "";
-      const pid = item.id || "";
-      return name.toLowerCase().includes(term) || pid.toLowerCase().includes(term);
+      return true;
     });
-  }, [predictions, filterRisk, searchTerm]);
+  }, [predictions, filterRisk]);
 
   // Pagination slicing
   const totalPages = Math.ceil(filteredPredictions.length / rowsPerPage) || 1;
@@ -188,23 +209,18 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         </div>
 
         <div className="search-filter-block">
-          <div className="search-input-wrap">
-            <SearchIcon />
-            <input
-              type="text"
-              className="history-search-input"
-              placeholder="Search by patient name or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
           <button
             type="button"
             className="filter-toggle-btn"
             onClick={() => {
               setFilterRisk((curr) =>
-                curr === "ALL" ? "High" : curr === "High" ? "Medium" : curr === "Medium" ? "Low" : "ALL"
+                curr === "ALL"
+                  ? "High"
+                  : curr === "High"
+                    ? "Medium"
+                    : curr === "Medium"
+                      ? "Low"
+                      : "ALL"
               );
             }}
           >
@@ -219,7 +235,14 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         {/* Total Predictions */}
         <div className="stat-card">
           <div className="stat-icon-wrap teal">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
@@ -277,12 +300,24 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
           <>
             {/* Table Header Row */}
             <div className="table-header-row">
-              <span className="th-cell">Date &amp; Time <SortIcon /></span>
-              <span className="th-cell">Patient <SortIcon /></span>
-              <span className="th-cell">Risk Level <SortIcon /></span>
-              <span className="th-cell">Risk Score <SortIcon /></span>
-              <span className="th-cell">Kidney Function <SortIcon /></span>
-              <span className="th-cell">Blood Pressure <SortIcon /></span>
+              <span className="th-cell">
+                Date &amp; Time <SortIcon />
+              </span>
+              <span className="th-cell">
+                Patient <SortIcon />
+              </span>
+              <span className="th-cell">
+                Risk Level <SortIcon />
+              </span>
+              <span className="th-cell">
+                Risk Score <SortIcon />
+              </span>
+              <span className="th-cell">
+                Kidney Function <SortIcon />
+              </span>
+              <span className="th-cell">
+                Blood Pressure <SortIcon />
+              </span>
               <span className="th-cell action">Action</span>
             </div>
 
@@ -290,10 +325,25 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
             <div className="table-body-rows">
               {displayedPredictions.map((row, idx) => {
                 const { date, time } = formatDateFormatted(row.created_at);
-                const demoPatient = patientDemoList[idx % patientDemoList.length];
-                const patientName = row.patient_data?.name || demoPatient.name;
-                const patientId = demoPatient.id;
-                const avatarInitials = demoPatient.avatar;
+
+                // Dynamic patient metadata
+                const pData = row.patient_data || {};
+                const patientName =
+                  pData.name ||
+                  pData.PatientName ||
+                  user?.user_metadata?.full_name ||
+                  user?.email?.split("@")[0] ||
+                  "Patient Record";
+                const patientId = row.id
+                  ? `CKD-${row.id.toString().substring(0, 6).toUpperCase()}`
+                  : `CKD-8452${idx + 1}`;
+                const avatarInitials =
+                  patientName
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .substring(0, 2)
+                    .toUpperCase() || "PT";
 
                 const isHigh = row.risk_level === "High";
                 const isMod = row.risk_level === "Medium" || row.risk_level === "Moderate";
@@ -303,11 +353,16 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
                 const prob = Math.round(row.probability || 0);
 
                 const egfrVal = row.patient_data?.GFR || row.patient_data?.gfr || 60;
-                const egfrSub = egfrVal >= 90 ? "Normal (eGFR)" : egfrVal >= 60 ? "Mildly decreased (eGFR)" : "Moderately decreased (eGFR)";
+                const egfrSub =
+                  egfrVal >= 90
+                    ? "Normal (eGFR)"
+                    : egfrVal >= 60
+                      ? "Mildly decreased (eGFR)"
+                      : "Moderately decreased (eGFR)";
 
                 const sysBp = row.patient_data?.SystolicBP || row.patient_data?.systolic_bp || 130;
                 const diaBp = row.patient_data?.DiastolicBP || row.patient_data?.diastolic_bp || 85;
-                const bpSub = (sysBp > 120 || diaBp > 80) ? "Above target" : "Within target";
+                const bpSub = sysBp > 120 || diaBp > 80 ? "Above target" : "Within target";
 
                 return (
                   <div className="table-data-row" key={row.id || idx}>
@@ -362,7 +417,7 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
                       <button
                         type="button"
                         className="btn-view-record"
-                        onClick={() => onViewDetail && onViewDetail(row.id)}
+                        onClick={() => onViewDetail && onViewDetail(row)}
                       >
                         <EyeIcon />
                         <span>View</span>
@@ -376,7 +431,8 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
             {/* Table Footer Pagination Bar */}
             <footer className="table-pagination-footer">
               <span className="showing-results-text">
-                Showing {Math.min(1, filteredPredictions.length)} to {displayedPredictions.length} of {filteredPredictions.length} results
+                Showing {Math.min(1, filteredPredictions.length)} to {displayedPredictions.length}{" "}
+                of {filteredPredictions.length} results
               </span>
 
               <div className="pagination-controls">
@@ -423,13 +479,21 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
 
       {/* Bottom Medical Disclaimer Note */}
       <footer className="history-disclaimer-banner">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="16" x2="12" y2="12" />
           <line x1="12" y1="8" x2="12.01" y2="8" />
         </svg>
         <span>
-          This prediction is based on the information provided and is not a replacement for medical advice. Always consult your nephrologist for personalized care.
+          This prediction is based on the information provided and is not a replacement for medical
+          advice. Always consult your nephrologist for personalized care.
         </span>
       </footer>
     </div>

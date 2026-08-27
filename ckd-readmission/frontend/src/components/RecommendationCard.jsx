@@ -21,7 +21,11 @@ export default function RecommendationCard({ recommendation }) {
         <div className="header-left">
           <span
             className="urgency-badge"
-            style={{ backgroundColor: config.tint, color: config.color, borderColor: config.border }}
+            style={{
+              backgroundColor: config.tint,
+              color: config.color,
+              borderColor: config.border,
+            }}
           >
             {recommendation.urgency_level} Priority
           </span>
@@ -75,8 +79,9 @@ export default function RecommendationCard({ recommendation }) {
 
           <div className="medical-disclaimer-box">
             <p>
-              <strong>Decision Support Disclaimer:</strong> Recommendations are calculated for clinical reference
-              and institutional protocol review. Always consult a qualified nephrologist before altering treatment plans.
+              <strong>Decision Support Disclaimer:</strong> Recommendations are calculated for
+              clinical reference and institutional protocol review. Always consult a qualified
+              nephrologist before altering treatment plans.
             </p>
           </div>
         </div>

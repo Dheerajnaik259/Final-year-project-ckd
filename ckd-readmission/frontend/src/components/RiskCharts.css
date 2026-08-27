@@ -64,25 +64,40 @@
   min-height: 38px;
 }
 
-.header-cell, .row-label-cell {
+.header-cell,
+.row-label-cell {
   background: var(--bg-page);
   color: var(--text-secondary);
 }
 
-.header-cell strong, .row-label-cell strong {
+.header-cell strong,
+.row-label-cell strong {
   color: var(--text-primary);
 }
 
-.header-cell small, .row-label-cell small {
+.header-cell small,
+.row-label-cell small {
   font-size: 0.65rem;
   color: var(--text-faint);
 }
 
 /* KDIGO Standard Heatmap Cell Tints */
-.cell-green { background: #eef7ee; color: #2e5c2d; }
-.cell-yellow { background: #fdf8e7; color: #7a5410; }
-.cell-orange { background: #fdf0e6; color: #8c3f10; }
-.cell-red { background: #fceceb; color: #7a1f1f; }
+.cell-green {
+  background: #eef7ee;
+  color: #2e5c2d;
+}
+.cell-yellow {
+  background: #fdf8e7;
+  color: #7a5410;
+}
+.cell-orange {
+  background: #fdf0e6;
+  color: #8c3f10;
+}
+.cell-red {
+  background: #fceceb;
+  color: #7a1f1f;
+}
 
 .dimmed-cell {
   opacity: 0.45;
@@ -257,7 +272,10 @@
 }
 
 @media (max-width: 550px) {
-  .kdigo-container, .severity-meter-box, .shap-container, .kfre-box {
+  .kdigo-container,
+  .severity-meter-box,
+  .shap-container,
+  .kfre-box {
     padding: 1rem;
     overflow-x: auto;
   }

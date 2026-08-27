@@ -45,7 +45,8 @@
   border-bottom: 2px solid transparent;
 }
 
-.public-nav-item:hover, .public-nav-item.active {
+.public-nav-item:hover,
+.public-nav-item.active {
   color: #ffffff;
 }
 

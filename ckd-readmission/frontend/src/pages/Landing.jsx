@@ -5,7 +5,16 @@ import "./Landing.css";
 // SVG Icons
 function UserIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
     </svg>
@@ -14,7 +23,16 @@ function UserIcon() {
 
 function EditPencilIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
     </svg>
   );
@@ -22,7 +40,16 @@ function EditPencilIcon() {
 
 function PulseIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
     </svg>
   );
@@ -30,16 +57,37 @@ function PulseIcon() {
 
 function KidneyIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 35 20 C 15 20 10 42 20 65 C 26 78 38 88 50 88 C 56 88 53 70 48 60 C 43 50 43 36 50 28 C 54 22 50 20 35 20 Z" fill="currentColor" />
-      <path d="M 65 20 C 85 20 90 42 80 65 C 74 78 62 88 50 88 C 44 88 47 70 52 60 C 57 50 57 36 50 28 C 46 22 50 20 65 20 Z" fill="currentColor" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M 35 20 C 15 20 10 42 20 65 C 26 78 38 88 50 88 C 56 88 53 70 48 60 C 43 50 43 36 50 28 C 54 22 50 20 35 20 Z"
+        fill="currentColor"
+      />
+      <path
+        d="M 65 20 C 85 20 90 42 80 65 C 74 78 62 88 50 88 C 44 88 47 70 52 60 C 57 50 57 36 50 28 C 46 22 50 20 65 20 Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
 
 function DropletIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
     </svg>
   );
@@ -47,7 +95,16 @@ function DropletIcon() {
 
 function ClockIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
     </svg>
@@ -56,7 +113,16 @@ function ClockIcon() {
 
 function CalendarIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
       <line x1="16" y1="2" x2="16" y2="6" />
       <line x1="8" y1="2" x2="8" y2="6" />
@@ -67,7 +133,16 @@ function CalendarIcon() {
 
 function EyeIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
@@ -76,7 +151,16 @@ function EyeIcon() {
 
 function PlusIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="12" y1="5" x2="12" y2="19" />
       <line x1="5" y1="12" x2="19" y2="12" />
     </svg>
@@ -85,7 +169,16 @@ function PlusIcon() {
 
 function BarChartIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <line x1="18" y1="20" x2="18" y2="10" />
       <line x1="12" y1="20" x2="12" y2="4" />
       <line x1="6" y1="20" x2="6" y2="14" />
@@ -95,7 +188,16 @@ function BarChartIcon() {
 
 function ShieldCheckIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <path d="m9 12 2 2 4-4" />
     </svg>
@@ -104,7 +206,16 @@ function ShieldCheckIcon() {
 
 function ChevronRightIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="m9 18 6-6-6-6" />
     </svg>
   );
@@ -113,7 +224,12 @@ function ChevronRightIcon() {
 // 3D Clipboard Graphic matching the bottom right card in mockup
 function Clipboard3DGraphic() {
   return (
-    <svg className="health-graphic-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      className="health-graphic-svg"
+      viewBox="0 0 200 160"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <defs>
         <radialGradient id="clipGlow" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
@@ -126,15 +242,69 @@ function Clipboard3DGraphic() {
       </defs>
 
       <ellipse cx="100" cy="140" rx="70" ry="18" fill="url(#clipGlow)" />
-      <rect x="45" y="25" width="90" height="110" rx="10" fill="#0c1715" stroke="#33c3a8" strokeOpacity="0.4" strokeWidth="1.5" transform="rotate(-6 90 80)" />
-      <rect x="75" y="18" width="30" height="10" rx="3" fill="#33c3a8" transform="rotate(-6 90 80)" />
-      <rect x="60" y="48" width="60" height="4" rx="2" fill="#33c3a8" fillOpacity="0.8" transform="rotate(-6 90 80)" />
-      <rect x="60" y="60" width="45" height="3" rx="1.5" fill="rgba(233, 243, 239, 0.4)" transform="rotate(-6 90 80)" />
-      <rect x="60" y="70" width="50" height="3" rx="1.5" fill="rgba(233, 243, 239, 0.4)" transform="rotate(-6 90 80)" />
+      <rect
+        x="45"
+        y="25"
+        width="90"
+        height="110"
+        rx="10"
+        fill="#0c1715"
+        stroke="#33c3a8"
+        strokeOpacity="0.4"
+        strokeWidth="1.5"
+        transform="rotate(-6 90 80)"
+      />
+      <rect
+        x="75"
+        y="18"
+        width="30"
+        height="10"
+        rx="3"
+        fill="#33c3a8"
+        transform="rotate(-6 90 80)"
+      />
+      <rect
+        x="60"
+        y="48"
+        width="60"
+        height="4"
+        rx="2"
+        fill="#33c3a8"
+        fillOpacity="0.8"
+        transform="rotate(-6 90 80)"
+      />
+      <rect
+        x="60"
+        y="60"
+        width="45"
+        height="3"
+        rx="1.5"
+        fill="rgba(233, 243, 239, 0.4)"
+        transform="rotate(-6 90 80)"
+      />
+      <rect
+        x="60"
+        y="70"
+        width="50"
+        height="3"
+        rx="1.5"
+        fill="rgba(233, 243, 239, 0.4)"
+        transform="rotate(-6 90 80)"
+      />
 
       <g transform="translate(120, 85)">
-        <path d="M 22 0 L 44 10 V 30 C 44 45 22 55 22 55 C 22 55 0 45 0 30 V 10 Z" fill="url(#shieldFill)" stroke="#44ddbf" strokeWidth="1.5" />
-        <path d="M 22 18 V 34 M 14 26 H 30" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+        <path
+          d="M 22 0 L 44 10 V 30 C 44 45 22 55 22 55 C 22 55 0 45 0 30 V 10 Z"
+          fill="url(#shieldFill)"
+          stroke="#44ddbf"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M 22 18 V 34 M 14 26 H 30"
+          stroke="#ffffff"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
       </g>
     </svg>
   );
@@ -143,16 +313,29 @@ function Clipboard3DGraphic() {
 function formatDate(iso) {
   if (!iso) return { date: "—", time: "" };
   const d = new Date(iso);
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const month = months[d.getMonth()];
   const day = d.getDate();
   const year = d.getFullYear();
-  
+
   let hours = d.getHours();
   const minutes = d.getMinutes().toString().padStart(2, "0");
   const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12 || 12;
-  
+
   return {
     date: `${month} ${day}, ${year}`,
     time: `${hours}:${minutes} ${ampm}`,
@@ -180,48 +363,95 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
 
     async function loadData() {
       try {
-        // 1. Fetch real patient profile from Supabase
-        const { data: profData } = await supabase
-          .from("patient_profiles")
-          .select("*")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        const realName = user.user_metadata?.full_name || user.email?.split("@")[0] || "User";
-        if (profData) {
-          setProfile(profData);
-          setEditForm({
-            full_name: profData.full_name || realName,
-            age: profData.age || "",
-            sex: profData.sex || "Male",
-            contact_number: profData.contact_number || "",
-          });
-        } else {
-          setProfile({
-            full_name: realName,
-            age: null,
-            sex: null,
-            contact_number: null,
-          });
-          setEditForm({
-            full_name: realName,
-            age: "",
-            sex: "Male",
-            contact_number: "",
-          });
+        // 1. Check local user-scoped profile snapshot first
+        let localProf = null;
+        try {
+          const cached = localStorage.getItem(`ckd_profile_${user.id}`);
+          if (cached) localProf = JSON.parse(cached);
+        } catch (_e) {
+          localProf = null;
         }
 
-        // 2. Fetch real prediction history for this authenticated user
-        const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
-        const res = await fetch(`${API_URL}/history?limit=10&user_id=${user.id}`);
-        if (res.ok) {
-          const data = await res.json();
-          const allPreds = data.predictions || [];
-          setRecentPredictions(allPreds.slice(0, 3));
-          setHistoryCount(data.count || allPreds.length);
+        // 2. Fetch real patient profile from Supabase
+        let profData = null;
+        try {
+          const { data } = await supabase
+            .from("patient_profiles")
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
+          profData = data;
+        } catch (_err) {
+          console.warn("Remote patient_profiles table query note:", _err);
+        }
 
-          if (allPreds.length > 0 && allPreds[0].patient_data) {
-            setLatestVitals(allPreds[0].patient_data);
+        const realName =
+          localProf?.full_name ||
+          profData?.full_name ||
+          user.user_metadata?.full_name ||
+          user.email?.split("@")[0] ||
+          "User";
+
+        const mergedProfile = {
+          user_id: user.id,
+          full_name: realName,
+          age: localProf?.age ?? profData?.age ?? null,
+          sex: localProf?.sex ?? profData?.sex ?? "Male",
+          contact_number: localProf?.contact_number ?? profData?.contact_number ?? null,
+        };
+
+        setProfile(mergedProfile);
+        setEditForm({
+          full_name: mergedProfile.full_name,
+          age: mergedProfile.age ? String(mergedProfile.age) : "",
+          sex: mergedProfile.sex || "Male",
+          contact_number: mergedProfile.contact_number || "",
+        });
+
+        // 3. Fetch real prediction history for this authenticated user
+        const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+        let serverPreds = [];
+        try {
+          const res = await fetch(`${API_URL}/history?limit=10&user_id=${user.id}`);
+          if (res.ok) {
+            const data = await res.json();
+            serverPreds = data.predictions || [];
+          }
+        } catch (err) {
+          console.warn("Could not fetch remote predictions for landing dashboard:", err);
+        }
+
+        let localPreds = [];
+        try {
+          localPreds = JSON.parse(localStorage.getItem(`ckd_history_${user.id}`) || "[]");
+        } catch (_e) {
+          localPreds = [];
+        }
+
+        const mergedMap = new Map();
+        [...serverPreds, ...localPreds].forEach((item) => {
+          if (item && item.id && !mergedMap.has(item.id)) {
+            if (!item.user_id || item.user_id === user.id) {
+              mergedMap.set(item.id, item);
+            }
+          }
+        });
+
+        const userPreds = Array.from(mergedMap.values()).sort(
+          (a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now())
+        );
+
+        setRecentPredictions(userPreds.slice(0, 3));
+        setHistoryCount(userPreds.length);
+
+        if (userPreds.length > 0) {
+          const topPred = userPreds[0];
+          const vitals =
+            topPred.patient_data ||
+            (topPred.full_result && topPred.full_result.patient_data) ||
+            topPred;
+          if (vitals) {
+            setLatestVitals(vitals);
           }
         }
       } catch (err) {
@@ -238,14 +468,34 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
     try {
       const updated = {
         user_id: user.id,
-        full_name: editForm.full_name,
+        full_name: editForm.full_name ? editForm.full_name.trim() : "",
         age: editForm.age ? parseInt(editForm.age, 10) : null,
-        sex: editForm.sex,
-        contact_number: editForm.contact_number,
+        sex: editForm.sex || "Male",
+        contact_number: editForm.contact_number ? editForm.contact_number.trim() : "",
       };
 
-      const { error } = await supabase.from("patient_profiles").upsert(updated);
-      if (error) throw error;
+      // 1. Instant user-scoped local persistence
+      try {
+        localStorage.setItem(`ckd_profile_${user.id}`, JSON.stringify(updated));
+      } catch (_e) {
+        console.warn("Local profile cache warning:", _e);
+      }
+
+      // 2. Update Supabase Auth user metadata
+      try {
+        await supabase.auth.updateUser({
+          data: { full_name: updated.full_name },
+        });
+      } catch (_e) {
+        console.warn("Supabase auth updateUser note:", _e);
+      }
+
+      // 3. Upsert to Supabase patient_profiles table
+      try {
+        await supabase.from("patient_profiles").upsert(updated, { onConflict: "user_id" });
+      } catch (err) {
+        console.warn("Supabase patient_profiles upsert note:", err);
+      }
 
       setProfile(updated);
       setIsEditOpen(false);
@@ -256,22 +506,69 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
     }
   };
 
-  const fullName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
+  const fullName =
+    profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
   const email = user?.email || "—";
 
-  // Vital computations from actual prediction data
-  const hasVitals = !!latestVitals;
-  const egfrVal = latestVitals?.gfr || latestVitals?.GFR;
-  const sysBp = latestVitals?.systolic_bp || latestVitals?.Systolic_BP;
-  const diaBp = latestVitals?.diastolic_bp || latestVitals?.Diastolic_BP;
+  // Robust Vital & Demographics extraction from latest prediction data
+  const egfrVal =
+    latestVitals?.GFR ?? latestVitals?.gfr ?? latestVitals?.egfr ?? latestVitals?.eGFR;
+
+  const sysBp =
+    latestVitals?.SystolicBP ??
+    latestVitals?.systolic_bp ??
+    latestVitals?.Systolic_BP ??
+    latestVitals?.systolic;
+
+  const diaBp =
+    latestVitals?.DiastolicBP ??
+    latestVitals?.diastolic_bp ??
+    latestVitals?.Diastolic_BP ??
+    latestVitals?.diastolic;
+
+  const predAge = latestVitals?.Age ?? latestVitals?.age ?? latestVitals?.patient_age;
+
+  const predGenderVal =
+    latestVitals?.Gender ?? latestVitals?.gender ?? latestVitals?.patient_gender;
+
+  const formattedGender =
+    predGenderVal !== undefined && predGenderVal !== null
+      ? predGenderVal === 1 ||
+        predGenderVal === "1" ||
+        String(predGenderVal).toLowerCase() === "male"
+        ? "Male"
+        : "Female"
+      : null;
+
+  const displayAge = profile?.age ? `${profile.age}` : predAge ? `${predAge}` : "Not specified";
+  const displayGender = profile?.sex || formattedGender || "Not specified";
+
+  const getBpStatus = (sys, dia) => {
+    if (sys === undefined || dia === undefined || sys === null || dia === null) {
+      return { label: "N/A", cls: "na" };
+    }
+    const s = Number(sys);
+    const d = Number(dia);
+    if (s >= 140 || d >= 90) return { label: "High", cls: "moderate" };
+    if (s >= 120 || d >= 80) return { label: "Elevated", cls: "normal" };
+    return { label: "Normal", cls: "normal" };
+  };
+  const bpStatus = getBpStatus(sysBp, diaBp);
+
+  const getEgfrStatus = (val) => {
+    if (val === undefined || val === null) return { label: "N/A", cls: "na" };
+    const v = Number(val);
+    if (v < 30) return { label: "Severely Low", cls: "moderate" };
+    if (v < 60) return { label: "Moderate", cls: "moderate" };
+    return { label: "Normal", cls: "normal" };
+  };
+  const egfrStatus = getEgfrStatus(egfrVal);
 
   return (
     <div className="dashboard-page-container">
       {/* Welcome Header */}
       <div className="dashboard-welcome-header">
-        <h1 className="welcome-title">
-          Welcome back, {fullName} 👋
-        </h1>
+        <h1 className="welcome-title">Welcome back, {fullName} 👋</h1>
         <p className="welcome-sub">Here's your health overview and latest insights.</p>
       </div>
 
@@ -303,15 +600,17 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                 </div>
                 <div className="profile-info-row">
                   <span className="profile-info-label">Age</span>
-                  <span className="profile-info-val">{profile?.age ? `${profile.age}` : "Not specified"}</span>
+                  <span className="profile-info-val">{displayAge}</span>
                 </div>
                 <div className="profile-info-row">
                   <span className="profile-info-label">Gender</span>
-                  <span className="profile-info-val">{profile?.sex || "Not specified"}</span>
+                  <span className="profile-info-val">{displayGender}</span>
                 </div>
                 <div className="profile-info-row">
                   <span className="profile-info-label">Phone</span>
-                  <span className="profile-info-val">{profile?.contact_number || "Not specified"}</span>
+                  <span className="profile-info-val">
+                    {profile?.contact_number || "Not specified"}
+                  </span>
                 </div>
                 <div className="profile-info-row">
                   <span className="profile-info-label">Email</span>
@@ -334,18 +633,14 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                     <div className="vital-details">
                       <span className="vital-name">eGFR</span>
                       <div className="vital-value-unit">
-                        {hasVitals && egfrVal !== undefined ? egfrVal : "—"}{" "}
-                        {hasVitals && <span className="vital-unit-text">mL/min/1.73m²</span>}
+                        {egfrVal !== undefined && egfrVal !== null ? egfrVal : "—"}{" "}
+                        {egfrVal !== undefined && egfrVal !== null && (
+                          <span className="vital-unit-text">mL/min/1.73m²</span>
+                        )}
                       </div>
                     </div>
                   </div>
-                  {hasVitals && egfrVal !== undefined ? (
-                    <span className={`vital-status-pill ${egfrVal < 60 ? "moderate" : "normal"}`}>
-                      {egfrVal < 60 ? "Moderate" : "Normal"}
-                    </span>
-                  ) : (
-                    <span className="vital-status-pill na">N/A</span>
-                  )}
+                  <span className={`vital-status-pill ${egfrStatus.cls}`}>{egfrStatus.label}</span>
                 </div>
 
                 <div className="vital-item-row">
@@ -356,16 +651,19 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                     <div className="vital-details">
                       <span className="vital-name">Blood Pressure</span>
                       <div className="vital-value-unit">
-                        {hasVitals && sysBp !== undefined && diaBp !== undefined ? `${sysBp} / ${diaBp}` : "—"}{" "}
-                        {hasVitals && <span className="vital-unit-text">mmHg</span>}
+                        {sysBp !== undefined &&
+                        sysBp !== null &&
+                        diaBp !== undefined &&
+                        diaBp !== null
+                          ? `${sysBp} / ${diaBp}`
+                          : "—"}{" "}
+                        {sysBp !== undefined && sysBp !== null && (
+                          <span className="vital-unit-text">mmHg</span>
+                        )}
                       </div>
                     </div>
                   </div>
-                  {hasVitals ? (
-                    <span className="vital-status-pill normal">Normal</span>
-                  ) : (
-                    <span className="vital-status-pill na">N/A</span>
-                  )}
+                  <span className={`vital-status-pill ${bpStatus.cls}`}>{bpStatus.label}</span>
                 </div>
               </div>
             </div>
@@ -407,7 +705,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                     <div
                       key={pred.id}
                       className="recent-pred-row"
-                      onClick={() => onViewDetail && onViewDetail(pred.id)}
+                      onClick={() => onViewDetail && onViewDetail(pred)}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="pred-date-cell">
@@ -430,7 +728,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                         className="btn-view-report"
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (onViewDetail) onViewDetail(pred.id);
+                          if (onViewDetail) onViewDetail(pred);
                         }}
                       >
                         <EyeIcon /> View Report
@@ -452,7 +750,9 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
             </div>
             <div className="tile-text-group">
               <span className="tile-main-title">New Prediction</span>
-              <span className="tile-sub-desc">Start a new assessment and check readmission risk.</span>
+              <span className="tile-sub-desc">
+                Start a new assessment and check readmission risk.
+              </span>
             </div>
             <div className="tile-arrow-icon">
               <ChevronRightIcon />
@@ -508,6 +808,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                 <input
                   type="text"
                   className="glass-input-styled"
+                  style={{ paddingLeft: "1rem" }}
                   value={editForm.full_name}
                   onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
                   required
@@ -519,6 +820,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                 <input
                   type="number"
                   className="glass-input-styled"
+                  style={{ paddingLeft: "1rem" }}
                   placeholder="e.g. 56"
                   value={editForm.age}
                   onChange={(e) => setEditForm({ ...editForm, age: e.target.value })}
@@ -529,11 +831,16 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                 <label>Gender</label>
                 <select
                   className="glass-input-styled"
+                  style={{ paddingLeft: "1rem", color: "#ffffff", backgroundColor: "#0c1715" }}
                   value={editForm.sex}
                   onChange={(e) => setEditForm({ ...editForm, sex: e.target.value })}
                 >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="Male" style={{ background: "#0c1715", color: "#ffffff" }}>
+                    Male
+                  </option>
+                  <option value="Female" style={{ background: "#0c1715", color: "#ffffff" }}>
+                    Female
+                  </option>
                 </select>
               </div>
 
@@ -542,6 +849,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                 <input
                   type="text"
                   className="glass-input-styled"
+                  style={{ paddingLeft: "1rem" }}
                   placeholder="+91 98765 43210"
                   value={editForm.contact_number}
                   onChange={(e) => setEditForm({ ...editForm, contact_number: e.target.value })}

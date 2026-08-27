@@ -83,6 +83,13 @@ class PatientPayload(BaseModel):
             if legacy_value is None and api_value is not None:
                 setattr(self, legacy_field, api_value)
 
+        if self.diabetes is None and self.Diabetes is None:
+            self.diabetes = 0.0
+            self.Diabetes = 0.0
+        if self.hypertension is None and self.Hypertension is None:
+            self.hypertension = 0.0
+            self.Hypertension = 0.0
+
         if self.ckd_stage is None:
             gfr_value = self.egfr if self.egfr is not None else self.GFR
             if gfr_value is not None:

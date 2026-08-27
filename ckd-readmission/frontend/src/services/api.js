@@ -15,7 +15,7 @@ async function fetchWithFallback(endpoint, options = {}) {
       const resAlt = await fetch(`${ALT_URL}${endpoint}`, options);
       if (!resAlt.ok) {
         const errAlt = await resAlt.json().catch(() => ({}));
-        throw new Error(errAlt.error || `Server error: ${resAlt.status}`);
+        throw new Error(errAlt.error || `Server error: ${resAlt.status}`, { cause: err });
       }
       return await resAlt.json();
     }
