@@ -1,9 +1,5 @@
 from __future__ import annotations
 
-import json
-import pickle
-from pathlib import Path
-
 import pytest
 
 from config.paths import resolve_model_path
@@ -103,7 +99,8 @@ def test_payload_rejects_missing_required_feature():
         parse_patient_payload(payload)
 
 
-def test_groq_fallback_without_api_key():
+def test_groq_fallback_without_api_key(monkeypatch):
+    monkeypatch.setattr("services.groq_recommendation.GROQ_API_KEY", None)
     generator = GroqRecommendationGenerator(api_key=None)
     result = generator.generate(
         risk_score=0.8,

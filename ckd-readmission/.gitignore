@@ -5,6 +5,8 @@
 
 # Python
 __pycache__/
+.pytest_cache/
+.coverage
 *.py[cod]
 *$py.class
 venv/

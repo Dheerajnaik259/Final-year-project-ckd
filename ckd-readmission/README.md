@@ -70,39 +70,52 @@ This project is designed as a decision-support prototype for academic use. It pr
 ```text
 ckd-readmission/
 |-- backend/
-|   |-- app.py                          # Flask app with CORS
-|   |-- requirements.txt                # Python dependencies
+|   |-- app.py
+|   |-- requirements.txt
+|   |-- pytest.ini
+|   |-- auth/
+|   |   `-- jwt_guard.py                # Optional JWT on /predict
+|   |-- config/
+|   |   |-- clinical_constants.py       # KDIGO/KFRE/severity thresholds
+|   |   `-- paths.py                    # Repo-local model artifact paths
+|   |-- schemas/
+|   |   `-- patient.py                  # Pydantic request validation
 |   |-- model/
-|   |   |-- Train.py                    # Model training script (no emojis)
-|   |   |-- predict.py                  # Prediction engine with feature extraction
-|   |   |-- ckd_hybrid_model.pkl        # Trained hybrid model (91.75% accuracy)
-|   |   |-- scaler.pkl                  # Feature normalization
-|   |   |-- feature_names.json          # 13 model features
-|   |   |-- shap_importance.csv         # SHAP feature importance
-|   |   |-- ckd_clinical_data.csv       # Training data (2,000 records)
+|   |   |-- Train.py
+|   |   |-- clinical.py                 # Guardrails, KFRE, flags (no pickle)
+|   |   |-- loader.py                   # Load .pkl from model/ or CKD_MODEL_PATH
+|   |   |-- predict.py
+|   |   |-- ckd_hybrid_model.pkl
+|   |   |-- scaler.pkl
+|   |   |-- feature_names.json
+|   |   |-- shap_importance.csv
+|   |   |-- ckd_clinical_data.csv
 |   |   `-- Chronic_Kidney_Dsease_data.csv
 |   |-- routes/
-|   |   `-- predict.py                  # /predict endpoint
-|   `-- services/
-|       |-- groq_recommendation.py      # AI recommendation generation
-|       |-- groq_service.py             # Groq API wrapper
-|       `-- n8n_service.py              # N8N integration
+|   |   `-- predict.py
+|   |-- services/
+|   |   |-- groq_recommendation.py
+|   |   |-- groq_service.py
+|   |   `-- n8n_service.py
+|   `-- tests/
+|       `-- test_clinical.py
 |-- frontend/
 |   |-- src/
 |   |   |-- components/
-|   |   |   |-- PatientForm.jsx         # Multi-step form
-|   |   |   |-- ResultCard.jsx          # Results display
-|   |   |   `-- RecommendationCard.jsx  # AI recommendations
+|   |   |   |-- PatientForm.jsx
+|   |   |   |-- ResultCard.jsx
+|   |   |   `-- RecommendationCard.jsx
 |   |   |-- pages/
 |   |   |   |-- Home.jsx
 |   |   |   `-- Results.jsx
-|   |   `-- services/
-|   |       `-- api.js                  # Backend API client
-|   |-- dist/                           # Pre-built production files
+|   |   |-- services/
+|   |   |   `-- api.js
+|   |   `-- validation/
+|   |       |-- patientSchema.js        # Zod range validation
+|   |       `-- patientSchema.test.js
 |   |-- package.json
 |   `-- vite.config.js
-|-- README.md
-`-- README_UPDATES.txt                  # Setup and deployment guide
+`-- README.md
 ```
 
 ## How It Works
@@ -164,6 +177,18 @@ cd frontend
 npm install
 npm run dev
 # Frontend runs on http://localhost:5173
+```
+
+### Tests
+
+```bash
+# Backend
+cd backend
+pytest
+
+# Frontend
+cd frontend
+npm test
 ```
 
 ### Environment Variables
@@ -400,8 +425,7 @@ Sample high-risk and low-risk patient profiles are available in [dummy_entries.m
 
 - Train on real CKD readmission outcome data
 - Perform external validation on hospital datasets
-- Add authentication and audit logging
-- Add unit and API tests
+- Expand JWT/OAuth beyond the optional `JWT_SECRET` gate
 - Add deployment documentation
 - Include calibration and fairness analysis
 
