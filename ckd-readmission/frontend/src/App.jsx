@@ -202,7 +202,7 @@ export default function App() {
           onClick={handleReset}
           style={{ cursor: "pointer" }}
         >
-          <div className="brand-mark">CKD</div>
+          <img src="/logo.png" alt="CKD Logo" className="app-logo-img" />
           <div>
             <span className="brand-name">
               CKD <span className="brand-sub">Readmission Predictor</span>

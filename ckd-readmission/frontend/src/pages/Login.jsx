@@ -230,7 +230,7 @@ export default function Login({ onAuthSuccess, initialIsRegister = true, onBackT
             onClick={onBackToLanding}
             style={{ cursor: onBackToLanding ? "pointer" : "default" }}
           >
-            <div className="hero-brand-mark">CKD</div>
+            <img src="/logo.png" alt="CKD Logo" className="app-logo-img" />
             <div>
               <div className="hero-brand-title">CKD</div>
               <div className="hero-brand-sub">Readmission Predictor</div>

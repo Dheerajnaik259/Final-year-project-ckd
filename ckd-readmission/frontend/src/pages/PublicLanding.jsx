@@ -107,7 +107,7 @@ export default function PublicLanding({ onSignIn, onCreateAccount }) {
       {/* Topbar Header */}
       <header className="public-topbar">
         <div className="brand-lockup" onClick={() => handleNavClick("Home", null)} style={{ cursor: "pointer" }}>
-          <div className="brand-mark">CKD</div>
+          <img src="/logo.png" alt="CKD Logo" className="app-logo-img" />
           <div>
             <span className="brand-name">CKD <span style={{ color: "var(--accent-primary)" }}>Readmission Predictor</span></span>
           </div>
