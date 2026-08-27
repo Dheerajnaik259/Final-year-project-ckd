@@ -141,20 +141,25 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         console.warn("Could not fetch remote history, using local history fallback:", e);
       }
 
-      let localRecords = [];
+      let localRecords;
       try {
-        const storageKey = user?.id ? `ckd_history_${user.id}` : "ckd_local_prediction_history";
-        localRecords = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        const userKey = user?.id ? `ckd_history_${user.id}` : null;
+        const userRecs = userKey ? JSON.parse(localStorage.getItem(userKey) || "[]") : [];
+        const fallbackRecs = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+        localRecords = [...userRecs, ...fallbackRecs];
       } catch (_err) {
-        // Fallback to empty array
+        localRecords = [];
       }
 
       const mergedMap = new Map();
       [...serverRecords, ...localRecords].forEach((item) => {
-        if (item && item.id && !mergedMap.has(item.id)) {
-          // Verify user isolation if user_id tag is present on record
-          if (!user?.id || !item.user_id || item.user_id === user.id) {
-            mergedMap.set(item.id, item);
+        if (item && (item.id || item.prediction_id)) {
+          const key = item.id || item.prediction_id;
+          if (!mergedMap.has(key)) {
+            // Keep record if no user isolation filter or if user_id matches
+            if (!user?.id || !item.user_id || item.user_id === user.id) {
+              mergedMap.set(key, item);
+            }
           }
         }
       });

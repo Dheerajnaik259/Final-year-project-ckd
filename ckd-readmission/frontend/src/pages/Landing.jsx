@@ -418,18 +418,24 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
           console.warn("Could not fetch remote predictions for landing dashboard:", err);
         }
 
-        let localPreds = [];
+        let localPreds;
         try {
-          localPreds = JSON.parse(localStorage.getItem(`ckd_history_${user.id}`) || "[]");
+          const userKey = user?.id ? `ckd_history_${user.id}` : null;
+          const userRecs = userKey ? JSON.parse(localStorage.getItem(userKey) || "[]") : [];
+          const fallbackRecs = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+          localPreds = [...userRecs, ...fallbackRecs];
         } catch (_e) {
           localPreds = [];
         }
 
         const mergedMap = new Map();
         [...serverPreds, ...localPreds].forEach((item) => {
-          if (item && item.id && !mergedMap.has(item.id)) {
-            if (!item.user_id || item.user_id === user.id) {
-              mergedMap.set(item.id, item);
+          if (item && (item.id || item.prediction_id)) {
+            const key = item.id || item.prediction_id;
+            if (!mergedMap.has(key)) {
+              if (!user?.id || !item.user_id || item.user_id === user.id) {
+                mergedMap.set(key, item);
+              }
             }
           }
         });

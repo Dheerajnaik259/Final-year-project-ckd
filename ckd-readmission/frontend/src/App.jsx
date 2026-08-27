@@ -163,13 +163,9 @@ export default function App() {
   const handleResultsReady = (data) => {
     setResult(data);
 
-    // Immediately persist to user-scoped local history snapshot
+    // Immediately persist to user-scoped and global local history snapshot
     if (data) {
       try {
-        const storageKey = session?.user?.id
-          ? `ckd_history_${session.user.id}`
-          : "ckd_local_prediction_history";
-        const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
         const recordId = data.prediction_id || `pred_${Date.now()}`;
         const newRecord = {
           id: recordId,
@@ -188,8 +184,18 @@ export default function App() {
           patient_data: data.patient_data,
           full_result: data,
         };
-        const updatedHistory = [newRecord, ...existing.filter((item) => item.id !== recordId)];
-        localStorage.setItem(storageKey, JSON.stringify(updatedHistory));
+
+        if (session?.user?.id) {
+          const userKey = `ckd_history_${session.user.id}`;
+          const existingUser = JSON.parse(localStorage.getItem(userKey) || "[]");
+          localStorage.setItem(userKey, JSON.stringify([newRecord, ...existingUser.filter((i) => i.id !== recordId)]));
+        }
+
+        const existingFallback = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+        localStorage.setItem(
+          "ckd_local_prediction_history",
+          JSON.stringify([newRecord, ...existingFallback.filter((i) => i.id !== recordId)])
+        );
       } catch (err) {
         console.error("Failed to save local prediction history:", err);
       }
