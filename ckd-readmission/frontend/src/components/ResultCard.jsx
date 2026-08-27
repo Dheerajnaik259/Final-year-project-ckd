@@ -47,6 +47,29 @@ export default function ResultCard({ result, onReset }) {
         <div className="assessment-block">
           <h3 className="section-title-serif">Assessment</h3>
           <p className="assessment-text">{result.message}</p>
+          {result.has_blank_defaults && (
+            <div className="blank-fields-notice-banner" style={{
+              marginTop: "0.85rem",
+              padding: "0.75rem 1rem",
+              borderRadius: "6px",
+              background: "rgba(201, 138, 58, 0.12)",
+              border: "1px solid rgba(201, 138, 58, 0.3)",
+              color: "#e2ad5c",
+              fontSize: "0.85rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ shrink: 0, flexShrink: 0 }}>
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              <span>
+                <strong>Clinical Note:</strong> Some optional lab values were left blank and estimated using standard population baseline reference values. Readmission risk estimates may vary if actual lab values differ.
+              </span>
+            </div>
+          )}
         </div>
       </section>
 

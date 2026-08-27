@@ -2,6 +2,25 @@ import PatientForm from "../components/PatientForm";
 import { predictReadmissionRisk } from "../services/api";
 import { useState } from "react";
 
+// Security Shield Icon
+function SecurityShieldIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+// Bookmark / Save Draft Icon
+function SaveDraftIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
+
 export default function Home({ user, onResultsReady }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,29 +40,56 @@ export default function Home({ user, onResultsReady }) {
   };
 
   return (
-    <div className="page-home">
-      <section className="intro-column" style={{ marginBottom: "1.5rem" }}>
-        <h1
-          className="page-title serif"
-          style={{
-            fontSize: "2rem",
-            fontWeight: 600,
-            color: "var(--text-primary)",
-            marginBottom: "0.3rem",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          New patient intake
-        </h1>
-        <p className="page-subtitle" style={{ color: "var(--text-secondary)", fontSize: "0.92rem" }}>
-          Complete the 3-section clinical profile below to compute readmission risk, KDIGO staging, and KFRE prognosis.
-        </p>
-      </section>
+    <div className="new-prediction-page-container">
+      {/* Top Header Row with Security Badge */}
+      <header className="prediction-header-row">
+        <div className="header-title-lockup">
+          <h1 className="prediction-main-title">
+            New Prediction
+            <span className="title-teal-line" />
+          </h1>
+          <p className="prediction-sub-desc">
+            Enter clinical and laboratory details to calculate readmission risk, KDIGO staging, and KFRE prognosis.
+          </p>
+        </div>
 
-      <section className="workspace-column">
-        {error && <div className="error-banner">{error}</div>}
+        <div className="security-badge-card">
+          <div className="security-icon-box">
+            <SecurityShieldIcon />
+          </div>
+          <div className="security-text-lockup">
+            <span className="security-title">Your data is secure</span>
+            <span className="security-sub">All information is encrypted and stored securely.</span>
+          </div>
+        </div>
+      </header>
+
+      {error && <div className="error-banner">{error}</div>}
+
+      {/* Main Content Area */}
+      <main className="prediction-workspace-body">
         <PatientForm onSubmit={handleSubmit} loading={loading} user={user} />
-      </section>
+      </main>
+
+      {/* Bottom Sticky Clinical Judgment Notice */}
+      <footer className="clinical-disclaimer-banner">
+        <div className="disclaimer-left">
+          <div className="disclaimer-icon-box">
+            <SecurityShieldIcon />
+          </div>
+          <div className="disclaimer-text-lockup">
+            <span className="disclaimer-title">Clinical decision support, not a replacement for judgment</span>
+            <span className="disclaimer-sub">
+              This tool provides risk estimates to support clinical decisions and should be used along with clinical judgment.
+            </span>
+          </div>
+        </div>
+
+        <button className="btn-save-draft" onClick={() => alert("Draft saved locally.")}>
+          <SaveDraftIcon />
+          <span>Save as Draft</span>
+        </button>
+      </footer>
     </div>
   );
 }

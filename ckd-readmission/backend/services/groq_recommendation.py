@@ -50,28 +50,34 @@ class GroqRecommendationGenerator:
         try:
             if not self.api_key or not self.client:
                 logger.warning("Groq API key missing, using fallback recommendations")
-                return self._fallback_recommendation(risk_level, patient_data)
-            
-            # Build clinical context prompt
-            prompt = self._build_prompt(
-                risk_level,
-                risk_percentage,
-                top_shap_features,
-                patient_data
-            )
-            
-            # Call Groq API
-            response = self._call_groq(prompt)
-            
-            if response:
-                return response
+                res = self._fallback_recommendation(risk_level, patient_data)
             else:
-                logger.warning("Groq returned empty response, using fallback")
-                return self._fallback_recommendation(risk_level, patient_data)
-                
+                prompt = self._build_prompt(
+                    risk_level,
+                    risk_percentage,
+                    top_shap_features,
+                    patient_data
+                )
+                res = self._call_groq(prompt)
+                if not res:
+                    logger.warning("Groq returned empty response, using fallback")
+                    res = self._fallback_recommendation(risk_level, patient_data)
+
+            # Guarantee urgency_level aligns directly with calculated ML risk_level
+            if risk_level in ("Medium", "Moderate") and res.get("urgency_level") not in ("Medium", "Critical"):
+                res["urgency_level"] = "Medium"
+            elif risk_level == "High" and res.get("urgency_level") not in ("High", "Critical"):
+                res["urgency_level"] = "High"
+            elif risk_level == "Low" and res.get("urgency_level") not in ("Low", "Medium"):
+                res["urgency_level"] = "Low"
+
+            return res
+
         except Exception as e:
             logger.error(f"Groq recommendation error: {str(e)}", exc_info=True)
-            return self._fallback_recommendation(risk_level, patient_data)
+            res = self._fallback_recommendation(risk_level, patient_data)
+            res["urgency_level"] = "Medium" if risk_level in ("Medium", "Moderate") else risk_level
+            return res
     
     def _build_prompt(
         self,
@@ -131,7 +137,7 @@ Return ONLY a valid JSON object (no markdown, no explanation) with this exact st
     "advice 3"
   ],
   "follow_up": "Specific follow-up schedule and monitoring points based on risk level and labs",
-  "urgency_level": "Critical" or "High" or "Medium" or "Low"
+  "urgency_level": "Critical", "High", "Medium", or "Low" (must match the patient's overall risk_level unless acute clinical crisis flags are present)
 }}
 
 IMPORTANT: Make all recommendations specific to their out-of-range lab values and risk factors from above. Do NOT provide generic recommendations."""
@@ -234,7 +240,7 @@ IMPORTANT: Make all recommendations specific to their out-of-range lab values an
                     "Maintain healthy weight (BMI 20-25) with balanced nutrition"
                 ],
                 "follow_up": "Quarterly clinic visits, 3-month lab work, and home monitoring for any swelling, weight gain, or increased fatigue",
-                "urgency_level": "High"
+                "urgency_level": "Medium"
             },
             "Low": {
                 "summary": "Your kidney function is relatively stable with low readmission risk. Maintain current lifestyle and preventive care to preserve kidney health for the long term.",

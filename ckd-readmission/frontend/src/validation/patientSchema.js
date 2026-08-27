@@ -36,15 +36,10 @@ const numberField = (key) => {
 // Only fields rendered and required in the intake form steps
 export const requiredFields = [
   "Age",
-  "BMI",
   "SystolicBP",
   "DiastolicBP",
   "SerumCreatinine",
   "GFR",
-  "HemoglobinLevels",
-  "PriorAdmissions",
-  "LengthOfStay",
-  "ComorbidityCount",
 ];
 
 const shape = Object.fromEntries(

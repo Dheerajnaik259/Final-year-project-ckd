@@ -255,3 +255,23 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 550px) {
+  .kdigo-container, .severity-meter-box, .shap-container, .kfre-box {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  .kdigo-grid {
+    min-width: 320px;
+  }
+  .shap-row {
+    grid-template-columns: 100px 1fr 50px;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+  }
+  .kfre-row {
+    grid-template-columns: 110px 1fr 45px;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+  }
+}
