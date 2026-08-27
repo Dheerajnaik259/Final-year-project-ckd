@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, g
-from auth.jwt_guard import require_auth
+from auth.jwt_guard import _jwt_secret, require_auth
 from model.predict import predict
 from schemas.patient import PayloadValidationError, parse_patient_payload
 from services.groq_service import get_ai_suggestions
@@ -36,7 +36,7 @@ def predict_route():
             risk_score=ml_result["probability"] / 100.0,
             risk_level=ml_result["risk_level"],
             risk_percentage=ml_result["probability"],
-            top_shap_features=top_clinical_factors,
+            top_clinical_factors=top_clinical_factors,
             patient_data=patient_data,
         )
         logger.info(
@@ -62,8 +62,12 @@ def predict_route():
             "source": "server",
         }
 
-        # Use verified user_id from JWT, never from client input
-        user_id = getattr(g, "user_id", None) or request_data.get("user_id")
+        # Enforce verified user_id from JWT token when auth is active; ignore client input
+        if _jwt_secret():
+            user_id = getattr(g, "user_id", None)
+        else:
+            user_id = request_data.get("user_id")
+
         prediction_id = save_prediction(patient_data, response_data, user_id=user_id)
         if prediction_id:
             response_data["prediction_id"] = prediction_id

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def _jwt_secret() -> str | None:
-    secret = os.getenv("SUPABASE_JWT_SECRET", "").strip()
+    secret = os.getenv("SUPABASE_JWT_SECRET", "").strip() or os.getenv("JWT_SECRET", "").strip()
     return secret or None
 
 

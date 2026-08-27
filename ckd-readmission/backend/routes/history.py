@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, g
 import logging
 
-from auth.jwt_guard import require_auth
+from auth.jwt_guard import _jwt_secret, require_auth
 from services.supabase_service import get_predictions, get_prediction_by_id
 
 logger = logging.getLogger(__name__)
@@ -18,8 +18,11 @@ def list_predictions():
     except (ValueError, TypeError):
         limit, offset = 20, 0
 
-    # Use verified user_id from JWT; fall back to query param only when auth is disabled
-    user_id = getattr(g, "user_id", None) or request.args.get("user_id")
+    if _jwt_secret():
+        user_id = getattr(g, "user_id", None)
+    else:
+        user_id = request.args.get("user_id")
+
     predictions = get_predictions(limit=limit, offset=offset, user_id=user_id)
     return jsonify({"predictions": predictions, "count": len(predictions)}), 200
 

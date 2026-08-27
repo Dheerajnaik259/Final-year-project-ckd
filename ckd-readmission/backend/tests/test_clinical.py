@@ -106,7 +106,7 @@ def test_groq_fallback_without_api_key(monkeypatch):
         risk_score=0.8,
         risk_level="High",
         risk_percentage=80,
-        top_shap_features=[],
+        top_clinical_factors=[],
         patient_data=_high_risk_patient(),
     )
     assert result["urgency_level"] == "Critical"

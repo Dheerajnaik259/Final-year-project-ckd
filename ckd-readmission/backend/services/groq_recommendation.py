@@ -30,7 +30,7 @@ class GroqRecommendationGenerator:
         risk_score: float,
         risk_level: str,
         risk_percentage: float,
-        top_shap_features: List[Dict],
+        top_clinical_factors: List[Dict],
         patient_data: Dict,
     ) -> Dict:
         """
@@ -55,7 +55,7 @@ class GroqRecommendationGenerator:
                 prompt = self._build_prompt(
                     risk_level,
                     risk_percentage,
-                    top_shap_features,
+                    top_clinical_factors,
                     patient_data
                 )
                 res = self._call_groq(prompt)
@@ -83,15 +83,15 @@ class GroqRecommendationGenerator:
         self,
         risk_level: str,
         risk_percentage: float,
-        top_shap_features: List[Dict],
+        top_clinical_factors: List[Dict],
         patient_data: Dict,
     ) -> str:
         """Build the clinical prompt for Groq."""
         
-        # Format SHAP features
+        # Format top clinical factors
         feature_impact_str = "\n".join([
             f"  - {f['feature']}: {f['value']} (impact: {f['impact']:.2%})"
-            for f in top_shap_features[:5]  # Top 5 features
+            for f in top_clinical_factors[:5]  # Top 5 features
         ])
         
         # Clinical context
@@ -268,29 +268,17 @@ def get_recommendation(
     risk_score: float,
     risk_level: str,
     risk_percentage: float,
-    top_shap_features: List[Dict],
+    top_clinical_factors: List[Dict],
     patient_data: Dict,
 ) -> Dict:
     """
     Convenience function to generate recommendations.
-    
-    Example:
-        recommendation = get_recommendation(
-            risk_score=0.78,
-            risk_level="High",
-            risk_percentage=78.0,
-            top_shap_features=[
-                {"feature": "serum_creatinine", "value": 6.5, "impact": 0.34},
-                {"feature": "gfr", "value": 25.0, "impact": 0.28},
-            ],
-            patient_data={...}
-        )
     """
     generator = GroqRecommendationGenerator()
     return generator.generate(
         risk_score=risk_score,
         risk_level=risk_level,
         risk_percentage=risk_percentage,
-        top_shap_features=top_shap_features,
+        top_clinical_factors=top_clinical_factors,
         patient_data=patient_data,
     )
