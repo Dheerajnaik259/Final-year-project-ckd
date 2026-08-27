@@ -1,0 +1,303 @@
+/* Landing Page Styling */
+.page-landing {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.landing-header-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.landing-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.landing-headline {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Patient Details Glass Card */
+.patient-card {
+  padding: 1.75rem 2rem;
+  position: relative;
+}
+
+.patient-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.8rem;
+}
+
+.patient-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.edit-link {
+  background: none;
+  border: none;
+  color: var(--accent-primary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.edit-link:hover {
+  color: var(--accent-secondary);
+  text-decoration: underline;
+}
+
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem 2.5rem;
+}
+
+.patient-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.detail-label {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-value {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Action Tiles */
+.action-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.action-tile {
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.action-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 12px 32px rgba(51, 195, 168, 0.15);
+}
+
+.tile-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 12px;
+  background: rgba(51, 195, 168, 0.12);
+  border: 1px solid rgba(51, 195, 168, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tile-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tile-subtext {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Recent Activity Preview */
+.recent-activity-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.view-all-link {
+  color: var(--accent-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.view-all-link:hover {
+  color: var(--accent-secondary);
+  text-decoration: underline;
+}
+
+.recent-rows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.compact-activity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: border-color 0.15s ease;
+}
+
+.compact-activity-row:hover {
+  border-color: rgba(51, 195, 168, 0.3);
+}
+
+.activity-date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.activity-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.risk-pill {
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.activity-prob {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 50px;
+  text-align: right;
+}
+
+.empty-activity-card {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Glass Edit Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 13, 12, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.glass-modal {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-surface-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 2rem;
+  box-shadow: var(--shadow-glass);
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .patient-grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+  .action-tiles-grid {
+    grid-template-columns: 1fr;
+  }
+  .compact-activity-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .activity-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

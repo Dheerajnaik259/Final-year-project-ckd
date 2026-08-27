@@ -1,44 +1,46 @@
 /* ═══════════════════════════════════════════════
-   Clinical Paper Design System (EHR / Nephrology Chart)
+   Glassmorphic Dark Design System (CKD Workspace)
    ═══════════════════════════════════════════════ */
 
 :root {
   /* Canvas & Surface */
-  --bg-page: #eef1ee;
-  --bg-surface: #ffffff;
-  --bg-surface-strong: #ffffff;
-  --border-color: #d8ddd8;
-  --line-muted: #e2e7e2;
+  --bg-page: #070d0c;
+  --bg-surface: rgba(15, 23, 21, 0.78);
+  --bg-surface-strong: rgba(12, 18, 17, 0.96);
+  --border-color: rgba(233, 243, 239, 0.10);
+  --line-muted: rgba(233, 243, 239, 0.08);
   
   /* Ink Palette */
-  --text-primary: #16241f;
-  --text-secondary: #4b5b56;
-  --text-faint: #7d8a85;
+  --text-primary: #e9f3ef;
+  --text-secondary: rgba(233, 243, 239, 0.68);
+  --text-faint: rgba(233, 243, 239, 0.52);
   
-  /* Interactive Accent */
-  --accent-primary: #0f5c53;
-  --accent-hover: #0a433d;
-  --accent-tint: rgba(15, 92, 83, 0.08);
+  /* Interactive Accent (Teal / Mint Gradient) */
+  --accent-primary: #33c3a8;
+  --accent-secondary: #44ddbf;
+  --accent-hover: #2db198;
+  --accent-tint: rgba(51, 195, 168, 0.12);
   
   /* KDIGO Risk Palette */
-  --risk-low: #5b8c5a;
-  --risk-low-tint: rgba(91, 140, 90, 0.10);
+  --risk-low: #33c3a8;
+  --risk-low-tint: rgba(51, 195, 168, 0.12);
   --risk-mod: #c98a3a;
-  --risk-mod-tint: rgba(201, 138, 58, 0.10);
-  --risk-high: #b23a2e;
-  --risk-high-tint: rgba(178, 58, 46, 0.10);
-  --risk-critical: #7a1f1f;
-  --risk-critical-tint: rgba(122, 31, 31, 0.10);
+  --risk-mod-tint: rgba(201, 138, 58, 0.12);
+  --risk-high: #c45443;
+  --risk-high-tint: rgba(196, 84, 67, 0.12);
+  --risk-critical: #c45443;
+  --risk-critical-tint: rgba(196, 84, 67, 0.16);
   
   /* Typography */
   --font-serif: 'Source Serif 4', Georgia, serif;
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', Consolas, monospace;
   
-  /* Hairline Shadow & Document Radius */
-  --shadow-hairline: 0 1px 3px rgba(22, 36, 31, 0.05);
-  --radius-card: 6px;
-  --radius-button: 4px;
+  /* Glass Shadows & Radius */
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-hairline: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --radius-card: 12px;
+  --radius-button: 8px;
 }
 
 *, *::before, *::after {
@@ -56,6 +58,40 @@ html, body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Background Crosshair Grid & Drifting Blurred Orb */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: 
+    radial-gradient(rgba(233, 243, 239, 0.08) 1px, transparent 0),
+    linear-gradient(to right, rgba(233, 243, 239, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(233, 243, 239, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px, 48px 48px;
+}
+
+.bg-glow {
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(51, 195, 168, 0.15) 0%, rgba(68, 221, 191, 0.05) 50%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbDrift 16s ease-in-out infinite alternate;
+}
+
+@keyframes orbDrift {
+  0% { transform: translate(-50%, 0) scale(1); }
+  50% { transform: translate(-45%, 50px) scale(1.1); }
+  100% { transform: translate(-55%, 20px) scale(0.95); }
 }
 
 h1, h2, h3, h4, .serif, .section-title-serif, .page-title {
@@ -64,11 +100,20 @@ h1, h2, h3, h4, .serif, .section-title-serif, .page-title {
   font-weight: 600;
 }
 
-/* Global Monospace Rules for Numeric Values and Data Columns */
 td, code, pre, .mono, .num, input, select,
 .probability-value, .detail-code, .unit-suffix, .ref-range,
 .kdigo-caption, .shap-val, .kfre-val, .kfre-citation, .chart-mono-tag {
   font-family: var(--font-mono);
+}
+
+/* Glass Card Utility */
+.glass-panel {
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-glass);
 }
 
 /* Scrollbar */
@@ -80,6 +125,6 @@ td, code, pre, .mono, .num, input, select,
   background: var(--bg-page);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c0c7c0;
+  background: rgba(233, 243, 239, 0.15);
   border-radius: 3px;
 }
