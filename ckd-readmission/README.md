@@ -366,9 +366,14 @@ The application provides the following clinical decision-support outputs alongsi
 
 ---
 
-## Sample Patient Profiles
+## Sample Patient Profiles & Demo Guide
 
-High-risk and low-risk demo profiles are available in [dummy_entries.md](dummy_entries.md).
+Quick test values for **Low Risk**, **Medium Risk**, and **High Risk** clinical profiles are available in [dummy_entries.md](dummy_entries.md).
+
+Use these entries during live demonstration to test different risk tiers:
+- **Low Risk:** eGFR 98, Creatinine 0.8, 0 Prior Admissions (Probability < 25%)
+- **Medium Risk:** eGFR 48, Creatinine 1.8, 1 Prior Admission (Probability ~40%)
+- **High Risk:** eGFR 12, Creatinine 5.5, 4 Prior Admissions (Probability ≥ 70%)
 
 ---
 
