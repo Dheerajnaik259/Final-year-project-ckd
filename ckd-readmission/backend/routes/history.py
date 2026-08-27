@@ -16,7 +16,8 @@ def list_predictions():
     except (ValueError, TypeError):
         limit, offset = 20, 0
 
-    predictions = get_predictions(limit=limit, offset=offset)
+    user_id = request.args.get("user_id")
+    predictions = get_predictions(limit=limit, offset=offset, user_id=user_id)
     return jsonify({"predictions": predictions, "count": len(predictions)}), 200
 
 

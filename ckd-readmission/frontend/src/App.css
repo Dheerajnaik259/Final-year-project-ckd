@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════
-   App Shell Layout — Clinical Paper Theme
+   App Shell Layout — Topbar & Dropdown (Reference Mockup)
    ═══════════════════════════════════════════════ */
 
 .app-shell {
@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   background-color: var(--bg-page);
+  position: relative;
+  z-index: 1;
 }
 
 /* Header / Topbar */
@@ -14,9 +16,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.9rem 2rem;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.85rem 2.5rem;
+  background: rgba(8, 14, 13, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(233, 243, 239, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .brand-lockup {
@@ -26,73 +33,211 @@
   user-select: none;
 }
 
-.brand-mark {
-  width: 2.2rem;
-  height: 2.2rem;
-  background: #0f5c53;
-  color: #ffffff;
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 0.95rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: -0.02em;
+.app-logo-img {
+  height: 2.8rem;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(51, 195, 168, 0.3));
+  transition: transform 0.2s ease;
 }
 
-.brand-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-faint);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.brand-lockup:hover .app-logo-img {
+  transform: scale(1.04);
 }
 
 .brand-name {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
-/* Tab navigation (EHR Underline pattern) */
-.topbar-actions {
+.brand-sub {
+  font-size: 0.8rem;
+  color: rgba(233, 243, 239, 0.6);
+  font-weight: 400;
+  margin-left: 0.4rem;
+}
+
+/* Nav Tabs Pill Container */
+.topbar-right {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
 }
 
+.topbar-actions {
+  display: flex;
+  gap: 0.4rem;
+  background: rgba(12, 20, 18, 0.8);
+  padding: 0.3rem;
+  border-radius: 10px;
+  border: 1px solid rgba(233, 243, 239, 0.08);
+}
+
 .nav-btn {
-  padding: 0.5rem 0.2rem;
-  border: none;
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
   background: transparent;
-  color: var(--text-secondary);
+  color: rgba(233, 243, 239, 0.7);
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: color 0.12s ease, border-color 0.12s ease;
+  transition: all 0.15s ease;
 }
 
 .nav-btn:hover {
-  color: var(--text-primary);
-  background: transparent;
+  color: #ffffff;
+  background: rgba(233, 243, 239, 0.05);
 }
 
 .nav-btn.active {
-  color: #0f5c53;
-  border-bottom-color: #0f5c53;
-  background: transparent;
+  color: var(--accent-primary);
+  background: rgba(51, 195, 168, 0.12);
+  border-color: rgba(51, 195, 168, 0.35);
   font-weight: 600;
+}
+
+/* User Avatar & Dropdown */
+.user-menu-container {
+  position: relative;
+}
+
+.user-avatar-btn-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-avatar-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: #050a09;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(51, 195, 168, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.user-avatar-btn-wrap:hover .user-avatar-btn {
+  transform: scale(1.05);
+}
+
+.avatar-chevron {
+  color: rgba(233, 243, 239, 0.6);
+  font-size: 0.75rem;
+}
+
+.user-dropdown-card {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.6rem);
+  width: 210px;
+  background: rgba(12, 19, 18, 0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(233, 243, 239, 0.1);
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  z-index: 200;
+}
+
+.dropdown-action-row {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  text-align: left;
+}
+
+.dropdown-action-row:hover {
+  background: rgba(233, 243, 239, 0.06);
+}
+
+.dropdown-icon-wrap {
+  color: rgba(233, 243, 239, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-action-row.danger .dropdown-icon-wrap {
+  color: #ef4444;
+}
+
+.dropdown-text-lockup {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-title {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dropdown-action-row.danger .dropdown-title {
+  color: #ef4444;
+}
+
+.dropdown-sub {
+  font-size: 0.75rem;
+  color: rgba(233, 243, 239, 0.5);
+}
+
+/* Centered Loading Screen */
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 3px solid rgba(51, 195, 168, 0.15);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Main Content Area */
 .app-main {
   flex: 1;
-  max-width: 1100px;
+  max-width: 1200px;
   width: 100%;
   margin: 2rem auto;
   padding: 0 1.5rem;
@@ -103,25 +248,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  border-top: 1px solid var(--border-color);
-  background: var(--bg-surface);
+  padding: 1rem 2.5rem;
+  border-top: 1px solid rgba(233, 243, 239, 0.08);
+  background: rgba(8, 14, 13, 0.9);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-faint);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 850px) {
   .app-topbar {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.2rem;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .topbar-right {
+    width: 100%;
+    justify-content: space-between;
   }
   .app-main {
     margin: 1rem auto;
     padding: 0 1rem;
-  }
-  .app-footer {
-    padding: 0.75rem 1rem;
-    flex-direction: column;
-    gap: 0.4rem;
   }
 }

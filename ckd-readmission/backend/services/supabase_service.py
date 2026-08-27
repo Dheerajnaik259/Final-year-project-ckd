@@ -38,7 +38,7 @@ def _get_client():
         return None
 
 
-def save_prediction(patient_data: Dict, result: Dict) -> Optional[str]:
+def save_prediction(patient_data: Dict, result: Dict, user_id: Optional[str] = None) -> Optional[str]:
     """
     Insert a prediction record into Supabase.
     Returns the prediction UUID on success, None on failure.
@@ -49,6 +49,7 @@ def save_prediction(patient_data: Dict, result: Dict) -> Optional[str]:
 
     try:
         assessment = result.get("clinical_assessment", {})
+        uid = user_id or patient_data.get("user_id")
 
         row = {
             "patient_age": int(patient_data.get("age", patient_data.get("Age", 0))),
@@ -63,6 +64,8 @@ def save_prediction(patient_data: Dict, result: Dict) -> Optional[str]:
             "patient_data": patient_data,
             "full_result": result,
         }
+        if uid:
+            row["user_id"] = uid
 
         response = client.table("predictions").insert(row).execute()
 
@@ -79,9 +82,9 @@ def save_prediction(patient_data: Dict, result: Dict) -> Optional[str]:
         return None
 
 
-def get_predictions(limit: int = 20, offset: int = 0) -> List[Dict]:
+def get_predictions(limit: int = 20, offset: int = 0, user_id: Optional[str] = None) -> List[Dict]:
     """
-    Fetch recent predictions, newest first.
+    Fetch recent predictions, newest first, optionally filtered by user_id.
     Returns empty list if Supabase is unavailable.
     """
     client = _get_client()
@@ -89,13 +92,18 @@ def get_predictions(limit: int = 20, offset: int = 0) -> List[Dict]:
         return []
 
     try:
-        response = (
+        query = (
             client.table("predictions")
             .select(
                 "id, created_at, patient_age, patient_gender, "
-                "risk_level, probability, ckd_stage, kdigo_risk, severity_score"
+                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data"
             )
-            .order("created_at", desc=True)
+        )
+        if user_id:
+            query = query.eq("user_id", user_id)
+
+        response = (
+            query.order("created_at", desc=True)
             .range(offset, offset + limit - 1)
             .execute()
         )

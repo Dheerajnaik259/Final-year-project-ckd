@@ -2,7 +2,7 @@ import PatientForm from "../components/PatientForm";
 import { predictReadmissionRisk } from "../services/api";
 import { useState } from "react";
 
-export default function Home({ onResultsReady }) {
+export default function Home({ user, onResultsReady }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -11,7 +11,7 @@ export default function Home({ onResultsReady }) {
     setError(null);
 
     try {
-      const result = await predictReadmissionRisk(data);
+      const result = await predictReadmissionRisk(data, user?.id);
       onResultsReady(result);
     } catch (e) {
       setError(e.message || "Prediction failed. Check that backend is running.");
@@ -42,7 +42,7 @@ export default function Home({ onResultsReady }) {
 
       <section className="workspace-column">
         {error && <div className="error-banner">{error}</div>}
-        <PatientForm onSubmit={handleSubmit} loading={loading} />
+        <PatientForm onSubmit={handleSubmit} loading={loading} user={user} />
       </section>
     </div>
   );

@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import "./History.css";
 
 const riskColors = {
-  High: { color: "#b23a2e", tint: "rgba(178, 58, 46, 0.10)" },
-  Medium: { color: "#c98a3a", tint: "rgba(201, 138, 58, 0.10)" },
-  Low: { color: "#5b8c5a", tint: "rgba(91, 140, 90, 0.10)" },
+  High: { color: "#c45443", tint: "rgba(196, 84, 67, 0.12)" },
+  Medium: { color: "#c98a3a", tint: "rgba(201, 138, 58, 0.12)" },
+  Low: { color: "#33c3a8", tint: "rgba(51, 195, 168, 0.12)" },
 };
 
 function formatDate(iso) {
@@ -19,10 +19,11 @@ function formatDate(iso) {
 }
 
 function genderLabel(val) {
+  if (typeof val === "string") return val;
   return val === 1 ? "Male" : "Female";
 }
 
-export default function History({ onBack, onViewDetail }) {
+export default function History({ user, onBack, onNewPredict, onViewDetail }) {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,7 +34,11 @@ export default function History({ onBack, onViewDetail }) {
     const fetchHistory = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_URL}/history?limit=50`);
+        let url = `${API_URL}/history?limit=50`;
+        if (user?.id) {
+          url += `&user_id=${user.id}`;
+        }
+        const res = await fetch(url);
         if (!res.ok) throw new Error("Failed to load history");
         const data = await res.json();
         setPredictions(data.predictions || []);
@@ -44,7 +49,7 @@ export default function History({ onBack, onViewDetail }) {
       }
     };
     fetchHistory();
-  }, [API_URL]);
+  }, [API_URL, user]);
 
   return (
     <div className="page-history">
@@ -57,9 +62,14 @@ export default function History({ onBack, onViewDetail }) {
             Audit trail of computed clinical predictions, KDIGO staging, and risk profiles.
           </p>
         </div>
-        <button className="btn-outline" onClick={onBack}>
-          New Patient Intake
-        </button>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+          <button className="btn-outline" onClick={onBack}>
+            ← Back to Dashboard
+          </button>
+          <button className="btn-solid" onClick={onNewPredict || onBack}>
+            New Prediction
+          </button>
+        </div>
       </section>
 
       {loading && (
@@ -71,19 +81,19 @@ export default function History({ onBack, onViewDetail }) {
       {error && <div className="error-banner">{error}</div>}
 
       {!loading && !error && predictions.length === 0 && (
-        <div className="history-empty">
-          <h3 className="serif">No archive records found</h3>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+        <div className="history-empty glass-panel" style={{ padding: "2rem", textAlign: "center" }}>
+          <h3 className="serif" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>No archive records found</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginBottom: "1rem" }}>
             Run your first patient intake prediction to populate the audit record.
           </p>
-          <button className="btn-solid" onClick={onBack} style={{ marginTop: "0.5rem" }}>
+          <button className="btn-solid" onClick={onNewPredict || onBack}>
             Run First Intake
           </button>
         </div>
       )}
 
       {!loading && predictions.length > 0 && (
-        <section className="history-surface">
+        <section className="history-surface glass-panel">
           <div className="history-header-row">
             <span className="col-date mono">Date &amp; Time</span>
             <span className="col-patient">Patient</span>

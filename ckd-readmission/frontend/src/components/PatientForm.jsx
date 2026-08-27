@@ -1,5 +1,6 @@
 import "./PatientForm.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../services/supabaseClient";
 import { FIELD_RANGES, requiredFields, validateFields, validatePatientForm } from "../validation/patientSchema";
 
 const fields = [
@@ -99,11 +100,35 @@ const toPredictionPayload = (formData) => {
   };
 };
 
-export default function PatientForm({ onSubmit, loading }) {
+export default function PatientForm({ onSubmit, loading, user }) {
   const [form, setForm] = useState(defaultValues);
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+
+  useEffect(() => {
+    if (!user?.id) return;
+    async function loadProfile() {
+      try {
+        const { data } = await supabase
+          .from("patient_profiles")
+          .select("*")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (data) {
+          setForm((current) => ({
+            ...current,
+            Age: current.Age || data.age || "",
+            Gender: data.sex === "Male" ? 1 : 0,
+          }));
+        }
+      } catch (err) {
+        console.error("Error prefilling patient form:", err);
+      }
+    }
+    loadProfile();
+  }, [user]);
 
   const chunks = [fields.slice(0, 6), fields.slice(6, 14), fields.slice(14)];
 
