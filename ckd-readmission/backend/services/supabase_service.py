@@ -61,6 +61,7 @@ def save_prediction(patient_data: Dict, result: Dict) -> Optional[str]:
             "top_factors": result.get("top_clinical_factors", []),
             "clinical_recommendation": result.get("clinical_recommendation", {}),
             "patient_data": patient_data,
+            "full_result": result,
         }
 
         response = client.table("predictions").insert(row).execute()

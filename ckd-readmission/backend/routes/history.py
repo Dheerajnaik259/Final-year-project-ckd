@@ -28,4 +28,26 @@ def get_prediction_detail(prediction_id):
     if prediction is None:
         return jsonify({"error": "Prediction not found"}), 404
 
-    return jsonify(prediction), 200
+    # If full_result is stored, return it formatted for ResultCard
+    if "full_result" in prediction and prediction["full_result"]:
+        full_res = dict(prediction["full_result"])
+        full_res["prediction_id"] = prediction["id"]
+        full_res["created_at"] = prediction["created_at"]
+        return jsonify(full_res), 200
+
+    # Fallback formatting for older entries
+    fallback = {
+        "prediction_id": prediction["id"],
+        "created_at": prediction.get("created_at"),
+        "risk_level": prediction.get("risk_level", "Unknown"),
+        "probability": prediction.get("probability", 0),
+        "message": f"{prediction.get('risk_level', 'Unknown')} risk CKD readmission assessment.",
+        "top_clinical_factors": prediction.get("top_factors", []),
+        "clinical_recommendation": prediction.get("clinical_recommendation", {}),
+        "clinical_assessment": {
+            "ckd_stage": {"code": prediction.get("ckd_stage", "Unknown")},
+            "kdigo_risk": prediction.get("kdigo_risk", "N/A"),
+            "severity_score": prediction.get("severity_score", 0),
+        },
+    }
+    return jsonify(fallback), 200

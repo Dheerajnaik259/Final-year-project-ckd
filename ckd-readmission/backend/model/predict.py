@@ -6,7 +6,7 @@ import logging
 
 import pandas as pd
 
-from config.clinical_constants import RISK_THRESHOLDS
+from config.clinical_constants import RISK_LEVEL_THRESHOLDS as RISK_THRESHOLDS
 from model.clinical import (
     clinical_assessment,
     clinical_probability_floor,
