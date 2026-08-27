@@ -22,8 +22,10 @@ app = Flask(__name__)
 CORS(app)
 
 from routes.predict import predict_bp
+from routes.history import history_bp
 
 app.register_blueprint(predict_bp)
+app.register_blueprint(history_bp)
 
 @app.route("/", methods=["GET"])
 def index():

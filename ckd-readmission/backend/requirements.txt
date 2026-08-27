@@ -11,6 +11,7 @@ shap
 imbalanced-learn
 matplotlib
 seaborn
+supabase
 pydantic
 PyJWT
 pytest

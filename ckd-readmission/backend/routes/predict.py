@@ -4,6 +4,7 @@ from model.predict import predict
 from schemas.patient import PayloadValidationError, parse_patient_payload
 from services.groq_service import get_ai_suggestions
 from services.groq_recommendation import get_recommendation
+from services.supabase_service import save_prediction
 import logging
 
 logger = logging.getLogger(__name__)
@@ -50,7 +51,7 @@ def predict_route():
         )
         logger.info("Using Groq for AI suggestions")
 
-        return jsonify({
+        response_data = {
             "risk_level": ml_result["risk_level"],
             "probability": ml_result["probability"],
             "message": ml_result["message"],
@@ -58,7 +59,14 @@ def predict_route():
             "top_clinical_factors": top_clinical_factors,
             "clinical_recommendation": clinical_recommendation,
             "suggestions": suggestions,
-        }), 200
+        }
+
+        # Save to Supabase (non-blocking — failures are logged, never returned)
+        prediction_id = save_prediction(patient_data, response_data)
+        if prediction_id:
+            response_data["prediction_id"] = prediction_id
+
+        return jsonify(response_data), 200
 
     except Exception as exc:
         logger.error("Prediction error: %s", exc, exc_info=True)
