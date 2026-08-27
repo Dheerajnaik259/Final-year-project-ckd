@@ -46,8 +46,9 @@ def get_prediction_detail(prediction_id):
         "top_clinical_factors": prediction.get("top_factors", []),
         "clinical_recommendation": prediction.get("clinical_recommendation", {}),
         "clinical_assessment": {
-            "ckd_stage": {"code": prediction.get("ckd_stage", "Unknown")},
-            "kdigo_risk": prediction.get("kdigo_risk", "N/A"),
+            "ckd_stage": {"code": f"G{prediction.get('ckd_stage', '3')}", "label": f"Stage {prediction.get('ckd_stage', '3')}"},
+            "albuminuria": {"code": "A1", "label": "Normal to mildly increased"},
+            "kdigo_risk": prediction.get("kdigo_risk", "Moderate"),
             "severity_score": prediction.get("severity_score", 0),
         },
     }

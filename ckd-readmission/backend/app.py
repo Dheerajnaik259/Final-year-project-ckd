@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 from routes.predict import predict_bp
 from routes.history import history_bp
@@ -39,4 +39,4 @@ def health():
 
 if __name__ == "__main__":
     logger.info("Starting CKD Readmission Predictor Backend on port 5000")
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000, use_reloader=False)

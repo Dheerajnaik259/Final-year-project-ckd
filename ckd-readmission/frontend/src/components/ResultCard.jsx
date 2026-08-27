@@ -84,27 +84,45 @@ export default function ResultCard({ result, onReset }) {
           <div className="clinical-grid">
             <div className="detail-item">
               <span className="detail-label">CKD Stage</span>
-              <strong className="detail-code mono">{assessment.ckd_stage.code}</strong>
-              <p className="detail-desc">{assessment.ckd_stage.label}</p>
+              <strong className="detail-code mono">
+                {typeof assessment.ckd_stage === "object"
+                  ? assessment.ckd_stage?.code || "—"
+                  : assessment.ckd_stage || "—"}
+              </strong>
+              <p className="detail-desc">
+                {typeof assessment.ckd_stage === "object"
+                  ? assessment.ckd_stage?.label || ""
+                  : `Stage ${assessment.ckd_stage || ""}`}
+              </p>
             </div>
 
             <div className="detail-item">
               <span className="detail-label">Albuminuria</span>
-              <strong className="detail-code mono">{assessment.albuminuria.code}</strong>
-              <p className="detail-desc">{assessment.albuminuria.label}</p>
+              <strong className="detail-code mono">
+                {typeof assessment.albuminuria === "object"
+                  ? assessment.albuminuria?.code || "—"
+                  : assessment.albuminuria || "—"}
+              </strong>
+              <p className="detail-desc">
+                {typeof assessment.albuminuria === "object"
+                  ? assessment.albuminuria?.label || ""
+                  : assessment.albuminuria
+                  ? `Category ${assessment.albuminuria}`
+                  : "Normal to mildly increased"}
+              </p>
             </div>
 
             <div className="detail-item">
               <span className="detail-label">KDIGO Classification</span>
-              <strong className="detail-code mono">{assessment.kdigo_risk}</strong>
+              <strong className="detail-code mono">{assessment.kdigo_risk || "—"}</strong>
               <p className="detail-desc">Combined eGFR &amp; ACR rating</p>
             </div>
 
             <div className="detail-item">
               <span className="detail-label">Severity Score</span>
-              <strong className="detail-code mono">{assessment.severity_score} pts</strong>
+              <strong className="detail-code mono">{assessment.severity_score ?? 0} pts</strong>
               <p className="detail-desc">
-                Model: {assessment.model_probability}% | Floor: {assessment.clinical_floor}%
+                Model: {assessment.model_probability ?? result?.probability ?? 0}% | Floor: {assessment.clinical_floor ?? 0}%
               </p>
             </div>
           </div>

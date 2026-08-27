@@ -33,20 +33,42 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
   useEffect(() => {
     const fetchHistory = async () => {
       setLoading(true);
+      let serverRecords = [];
       try {
         let url = `${API_URL}/history?limit=50`;
         if (user?.id) {
           url += `&user_id=${user.id}`;
         }
         const res = await fetch(url);
-        if (!res.ok) throw new Error("Failed to load history");
-        const data = await res.json();
-        setPredictions(data.predictions || []);
+        if (res.ok) {
+          const data = await res.json();
+          serverRecords = data.predictions || [];
+        }
       } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
+        console.warn("Could not fetch remote history, using local history fallback:", e);
       }
+
+      // Merge with local storage history snapshot
+      let localRecords = [];
+      try {
+        localRecords = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+      } catch (err) {
+        localRecords = [];
+      }
+
+      const mergedMap = new Map();
+      [...serverRecords, ...localRecords].forEach((item) => {
+        if (item && item.id && !mergedMap.has(item.id)) {
+          mergedMap.set(item.id, item);
+        }
+      });
+
+      const combined = Array.from(mergedMap.values()).sort(
+        (a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      );
+
+      setPredictions(combined);
+      setLoading(false);
     };
     fetchHistory();
   }, [API_URL, user]);

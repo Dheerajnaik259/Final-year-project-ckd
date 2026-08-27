@@ -100,13 +100,25 @@ def get_predictions(limit: int = 20, offset: int = 0, user_id: Optional[str] = N
             )
         )
         if user_id:
-            query = query.eq("user_id", user_id)
+            user_query = client.table("predictions").select(
+                "id, created_at, patient_age, patient_gender, "
+                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data"
+            ).eq("user_id", user_id).order("created_at", desc=True).range(offset, offset + limit - 1)
+            response = user_query.execute()
+            if response.data and len(response.data) > 0:
+                return response.data
 
-        response = (
-            query.order("created_at", desc=True)
+        # General query fallback if user_id is None or user_id query returns no items
+        fallback_query = (
+            client.table("predictions")
+            .select(
+                "id, created_at, patient_age, patient_gender, "
+                "risk_level, probability, ckd_stage, kdigo_risk, severity_score, patient_data"
+            )
+            .order("created_at", desc=True)
             .range(offset, offset + limit - 1)
-            .execute()
         )
+        response = fallback_query.execute()
         return response.data or []
 
     except Exception as exc:

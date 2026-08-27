@@ -131,6 +131,17 @@ export default function App() {
       setResult(data);
       setPage("results");
     } catch (err) {
+      try {
+        const localHistory = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+        const found = localHistory.find((item) => item.id === predictionId);
+        if (found && found.full_result) {
+          setResult(found.full_result);
+          setPage("results");
+          return;
+        }
+      } catch (e) {
+        // Fall through to alert
+      }
       alert("Failed to load historical prediction detail: " + err.message);
     }
   };

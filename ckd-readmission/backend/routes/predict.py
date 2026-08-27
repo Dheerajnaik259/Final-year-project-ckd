@@ -62,7 +62,8 @@ def predict_route():
         }
 
         # Save to Supabase (non-blocking — failures are logged, never returned)
-        prediction_id = save_prediction(patient_data, response_data)
+        user_id = request_data.get("user_id")
+        prediction_id = save_prediction(patient_data, response_data, user_id=user_id)
         if prediction_id:
             response_data["prediction_id"] = prediction_id
 
