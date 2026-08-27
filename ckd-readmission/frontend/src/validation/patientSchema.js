@@ -2,11 +2,11 @@ import { z } from "zod";
 
 export const FIELD_RANGES = {
   Age: { min: 0, max: 120, unit: "years" },
-  BMI: { min: 10, max: 60, unit: "kg/m2" },
+  BMI: { min: 10, max: 60, unit: "kg/m²" },
   SystolicBP: { min: 70, max: 260, unit: "mmHg" },
   DiastolicBP: { min: 40, max: 160, unit: "mmHg" },
   SerumCreatinine: { min: 0.2, max: 15, unit: "mg/dL" },
-  GFR: { min: 1, max: 150, unit: "mL/min/1.73m2" },
+  GFR: { min: 1, max: 150, unit: "mL/min/1.73m²" },
   BUNLevels: { min: 2, max: 200, unit: "mg/dL" },
   HbA1c: { min: 3, max: 16, unit: "%" },
   FastingBloodSugar: { min: 40, max: 600, unit: "mg/dL" },
@@ -33,23 +33,15 @@ const numberField = (key) => {
     .max(range.max, `${key} must be between ${range.min} and ${range.max} ${range.unit}`);
 };
 
+// Only fields rendered and required in the intake form steps
 export const requiredFields = [
   "Age",
   "BMI",
   "SystolicBP",
   "DiastolicBP",
-  "Hypertension",
   "SerumCreatinine",
   "GFR",
-  "BUNLevels",
-  "HbA1c",
-  "FastingBloodSugar",
   "HemoglobinLevels",
-  "ProteinInUrine",
-  "ACR",
-  "SerumElectrolytesPotassium",
-  "SerumElectrolytesSodium",
-  "CholesterolTotal",
   "PriorAdmissions",
   "LengthOfStay",
   "ComorbidityCount",

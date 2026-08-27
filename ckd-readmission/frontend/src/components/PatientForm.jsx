@@ -107,7 +107,6 @@ export default function PatientForm({ onSubmit, loading }) {
 
   const chunks = [fields.slice(0, 6), fields.slice(6, 14), fields.slice(14)];
 
-  const currentStep = stepMeta[step];
   const visibleFields = chunks[step];
 
   const handle = (key, value) => {
@@ -151,7 +150,7 @@ export default function PatientForm({ onSubmit, loading }) {
 
   return (
     <div className="clinical-sheet">
-      {/* Step Tracker Bar */}
+      {/* Section Tracker Bar */}
       <div className="section-tracker" role="tablist">
         {stepMeta.map((item, index) => {
           const isDone = index < step;
@@ -171,7 +170,7 @@ export default function PatientForm({ onSubmit, loading }) {
         })}
       </div>
 
-      {error && <div className="error-banner">{error}</div>}
+      {error && <div className="error-banner" style={{ marginBottom: "1.25rem" }}>{error}</div>}
 
       {/* EHR Field Grid */}
       <div className="ehr-grid">
@@ -184,7 +183,7 @@ export default function PatientForm({ onSubmit, loading }) {
                 <select
                   className="ehr-input"
                   value={form[field.key]}
-                  onChange={(e) => handle(field.key, e.target.value)}
+                  onChange={(e) => handle(field.key, Number(e.target.value))}
                 >
                   {field.options.map((option) => (
                     <option key={option.value} value={option.value}>

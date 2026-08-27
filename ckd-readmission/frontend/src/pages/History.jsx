@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import "./History.css";
 
 const riskColors = {
-  High: { color: "#c45443", tint: "rgba(196, 84, 67, 0.10)" },
-  Medium: { color: "#bf7d2e", tint: "rgba(191, 125, 46, 0.12)" },
-  Low: { color: "#2e8a57", tint: "rgba(46, 138, 87, 0.12)" },
+  High: { color: "#b23a2e", tint: "rgba(178, 58, 46, 0.10)" },
+  Medium: { color: "#c98a3a", tint: "rgba(201, 138, 58, 0.10)" },
+  Low: { color: "#5b8c5a", tint: "rgba(91, 140, 90, 0.10)" },
 };
 
 function formatDate(iso) {
@@ -50,22 +50,21 @@ export default function History({ onBack, onViewDetail }) {
     <div className="page-history">
       <section className="history-banner">
         <div>
-          <p className="page-eyebrow">Prediction archive</p>
-          <h1 className="page-title">Case history and past results.</h1>
-          <p className="page-subtitle">
-            Every prediction is stored automatically. Review past cases, track
-            trends, and compare risk levels over time.
+          <h1 className="page-title serif" style={{ fontSize: "2rem", marginBottom: "0.3rem" }}>
+            Prediction archive
+          </h1>
+          <p className="page-subtitle" style={{ color: "var(--text-secondary)", fontSize: "0.92rem" }}>
+            Audit trail of computed clinical predictions, KDIGO staging, and risk profiles.
           </p>
         </div>
-        <button className="btn-secondary" onClick={onBack}>
-          New Prediction
+        <button className="btn-outline" onClick={onBack}>
+          New Patient Intake
         </button>
       </section>
 
       {loading && (
         <div className="history-status">
-          <div className="history-spinner" />
-          <p>Loading prediction history…</p>
+          <p className="mono" style={{ color: "var(--text-faint)" }}>Loading prediction archive…</p>
         </div>
       )}
 
@@ -73,11 +72,12 @@ export default function History({ onBack, onViewDetail }) {
 
       {!loading && !error && predictions.length === 0 && (
         <div className="history-empty">
-          <div className="empty-icon">📋</div>
-          <h3>No predictions yet</h3>
-          <p>Run your first prediction and it will appear here automatically.</p>
-          <button className="btn-primary" onClick={onBack}>
-            Run First Prediction
+          <h3 className="serif">No archive records found</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+            Run your first patient intake prediction to populate the audit record.
+          </p>
+          <button className="btn-solid" onClick={onBack} style={{ marginTop: "0.5rem" }}>
+            Run First Intake
           </button>
         </div>
       )}
@@ -85,12 +85,12 @@ export default function History({ onBack, onViewDetail }) {
       {!loading && predictions.length > 0 && (
         <section className="history-surface">
           <div className="history-header-row">
-            <span className="col-date">Date</span>
+            <span className="col-date mono">Date &amp; Time</span>
             <span className="col-patient">Patient</span>
             <span className="col-risk">Risk Level</span>
-            <span className="col-prob">Probability</span>
-            <span className="col-stage">CKD Stage</span>
-            <span className="col-kdigo">KDIGO</span>
+            <span className="col-prob mono num-col">Readmission Risk</span>
+            <span className="col-stage mono num-col">CKD Stage</span>
+            <span className="col-kdigo mono">KDIGO</span>
             <span className="col-action" />
           </div>
 
@@ -98,13 +98,13 @@ export default function History({ onBack, onViewDetail }) {
             const risk = riskColors[p.risk_level] || riskColors.Low;
             return (
               <div className="history-row" key={p.id}>
-                <span className="col-date">{formatDate(p.created_at)}</span>
+                <span className="col-date mono">{formatDate(p.created_at)}</span>
                 <span className="col-patient">
                   {genderLabel(p.patient_gender)}, {p.patient_age}y
                 </span>
                 <span className="col-risk">
                   <span
-                    className="risk-pill"
+                    className="risk-badge-flat"
                     style={{
                       color: risk.color,
                       borderColor: risk.color,
@@ -114,16 +114,16 @@ export default function History({ onBack, onViewDetail }) {
                     {p.risk_level}
                   </span>
                 </span>
-                <span className="col-prob">
+                <span className="col-prob mono num-col">
                   <strong>{p.probability}%</strong>
                 </span>
-                <span className="col-stage">{p.ckd_stage || "—"}</span>
-                <span className="col-kdigo">{p.kdigo_risk || "—"}</span>
+                <span className="col-stage mono num-col">{p.ckd_stage ? `G${p.ckd_stage}` : "—"}</span>
+                <span className="col-kdigo mono">{p.kdigo_risk || "—"}</span>
                 <span className="col-action">
                   <button
-                    className="btn-detail"
+                    className="btn-outline"
+                    style={{ padding: "0.25rem 0.65rem", fontSize: "0.8rem" }}
                     onClick={() => onViewDetail && onViewDetail(p.id)}
-                    title="View full details"
                   >
                     View
                   </button>

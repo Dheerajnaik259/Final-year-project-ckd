@@ -10,20 +10,20 @@
   box-shadow: var(--shadow-hairline);
 }
 
-/* Section Tracker */
+/* Section Tracker — Clean EHR Segment Line */
 .section-tracker {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 1rem;
+  padding-bottom: 1.25rem;
   margin-bottom: 2rem;
 }
 
 .tracker-step {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   font-size: 0.88rem;
   color: var(--text-faint);
   font-family: var(--font-sans);
@@ -52,6 +52,7 @@
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-faint);
+  background: #ffffff;
 }
 
 .tracker-step.active .step-indicator {
@@ -64,6 +65,7 @@
   background: var(--accent-primary);
   border-color: var(--accent-primary);
   color: #ffffff;
+  font-weight: 600;
 }
 
 /* EHR Field Grid */
@@ -111,26 +113,34 @@
   padding: 0.2rem 0;
 }
 
+select.ehr-input {
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
 .unit-suffix {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--text-faint);
   margin-left: 0.5rem;
+  white-space: nowrap;
 }
 
 .ref-range {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--text-faint);
+  margin-top: 0.15rem;
 }
 
 .field-error {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--risk-high);
+  margin-top: 0.15rem;
 }
 
-/* Segmented Control (Yes/No text, no iOS toggle switches) */
+/* Segmented Control (Yes/No text, flat, no iOS toggle switches) */
 .segmented-control {
   display: flex;
   gap: 0.5rem;
@@ -148,7 +158,7 @@
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
 }
 
 .segment-btn.selected {
@@ -202,7 +212,7 @@
 }
 
 .btn-solid.loading {
-  opacity: 0.7;
+  opacity: 0.75;
   animation: pulseOpacity 1.2s ease-in-out infinite;
 }
 

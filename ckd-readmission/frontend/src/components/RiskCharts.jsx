@@ -1,6 +1,6 @@
 import "./RiskCharts.css";
 
-// Risk Colors
+// KDIGO Risk Colors
 const COLOR_SAGE = "#5b8c5a";
 const COLOR_OCHRE = "#c98a3a";
 const COLOR_BRICK = "#b23a2e";
@@ -59,8 +59,8 @@ export function KDIGOHeatmapGrid({ ckdStage = "G3a", albuminuriaCode = "A2" }) {
 
         {/* Grid Rows */}
         {gRows.map((row) => (
-          <>
-            <div key={row.code} className="kdigo-cell row-label-cell">
+          <div key={row.code} style={{ display: "contents" }}>
+            <div className="kdigo-cell row-label-cell">
               <strong>{row.code}</strong>
               <small>{row.label}</small>
             </div>
@@ -80,7 +80,7 @@ export function KDIGOHeatmapGrid({ ckdStage = "G3a", albuminuriaCode = "A2" }) {
                 </div>
               );
             })}
-          </>
+          </div>
         ))}
       </div>
       <p className="kdigo-caption mono">
