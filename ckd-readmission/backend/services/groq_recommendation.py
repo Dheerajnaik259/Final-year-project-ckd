@@ -1,6 +1,6 @@
 """
 Groq-powered clinical recommendation generator for CKD readmission predictor.
-Generates personalized clinical recommendations based on prediction results and SHAP feature importance.
+Generates personalized clinical recommendations based on prediction results and top clinical risk factor attributions.
 """
 
 import os
@@ -40,7 +40,7 @@ class GroqRecommendationGenerator:
             risk_score: Float between 0-1 (model probability)
             risk_level: "High", "Medium", or "Low"
             risk_percentage: Float (0-100) percentage form
-            top_shap_features: List of top contributing features with impact values
+            top_clinical_factors: List of top contributing features with impact values
                 e.g., [{"feature": "serum_creatinine", "value": 6.5, "impact": 0.34}]
             patient_data: Dict with all 13+ clinical features
         
