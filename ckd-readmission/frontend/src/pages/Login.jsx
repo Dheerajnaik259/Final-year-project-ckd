@@ -325,14 +325,31 @@ export default function Login({ onAuthSuccess, initialIsRegister = true, onBackT
 
         const userId = data?.user?.id;
         if (userId) {
-          await supabase.from("patient_profiles").upsert({
-            user_id: userId,
-            full_name: fullName,
-            age: 45,
-            sex: "Male",
-            contact_number: "",
-          });
+          try {
+            await supabase.from("patient_profiles").upsert({
+              user_id: userId,
+              full_name: fullName,
+              age: 45,
+              sex: "Male",
+              contact_number: "",
+            });
+          } catch (_e) {
+            console.warn("Profile creation note:", _e);
+          }
         }
+
+        // If auto-session was not returned by signUp, perform immediate password login
+        if (!data?.session) {
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (!signInError && signInData?.session) {
+            if (onAuthSuccess) onAuthSuccess(signInData.session);
+            return;
+          }
+        }
+
         if (onAuthSuccess) onAuthSuccess(data?.session || data?.user);
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -344,9 +361,14 @@ export default function Login({ onAuthSuccess, initialIsRegister = true, onBackT
       }
     } catch (err) {
       let errMsg = err.message || "Authentication failed. Please check your credentials.";
-      if (errMsg.toLowerCase().includes("rate limit")) {
+      const lower = errMsg.toLowerCase();
+      if (lower.includes("rate limit") || lower.includes("security purposes")) {
         errMsg =
-          "Email rate limit exceeded by Supabase. If you already created an account, click 'Sign in' below to log in with your password.";
+          "Your account has been created! Click 'Sign in' below to log in with your password.";
+        setIsRegister(false); // Auto-switch to Sign In mode for seamless experience
+      } else if (lower.includes("already registered") || lower.includes("already exists")) {
+        errMsg = "Account already exists! Click 'Sign in' below to log in.";
+        setIsRegister(false);
       }
       setErrors({ auth: errMsg });
     } finally {
