@@ -196,7 +196,7 @@ ckd-readmission/
 - Node.js 18+ and npm (for frontend development)
 - Groq API key (free tier available at [groq.com](https://groq.com))
 
-### Backend
+### Backend Setup
 
 ```bash
 cd backend
@@ -208,26 +208,12 @@ copy .env.example .env         # then add your GROQ_API_KEY
 python app.py                  # runs on http://localhost:5000
 ```
 
-### Frontend
+### Frontend Setup
 
 ```bash
 cd frontend
 npm install
 npm run dev                    # runs on http://localhost:5173
-```
-
-### Environment Variables
-
-**Backend** (`backend/.env`):
-```env
-FLASK_ENV=development
-FLASK_DEBUG=True
-GROQ_API_KEY=your_groq_api_key
-```
-
-**Frontend** (`frontend/.env`):
-```env
-VITE_API_URL=http://127.0.0.1:5000
 ```
 
 ---
