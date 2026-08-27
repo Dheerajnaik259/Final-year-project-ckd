@@ -1,0 +1,67 @@
+{
+  "validation_ranges": {
+    "Age": { "min": 0, "max": 120, "unit": "years" },
+    "BMI": { "min": 10, "max": 60, "unit": "kg/m2" },
+    "SystolicBP": { "min": 70, "max": 260, "unit": "mmHg" },
+    "DiastolicBP": { "min": 40, "max": 160, "unit": "mmHg" },
+    "SerumCreatinine": { "min": 0.2, "max": 15, "unit": "mg/dL" },
+    "GFR": { "min": 1, "max": 150, "unit": "mL/min/1.73m2" },
+    "BUNLevels": { "min": 2, "max": 200, "unit": "mg/dL" },
+    "HbA1c": { "min": 3, "max": 16, "unit": "%" },
+    "FastingBloodSugar": { "min": 40, "max": 600, "unit": "mg/dL" },
+    "HemoglobinLevels": { "min": 3, "max": 20, "unit": "g/dL" },
+    "ProteinInUrine": { "min": 0, "max": 20, "unit": "g/day" },
+    "ACR": { "min": 0, "max": 5000, "unit": "mg/g" },
+    "SerumElectrolytesPotassium": { "min": 2, "max": 8, "unit": "mEq/L" },
+    "SerumElectrolytesSodium": { "min": 110, "max": 170, "unit": "mEq/L" },
+    "CholesterolTotal": { "min": 50, "max": 500, "unit": "mg/dL" },
+    "PriorAdmissions": { "min": 0, "max": 50, "unit": "count" },
+    "LengthOfStay": { "min": 0, "max": 180, "unit": "days" },
+    "ComorbidityCount": { "min": 0, "max": 30, "unit": "count" }
+  },
+  "field_aliases": {
+    "age": "Age",
+    "gender": "Gender",
+    "blood_pressure_systolic": "SystolicBP",
+    "blood_pressure_diastolic": "DiastolicBP",
+    "serum_creatinine": "SerumCreatinine",
+    "egfr": "GFR",
+    "hemoglobin": "HemoglobinLevels",
+    "diabetes": "Diabetes",
+    "hypertension": "Hypertension",
+    "prior_admissions": "PriorAdmissions",
+    "length_of_stay": "LengthOfStay",
+    "comorbidity_count": "ComorbidityCount"
+  },
+  "risk_level": {
+    "high": 0.7,
+    "medium": 0.4
+  },
+  "probability_floors": [
+    { "min_score": 12, "floor": 0.7 },
+    { "min_score": 9, "floor": 0.6 },
+    { "min_score": 6, "floor": 0.4 }
+  ],
+  "clinical_markers": {
+    "SerumCreatinine": { "normal_range": [0.6, 1.2], "weight": 0.25 },
+    "GFR": { "normal_range": [60, 150], "weight": 0.25, "inverse": true },
+    "SerumElectrolytesPotassium": { "normal_range": [3.5, 5.0], "weight": 0.15 },
+    "BUNLevels": { "normal_range": [7, 20], "weight": 0.15 },
+    "HemoglobinLevels": { "normal_range": [12, 17], "weight": 0.1, "inverse": true },
+    "ProteinInUrine": { "normal_range": [0, 0.15], "weight": 0.1 },
+    "ACR": { "normal_range": [0, 30], "weight": 0.1 },
+    "SystolicBP": { "normal_range": [90, 130], "weight": 0.08 }
+  },
+  "kfre": {
+    "age_coef": -0.2201,
+    "age_center": 7.036,
+    "male_coef": 0.2467,
+    "male_center": 0.5642,
+    "gfr_coef": -0.5567,
+    "gfr_center": 7.222,
+    "acr_coef": 0.451,
+    "acr_center": 5.137,
+    "baseline_2_year": 0.9832,
+    "baseline_5_year": 0.9365
+  }
+}

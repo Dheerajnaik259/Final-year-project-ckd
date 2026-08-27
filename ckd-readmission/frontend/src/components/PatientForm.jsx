@@ -1,5 +1,6 @@
 import "./PatientForm.css";
 import { useState } from "react";
+import { FIELD_RANGES, requiredFields, validateFields, validatePatientForm } from "../validation/patientSchema";
 
 const fields = [
   { key: "Age", label: "Age", type: "number", placeholder: "45", unit: "years" },
@@ -151,45 +152,54 @@ export default function PatientForm({ onSubmit, loading }) {
   const [form, setForm] = useState(defaultValues);
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const chunks = [fields.slice(0, 6), fields.slice(6, 14), fields.slice(14)];
-  const requiredFields = [
-    "Age",
-    "BMI",
-    "SystolicBP",
-    "DiastolicBP",
-    "Hypertension",
-    "SerumCreatinine",
-    "GFR",
-    "BUNLevels",
-    "HbA1c",
-    "FastingBloodSugar",
-    "HemoglobinLevels",
-    "ProteinInUrine",
-    "ACR",
-    "SerumElectrolytesPotassium",
-    "SerumElectrolytesSodium",
-    "CholesterolTotal",
-    "PriorAdmissions",
-    "LengthOfStay",
-    "ComorbidityCount",
-  ];
 
   const currentStep = stepMeta[step];
   const visibleFields = chunks[step];
 
   const handle = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
+    setFieldErrors((current) => {
+      if (!current[key]) {
+        return current;
+      }
+      const next = { ...current };
+      delete next[key];
+      return next;
+    });
+  };
+
+  const validateVisibleStep = () => {
+    const keys = visibleFields.map((field) => field.key).filter((key) => requiredFields.includes(key));
+    const result = validateFields(form, keys);
+    setFieldErrors(result.errors);
+    if (!result.ok) {
+      setError("Please correct the highlighted values. They must be biologically plausible.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
+  const handleContinue = () => {
+    if (!validateVisibleStep()) {
+      return;
+    }
+    setStep((current) => current + 1);
   };
 
   const handleSubmit = () => {
-    const missingFields = requiredFields.filter((field) => form[field] === "");
+    const result = validatePatientForm(form);
 
-    if (missingFields.length > 0) {
-      setError("Please complete all required measurements before running the case.");
+    if (!result.ok) {
+      setFieldErrors(result.errors);
+      setError("Please complete all required measurements with values inside the expected clinical ranges.");
       return;
     }
 
+    setFieldErrors({});
     setError("");
     onSubmit(toPredictionPayload(form));
   };
@@ -225,7 +235,7 @@ export default function PatientForm({ onSubmit, loading }) {
 
       <div className="fields-grid">
         {visibleFields.map((field) => (
-          <label className="field" key={field.key}>
+          <label className={`field ${fieldErrors[field.key] ? "invalid" : ""}`} key={field.key}>
             <span className="field-top">
               <span className="field-label">{field.label}</span>
               {field.unit && <span className="field-unit">{field.unit}</span>}
@@ -244,9 +254,13 @@ export default function PatientForm({ onSubmit, loading }) {
                 type="number"
                 placeholder={field.placeholder}
                 value={form[field.key]}
+                min={FIELD_RANGES[field.key]?.min}
+                max={FIELD_RANGES[field.key]?.max}
+                step="any"
                 onChange={(e) => handle(field.key, e.target.value)}
               />
             )}
+            {fieldErrors[field.key] && <span className="field-error">{fieldErrors[field.key]}</span>}
           </label>
         ))}
       </div>
@@ -264,7 +278,7 @@ export default function PatientForm({ onSubmit, loading }) {
         )}
 
         {step < 2 ? (
-          <button className="btn-primary" type="button" onClick={() => setStep((current) => current + 1)}>
+          <button className="btn-primary" type="button" onClick={handleContinue}>
             Continue
           </button>
         ) : (

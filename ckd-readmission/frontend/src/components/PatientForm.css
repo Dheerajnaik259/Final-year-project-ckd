@@ -221,6 +221,19 @@ html[data-theme="dark"] .field select:focus {
   color: rgba(92, 113, 104, 0.45);
 }
 
+.field.invalid input,
+.field.invalid select {
+  border-color: rgba(196, 84, 67, 0.55);
+}
+
+.field-error {
+  display: block;
+  margin-top: 0.35rem;
+  color: #a84839;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
 .form-meta {
   display: flex;
   justify-content: space-between;
