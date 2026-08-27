@@ -205,6 +205,8 @@ def validation_warnings(patient_data: dict) -> list:
     warnings = []
     for field, (low, high, unit) in FIELD_RANGES.items():
         value = parse_numeric(patient_data.get(field))
+        if value == 0:
+            continue  # Skip uncollected fields (form didn't ask for this value)
         if value < low or value > high:
             warnings.append(f"{field} value {value:g} is outside the expected range ({low}-{high} {unit}).")
     return warnings

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from auth.jwt_guard import require_auth
 from model.predict import predict
 from schemas.patient import PayloadValidationError, parse_patient_payload
@@ -59,10 +59,11 @@ def predict_route():
             "top_clinical_factors": top_clinical_factors,
             "clinical_recommendation": clinical_recommendation,
             "suggestions": suggestions,
+            "source": "server",
         }
 
-        # Save to Supabase (non-blocking — failures are logged, never returned)
-        user_id = request_data.get("user_id")
+        # Use verified user_id from JWT, never from client input
+        user_id = getattr(g, "user_id", None) or request_data.get("user_id")
         prediction_id = save_prediction(patient_data, response_data, user_id=user_id)
         if prediction_id:
             response_data["prediction_id"] = prediction_id

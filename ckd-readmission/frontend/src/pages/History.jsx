@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { fetchPredictionHistory } from "../services/api";
 import "./History.css";
 
 // SVG Icons
@@ -129,20 +130,13 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
-
   useEffect(() => {
     const fetchHistory = async () => {
       setLoading(true);
       let serverRecords = [];
       try {
-        let url = `${API_URL}/history?limit=100`;
-        if (user?.id) url += `&user_id=${user.id}`;
-        const res = await fetch(url);
-        if (res.ok) {
-          const data = await res.json();
-          serverRecords = data.predictions || [];
-        }
+        const data = await fetchPredictionHistory(100, 0, user?.id);
+        serverRecords = data.predictions || [];
       } catch (e) {
         console.warn("Could not fetch remote history, using local history fallback:", e);
       }
@@ -174,7 +168,7 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
     };
 
     fetchHistory();
-  }, [API_URL, user]);
+  }, [user]);
 
   // Statistics calculation
   const totalCount = predictions.length;

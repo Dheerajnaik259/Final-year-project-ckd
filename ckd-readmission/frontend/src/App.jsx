@@ -342,7 +342,7 @@ export default function App() {
 
   // Authenticated Patient Workspace
   const user = session.user;
-  const fullName = user?.user_metadata?.full_name || user?.email || "John Doe";
+  const fullName = user?.user_metadata?.full_name || user?.email || "User";
   const initials = fullName
     .split(" ")
     .map((n) => n[0])

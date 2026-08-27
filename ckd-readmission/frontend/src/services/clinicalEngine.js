@@ -157,7 +157,7 @@ export function extractTopFactors(data) {
   return factors.slice(0, 5);
 }
 
-export function generateRecommendations(riskLevel, probability, patientData) {
+export function generateRecommendations(riskLevel, _probability, _patientData) {
   const isHigh = riskLevel === "High";
   const isMod = riskLevel === "Medium" || riskLevel === "Moderate";
 
@@ -214,7 +214,7 @@ export function generateRecommendations(riskLevel, probability, patientData) {
 
 export function calculateLocalPrediction(patientData) {
   const severityScore = calculateSeverityScore(patientData);
-  let probability = 15.0;
+  let probability;
 
   if (severityScore >= 12) probability = 75.0;
   else if (severityScore >= 9) probability = 60.0;
@@ -241,7 +241,7 @@ export function calculateLocalPrediction(patientData) {
 
   const flags = [];
   const k = parseNumeric(patientData.SerumElectrolytesPotassium || dataKey(patientData, "potassium"));
-  if (k >= 5.5) flags.append ? flags.push("High potassium flag: potassium is 5.5 mEq/L or above.") : flags.push("High potassium flag: potassium is 5.5 mEq/L or above.");
+  if (k >= 5.5) flags.push("High potassium flag: potassium is 5.5 mEq/L or above.");
   if (gfr > 0 && gfr < 30) flags.push("Advanced CKD flag: eGFR is below 30.");
   const sysBp = parseNumeric(patientData.SystolicBP || patientData.blood_pressure_systolic);
   if (sysBp >= 140) flags.push("Hypertension flag: BP is above usual treatment target.");
@@ -279,6 +279,7 @@ export function calculateLocalPrediction(patientData) {
     patient_data: patientData,
     prediction_id: `pred_${Date.now()}`,
     has_blank_defaults: !!patientData.has_blank_defaults,
+    source: "offline_estimate",
   };
 }
 

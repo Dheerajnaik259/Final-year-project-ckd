@@ -1,9 +1,11 @@
 import os
 import json
+import logging
 from dotenv import load_dotenv
 from groq import Groq
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
@@ -67,7 +69,7 @@ Make recommendations STRICTLY specific to the patient's out-of-range lab values 
             "lifestyle": []
         }
     except Exception as e:
-        print(f"Groq API Error: {e}")
+        logger.error("Groq API error: %s", e)
         return {
             "urgent": "Unable to generate specific AI suggestions (Service Error).",
             "food": [],

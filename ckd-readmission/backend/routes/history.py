@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 import logging
 
+from auth.jwt_guard import require_auth
 from services.supabase_service import get_predictions, get_prediction_by_id
 
 logger = logging.getLogger(__name__)
@@ -8,20 +9,23 @@ history_bp = Blueprint("history", __name__)
 
 
 @history_bp.route("/history", methods=["GET"])
+@require_auth
 def list_predictions():
-    """Return paginated list of recent predictions."""
+    """Return paginated list of recent predictions for the authenticated user."""
     try:
         limit = min(int(request.args.get("limit", 20)), 100)
         offset = max(int(request.args.get("offset", 0)), 0)
     except (ValueError, TypeError):
         limit, offset = 20, 0
 
-    user_id = request.args.get("user_id")
+    # Use verified user_id from JWT; fall back to query param only when auth is disabled
+    user_id = getattr(g, "user_id", None) or request.args.get("user_id")
     predictions = get_predictions(limit=limit, offset=offset, user_id=user_id)
     return jsonify({"predictions": predictions, "count": len(predictions)}), 200
 
 
 @history_bp.route("/history/<prediction_id>", methods=["GET"])
+@require_auth
 def get_prediction_detail(prediction_id):
     """Return full details for a single prediction."""
     prediction = get_prediction_by_id(prediction_id)

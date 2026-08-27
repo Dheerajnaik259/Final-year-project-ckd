@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabaseClient";
+import { fetchPredictionHistory } from "../services/api";
 import "./Landing.css";
 
 // SVG Icons
@@ -409,14 +410,10 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
         });
 
         // 3. Fetch real prediction history for this authenticated user
-        const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
         let serverPreds = [];
         try {
-          const res = await fetch(`${API_URL}/history?limit=10&user_id=${user.id}`);
-          if (res.ok) {
-            const data = await res.json();
-            serverPreds = data.predictions || [];
-          }
+          const data = await fetchPredictionHistory(10, 0, user.id);
+          serverPreds = data.predictions || [];
         } catch (err) {
           console.warn("Could not fetch remote predictions for landing dashboard:", err);
         }
