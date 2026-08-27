@@ -15,3 +15,21 @@ export async function predictReadmissionRisk(patientData) {
 
   return res.json();
 }
+
+export async function fetchPredictionHistory(limit = 50, offset = 0) {
+  const res = await fetch(`${API_URL}/history?limit=${limit}&offset=${offset}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Failed to fetch history: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchPredictionDetail(predictionId) {
+  const res = await fetch(`${API_URL}/history/${predictionId}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Failed to fetch prediction detail: ${res.status}`);
+  }
+  return res.json();
+}

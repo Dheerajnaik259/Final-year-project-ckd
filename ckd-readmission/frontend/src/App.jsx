@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Results from "./pages/Results";
 import History from "./pages/History";
+import { fetchPredictionDetail } from "./services/api";
 
 export default function App() {
   // page: "home" | "results" | "history"
   const [page, setPage] = useState("home");
   const [result, setResult] = useState(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
 
   useEffect(() => {
     document.documentElement.dataset.theme = "dark";
@@ -25,6 +27,19 @@ export default function App() {
 
   const handleGoHistory = () => {
     setPage("history");
+  };
+
+  const handleViewDetail = async (predictionId) => {
+    setLoadingDetail(true);
+    try {
+      const data = await fetchPredictionDetail(predictionId);
+      setResult(data);
+      setPage("results");
+    } catch (err) {
+      alert("Failed to load historical prediction detail: " + err.message);
+    } finally {
+      setLoadingDetail(false);
+    }
   };
 
   return (
@@ -63,7 +78,7 @@ export default function App() {
           <Results result={result} onReset={handleReset} />
         )}
         {page === "history" && (
-          <History onBack={handleReset} />
+          <History onBack={handleReset} onViewDetail={handleViewDetail} />
         )}
       </main>
 
