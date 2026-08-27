@@ -9,6 +9,8 @@ requests
 xgboost
 shap
 imbalanced-learn
+matplotlib
+seaborn
 pydantic
 PyJWT
 pytest

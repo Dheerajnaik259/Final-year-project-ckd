@@ -1,0 +1,278 @@
+/* ═══════════════════════════════════════════════
+   RiskCharts – Visual analytics for predictions
+   ═══════════════════════════════════════════════ */
+
+.charts-section {
+  border: 1px solid var(--border-color);
+  border-radius: 1.75rem;
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-soft);
+  padding: 1.55rem;
+}
+
+.charts-heading {
+  margin-bottom: 1.35rem;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+/* ── Shared card surface ── */
+.chart-gauge,
+.chart-shap,
+.chart-kfre,
+.chart-severity {
+  border: 1px solid var(--border-color);
+  border-radius: 1.2rem;
+  padding: 1.1rem;
+  background: rgba(255, 255, 255, 0.62);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+html[data-theme="dark"] .chart-gauge,
+html[data-theme="dark"] .chart-shap,
+html[data-theme="dark"] .chart-kfre,
+html[data-theme="dark"] .chart-severity {
+  background: rgba(12, 18, 17, 0.92);
+  border-color: rgba(233, 243, 239, 0.10);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chart-gauge:hover,
+  .chart-shap:hover,
+  .chart-kfre:hover,
+  .chart-severity:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-pop);
+    border-color: rgba(68, 221, 191, 0.24);
+  }
+}
+
+.chart-inner-header {
+  margin-bottom: 0.9rem;
+}
+
+.chart-label {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.chart-sub {
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Risk Gauge ── */
+.gauge-svg {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  margin: 0.5rem auto 0.25rem;
+}
+
+.gauge-arc {
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gauge-pct {
+  fill: var(--text-primary);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.gauge-risk {
+  fill: var(--text-faint);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── SHAP Bar Chart ── */
+.shap-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.shap-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) 50px;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.shap-feature {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shap-track {
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(68, 221, 191, 0.08);
+  overflow: hidden;
+}
+
+html[data-theme="dark"] .shap-track {
+  background: rgba(68, 221, 191, 0.06);
+}
+
+.shap-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #2e8a57 0%, #44ddbf 100%);
+  width: 0%;
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.shap-fill.animate {
+  /* width is set inline */
+}
+
+.shap-value {
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* ── KFRE Chart ── */
+.kfre-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 0.7rem;
+}
+
+.kfre-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.kfre-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.kfre-period {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.kfre-pct {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.kfre-track {
+  height: 18px;
+  border-radius: 6px;
+  background: rgba(68, 221, 191, 0.08);
+  overflow: hidden;
+}
+
+html[data-theme="dark"] .kfre-track {
+  background: rgba(68, 221, 191, 0.06);
+}
+
+.kfre-fill {
+  height: 100%;
+  border-radius: 6px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kfre-fill.two-yr {
+  background: linear-gradient(90deg, #bf7d2e 0%, #e6a84d 100%);
+}
+
+.kfre-fill.five-yr {
+  background: linear-gradient(90deg, #c45443 0%, #e87a6b 100%);
+}
+
+.kfre-fill.animate {
+  /* width is set inline */
+}
+
+.kfre-note {
+  color: var(--text-faint);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  display: block;
+}
+
+/* ── Severity Meter ── */
+.severity-visual {
+  padding: 0.5rem 0;
+}
+
+.severity-bar-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0.55rem;
+}
+
+.severity-seg {
+  flex: 1;
+  height: 26px;
+  border-radius: 4px;
+  background: var(--seg-empty, rgba(68, 221, 191, 0.08));
+  transition: background-color 0.5s ease;
+}
+
+html[data-theme="dark"] .severity-seg {
+  --seg-empty: rgba(68, 221, 191, 0.06);
+}
+
+.severity-seg.animate {
+  /* color is set inline */
+}
+
+.severity-numbers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.severity-current {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+/* ── Responsive ── */
+@media (max-width: 760px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-section {
+    border-radius: 1.4rem;
+  }
+
+  .shap-row {
+    grid-template-columns: 90px minmax(0, 1fr) 44px;
+  }
+}

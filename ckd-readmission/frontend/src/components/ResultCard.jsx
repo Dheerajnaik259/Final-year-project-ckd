@@ -1,6 +1,7 @@
 import "./ResultCard.css";
 import { useEffect, useState } from "react";
 import RecommendationCard from "./RecommendationCard";
+import RiskCharts from "./RiskCharts";
 
 const riskConfig = {
   High: {
@@ -94,6 +95,8 @@ export default function ResultCard({ result, onReset }) {
           </div>
         </div>
       </section>
+
+      <RiskCharts result={result} />
 
       {assessment && (
         <>

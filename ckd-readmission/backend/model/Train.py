@@ -21,10 +21,14 @@ warnings.filterwarnings("ignore")
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, classification_report, roc_auc_score, confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report, roc_auc_score, confusion_matrix, roc_curve
 from xgboost import XGBClassifier
 from imblearn.over_sampling import SMOTE
 import shap
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Configure logging
 logging.basicConfig(
@@ -273,7 +277,163 @@ def compute_shap(X_train, X_test, y_train, feature_names):
 
 
 # ─────────────────────────────────────────────
-# 6. SAVE ARTIFACTS
+# 6. GENERATE TRAINING PLOTS
+# ─────────────────────────────────────────────
+
+def generate_training_plots(
+    model, X_test, y_test, y_pred, y_proba,
+    feature_names, shap_df, cv_scores,
+    y_before_smote, y_after_smote,
+    output_dir: str = "."
+):
+    """
+    Generate and save all training visualisation plots.
+    Outputs 5 PNG files into <output_dir>/plots/.
+    """
+    plots_dir = os.path.join(output_dir, "plots")
+    os.makedirs(plots_dir, exist_ok=True)
+
+    # Global style
+    sns.set_theme(style="darkgrid", palette="muted")
+    plt.rcParams.update({
+        "figure.facecolor": "#0f1a1a",
+        "axes.facecolor": "#0f1a1a",
+        "axes.edgecolor": "#2a3d3d",
+        "axes.labelcolor": "#c8e6df",
+        "text.color": "#c8e6df",
+        "xtick.color": "#9cbbb4",
+        "ytick.color": "#9cbbb4",
+        "grid.color": "#1e3232",
+        "savefig.facecolor": "#0f1a1a",
+        "font.family": "sans-serif",
+    })
+
+    ACCENT = "#44ddbf"
+    ACCENT2 = "#bf7d2e"
+    RED = "#c45443"
+    GREEN = "#2e8a57"
+
+    # ── 1. Confusion Matrix Heatmap ──
+    logger.info("  Generating confusion matrix plot...")
+    fig, ax = plt.subplots(figsize=(7, 6))
+    cm = confusion_matrix(y_test, y_pred)
+    sns.heatmap(
+        cm, annot=True, fmt="d", cmap="BuGn",
+        xticklabels=["No Readmission", "Readmission"],
+        yticklabels=["No Readmission", "Readmission"],
+        linewidths=1.5, linecolor="#0f1a1a",
+        annot_kws={"size": 18, "weight": "bold"},
+        ax=ax,
+    )
+    ax.set_xlabel("Predicted", fontsize=13, fontweight="bold")
+    ax.set_ylabel("Actual", fontsize=13, fontweight="bold")
+    ax.set_title("Confusion Matrix", fontsize=16, fontweight="bold", pad=14)
+    fig.tight_layout()
+    fig.savefig(os.path.join(plots_dir, "confusion_matrix.png"), dpi=180)
+    plt.close(fig)
+
+    # ── 2. ROC-AUC Curve ──
+    logger.info("  Generating ROC-AUC curve...")
+    fpr, tpr, _ = roc_curve(y_test, y_proba)
+    auc_val = roc_auc_score(y_test, y_proba)
+    fig, ax = plt.subplots(figsize=(7, 6))
+    ax.plot(fpr, tpr, color=ACCENT, linewidth=2.5,
+            label=f"AUC = {auc_val:.4f}")
+    ax.plot([0, 1], [0, 1], color="#555", linewidth=1, linestyle="--",
+            label="Random baseline")
+    ax.fill_between(fpr, tpr, alpha=0.12, color=ACCENT)
+    ax.set_xlabel("False Positive Rate", fontsize=13, fontweight="bold")
+    ax.set_ylabel("True Positive Rate", fontsize=13, fontweight="bold")
+    ax.set_title("ROC-AUC Curve", fontsize=16, fontweight="bold", pad=14)
+    ax.legend(loc="lower right", fontsize=11, framealpha=0.3)
+    fig.tight_layout()
+    fig.savefig(os.path.join(plots_dir, "roc_auc_curve.png"), dpi=180)
+    plt.close(fig)
+
+    # ── 3. SHAP Feature Importance Bar Chart ──
+    logger.info("  Generating SHAP feature importance chart...")
+    top_shap = shap_df.head(10).copy()
+    top_shap = top_shap.iloc[::-1]  # ascending for horizontal bar
+    fig, ax = plt.subplots(figsize=(8, 6))
+    bars = ax.barh(
+        top_shap["feature"], top_shap["importance"],
+        color=ACCENT, edgecolor="#0f1a1a", height=0.62,
+    )
+    for bar in bars:
+        width = bar.get_width()
+        ax.text(width + 0.01, bar.get_y() + bar.get_height() / 2,
+                f"{width:.3f}", va="center", ha="left",
+                fontsize=10, color="#9cbbb4")
+    ax.set_xlabel("Mean |SHAP Value|", fontsize=13, fontweight="bold")
+    ax.set_title("Top 10 Feature Importance (SHAP)",
+                 fontsize=16, fontweight="bold", pad=14)
+    fig.tight_layout()
+    fig.savefig(os.path.join(plots_dir, "shap_feature_importance.png"), dpi=180)
+    plt.close(fig)
+
+    # ── 4. Class Distribution Before & After SMOTE ──
+    logger.info("  Generating class distribution chart...")
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+    before_counts = np.bincount(y_before_smote)
+    after_counts = np.bincount(y_after_smote)
+    labels = ["No Readmit", "Readmit"]
+
+    axes[0].bar(labels, before_counts, color=[GREEN, RED],
+                edgecolor="#0f1a1a", width=0.55)
+    for i, v in enumerate(before_counts):
+        axes[0].text(i, v + max(before_counts) * 0.02, str(v),
+                     ha="center", fontsize=12, fontweight="bold", color="#c8e6df")
+    axes[0].set_title("Before SMOTE", fontsize=14, fontweight="bold")
+    axes[0].set_ylabel("Count", fontsize=12)
+
+    axes[1].bar(labels, after_counts, color=[GREEN, RED],
+                edgecolor="#0f1a1a", width=0.55)
+    for i, v in enumerate(after_counts):
+        axes[1].text(i, v + max(after_counts) * 0.02, str(v),
+                     ha="center", fontsize=12, fontweight="bold", color="#c8e6df")
+    axes[1].set_title("After SMOTE", fontsize=14, fontweight="bold")
+    axes[1].set_ylabel("Count", fontsize=12)
+
+    fig.suptitle("Class Distribution", fontsize=16, fontweight="bold", y=1.02)
+    fig.tight_layout()
+    fig.savefig(os.path.join(plots_dir, "class_distribution.png"), dpi=180,
+                bbox_inches="tight")
+    plt.close(fig)
+
+    # ── 5. Cross-Validation Scores Box Plot ──
+    logger.info("  Generating cross-validation plot...")
+    fig, ax = plt.subplots(figsize=(7, 5))
+    bp = ax.boxplot(
+        [cv_scores * 100], widths=0.4, patch_artist=True,
+        boxprops=dict(facecolor=ACCENT, alpha=0.35, edgecolor=ACCENT),
+        medianprops=dict(color=ACCENT2, linewidth=2.5),
+        whiskerprops=dict(color=ACCENT, linewidth=1.5),
+        capprops=dict(color=ACCENT, linewidth=1.5),
+        flierprops=dict(marker="o", markerfacecolor=RED, markersize=6),
+    )
+    ax.scatter(
+        np.ones(len(cv_scores)),
+        cv_scores * 100, color=ACCENT, s=80,
+        zorder=5, edgecolor="#0f1a1a", linewidth=1.2,
+    )
+    mean_val = cv_scores.mean() * 100
+    ax.axhline(y=mean_val, color=ACCENT2, linestyle="--", linewidth=1.2,
+               label=f"Mean = {mean_val:.2f}%")
+    ax.set_xticklabels(["5-Fold CV"])
+    ax.set_ylabel("Accuracy (%)", fontsize=13, fontweight="bold")
+    ax.set_title("Cross-Validation Accuracy",
+                 fontsize=16, fontweight="bold", pad=14)
+    ax.legend(fontsize=11, framealpha=0.3)
+    fig.tight_layout()
+    fig.savefig(os.path.join(plots_dir, "cv_scores.png"), dpi=180)
+    plt.close(fig)
+
+    logger.info(f"  All 5 plots saved to {plots_dir}/")
+
+
+# ─────────────────────────────────────────────
+# 7. SAVE ARTIFACTS
 # ─────────────────────────────────────────────
 
 def save_artifacts(model, scaler, feature_names, shap_df, output_dir: str = "."):
@@ -313,7 +473,7 @@ def save_artifacts(model, scaler, feature_names, shap_df, output_dir: str = ".")
 
 
 # ─────────────────────────────────────────────
-# 7. PREDICTION DEMO
+# 8. PREDICTION DEMO
 # ─────────────────────────────────────────────
 
 def predict_single(model, scaler, feature_names, sample: dict):
@@ -397,13 +557,33 @@ if __name__ == "__main__":
         # Step 7: Save artifacts
         save_artifacts(model, scaler, feature_names, shap_df, output_dir=".")
 
-        # Step 8: Demo prediction
+        # Step 8: Generate training plots
+        logger.info("\nGenerating training visualisation plots...")
+        y_pred = model.predict(X_test)
+        y_proba = model.predict_proba(X_test)[:, 1]
+        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        cv_scores = cross_val_score(model, X_train, y_train, cv=cv,
+                                     scoring="accuracy", n_jobs=-1)
+        generate_training_plots(
+            model=model,
+            X_test=X_test, y_test=y_test,
+            y_pred=y_pred, y_proba=y_proba,
+            feature_names=feature_names,
+            shap_df=shap_df,
+            cv_scores=cv_scores,
+            y_before_smote=y,
+            y_after_smote=y_res,
+            output_dir=".",
+        )
+
+        # Step 9: Demo prediction
         logger.info("\nDemo Prediction (sample patient):")
         sample_patient = {feature: np.mean(df[feature]) for feature in feature_names}
         result = predict_single(model, scaler, feature_names, sample_patient)
 
         logger.info("=" * 60)
         logger.info("Model training and evaluation complete!")
+        logger.info("Plots saved to ./plots/ directory")
         logger.info("=" * 60)
 
     except Exception as e:
