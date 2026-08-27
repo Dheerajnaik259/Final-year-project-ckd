@@ -108,6 +108,34 @@ export default function App() {
 
   const handleResultsReady = (data) => {
     setResult(data);
+    
+    // Immediately persist to local history snapshot
+    if (data) {
+      try {
+        const existing = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+        const recordId = data.prediction_id || `pred_${Date.now()}`;
+        const newRecord = {
+          id: recordId,
+          created_at: new Date().toISOString(),
+          patient_age: data.patient_data?.Age || data.patient_data?.age || 50,
+          patient_gender: data.patient_data?.Gender || data.patient_data?.gender || 1,
+          risk_level: data.risk_level,
+          probability: data.probability,
+          ckd_stage: typeof data.clinical_assessment?.ckd_stage === "object"
+            ? data.clinical_assessment?.ckd_stage?.code
+            : data.clinical_assessment?.ckd_stage || "G2",
+          kdigo_risk: data.clinical_assessment?.kdigo_risk || "Moderate",
+          severity_score: data.clinical_assessment?.severity_score || 0,
+          patient_data: data.patient_data,
+          full_result: data,
+        };
+        const updatedHistory = [newRecord, ...existing.filter((item) => item.id !== recordId)];
+        localStorage.setItem("ckd_local_prediction_history", JSON.stringify(updatedHistory));
+      } catch (err) {
+        console.error("Failed to save local prediction history:", err);
+      }
+    }
+
     setPage("results");
   };
 
