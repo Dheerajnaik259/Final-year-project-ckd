@@ -329,8 +329,8 @@ export default function Login({ onAuthSuccess, initialIsRegister = true, onBackT
             await supabase.from("patient_profiles").upsert({
               user_id: userId,
               full_name: fullName,
-              age: 45,
-              sex: "Male",
+              age: null,
+              sex: null,
               contact_number: "",
             });
           } catch (_e) {

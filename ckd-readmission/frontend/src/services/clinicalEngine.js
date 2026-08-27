@@ -92,43 +92,38 @@ export function calculateSeverityScore(data) {
   const cr = parseNumeric(data.SerumCreatinine || data.serum_creatinine);
   if (cr > 3.5) score += 3;
   else if (cr > 2.0) score += 2;
-  else if (cr > 1.4) score += 1;
+  else if (cr > 1.5) score += 1;
 
   const bun = parseNumeric(data.BUNLevels || data.bun_levels);
   if (bun > 40) score += 2;
-  else if (bun > 20) score += 1;
+  else if (bun > 25) score += 1;
 
   const protein = parseNumeric(data.ProteinInUrine || data.protein_in_urine);
   if (protein > 1.0) score += 2;
-  else if (protein > 0.15) score += 1;
+  else if (protein > 0.3) score += 1;
 
   const k = parseNumeric(data.SerumElectrolytesPotassium || data.potassium);
-  if (k >= 5.5) score += 3;
-  else if (k >= 5.0) score += 1;
+  if (k > 5.5) score += 2;
+  else if (k > 5.0) score += 1;
 
   const na = parseNumeric(data.SerumElectrolytesSodium || data.sodium);
   if (na > 0 && na < 130) score += 2;
   else if (na > 0 && na < 135) score += 1;
 
   const hb = parseNumeric(data.HemoglobinLevels || data.hemoglobin);
-  if (hb > 0 && hb < 9.0) score += 3;
+  if (hb > 0 && hb < 9.0) score += 2;
   else if (hb > 0 && hb < 11.0) score += 1;
 
   const sbp = parseNumeric(data.SystolicBP || data.blood_pressure_systolic);
-  if (sbp >= 160) score += 2;
-  else if (sbp >= 140) score += 1;
+  if (sbp > 160) score += 2;
+  else if (sbp > 140) score += 1;
 
-  if (parseNumeric(data.Diabetes || data.diabetes) > 0) score += 2;
+  const hasDiabetes = parseNumeric(data.Diabetes || data.diabetes) > 0;
+  if (hasDiabetes) score += 1;
+
   if (parseNumeric(data.Smoking || data.smoking) > 0) score += 1;
+  if (parseNumeric(data.PreviousAcuteKidneyInjury) > 0) score += 1;
   if (parseNumeric(data.Edema || data.edema) > 0) score += 1;
-
-  const prior = parseNumeric(data.PriorAdmissions || data.prior_admissions);
-  if (prior >= 3) score += 3;
-  else if (prior >= 1) score += 1;
-
-  const los = parseNumeric(data.LengthOfStay || data.length_of_stay);
-  if (los >= 7) score += 2;
-  else if (los >= 4) score += 1;
 
   return score;
 }
@@ -221,23 +216,23 @@ export function calculateLocalPrediction(patientData) {
   const severityScore = calculateSeverityScore(patientData);
   let probability = 15.0;
 
-  if (severityScore >= 12) probability = 85.0;
-  else if (severityScore >= 8) probability = 68.0;
-  else if (severityScore >= 5) probability = 48.0;
-  else if (severityScore >= 2) probability = 28.0;
-  else probability = 12.0;
+  if (severityScore >= 12) probability = 75.0;
+  else if (severityScore >= 9) probability = 60.0;
+  else if (severityScore >= 6) probability = 40.0;
+  else if (severityScore >= 3) probability = 25.0;
+  else probability = 15.0;
 
   // Add subtle variation based on prior admissions and eGFR
   const prior = parseNumeric(patientData.PriorAdmissions || patientData.prior_admissions);
   const gfr = parseNumeric(patientData.GFR || patientData.egfr);
-  if (prior > 0) probability += Math.min(12, prior * 4);
-  if (gfr > 0 && gfr < 30) probability += 8;
+  if (prior > 0) probability += Math.min(8, prior * 2.5);
+  if (gfr > 0 && gfr < 30) probability += 5;
 
   probability = Math.min(98.5, Math.max(5.0, parseFloat(probability.toFixed(1))));
 
   let riskLevel = "Low";
-  if (probability >= 50.0) riskLevel = "High";
-  else if (probability >= 30.0) riskLevel = "Medium";
+  if (probability >= 70.0) riskLevel = "High";
+  else if (probability >= 40.0) riskLevel = "Medium";
 
   const gfrStage = ckdGfrStage(gfr);
   const acrCat = albuminuriaCategory(parseNumeric(patientData.ACR || patientData.acr));

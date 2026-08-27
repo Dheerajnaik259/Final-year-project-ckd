@@ -353,7 +353,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
   const [editForm, setEditForm] = useState({
     full_name: "",
     age: "",
-    sex: "Male",
+    sex: "",
     contact_number: "",
   });
   const [savingProfile, setSavingProfile] = useState(false);
@@ -396,7 +396,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
           user_id: user.id,
           full_name: realName,
           age: localProf?.age ?? profData?.age ?? null,
-          sex: localProf?.sex ?? profData?.sex ?? "Male",
+          sex: localProf?.sex ?? profData?.sex ?? null,
           contact_number: localProf?.contact_number ?? profData?.contact_number ?? null,
         };
 
@@ -404,7 +404,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
         setEditForm({
           full_name: mergedProfile.full_name,
           age: mergedProfile.age ? String(mergedProfile.age) : "",
-          sex: mergedProfile.sex || "Male",
+          sex: mergedProfile.sex || "",
           contact_number: mergedProfile.contact_number || "",
         });
 
@@ -470,7 +470,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
         user_id: user.id,
         full_name: editForm.full_name ? editForm.full_name.trim() : "",
         age: editForm.age ? parseInt(editForm.age, 10) : null,
-        sex: editForm.sex || "Male",
+        sex: editForm.sex || null,
         contact_number: editForm.contact_number ? editForm.contact_number.trim() : "",
       };
 
@@ -835,11 +835,14 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
                   value={editForm.sex}
                   onChange={(e) => setEditForm({ ...editForm, sex: e.target.value })}
                 >
-                  <option value="Male" style={{ background: "#0c1715", color: "#ffffff" }}>
-                    Male
+                  <option value="" style={{ background: "#0c1715", color: "#ffffff" }}>
+                    Select Gender
                   </option>
                   <option value="Female" style={{ background: "#0c1715", color: "#ffffff" }}>
                     Female
+                  </option>
+                  <option value="Male" style={{ background: "#0c1715", color: "#ffffff" }}>
+                    Male
                   </option>
                 </select>
               </div>

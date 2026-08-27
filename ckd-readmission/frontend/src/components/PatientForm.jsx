@@ -504,11 +504,13 @@ export default function PatientForm({ onSubmit, loading, user }) {
           .maybeSingle();
 
         if (data) {
-          setForm((current) => ({
-            ...current,
-            Age: current.Age || data.age || "",
-            Gender: data.sex === "Male" ? 1 : 0,
-          }));
+          setForm((current) => {
+            const next = { ...current };
+            if (data.age && !next.Age) next.Age = data.age;
+            if (data.sex === "Male") next.Gender = 1;
+            else if (data.sex === "Female") next.Gender = 0;
+            return next;
+          });
         }
       } catch (err) {
         console.error("Error prefilling patient form:", err);

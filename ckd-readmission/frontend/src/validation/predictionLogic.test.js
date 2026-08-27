@@ -34,4 +34,34 @@ describe("Prediction Logic & Clinical Range Utilities", () => {
     expect(res.ok).toBe(true);
     expect(Object.keys(res.errors).length).toBe(0);
   });
+
+  it("predicts Medium Risk (~40-45%) correctly for Case 2 parameters from dummy_entries.md", async () => {
+    const { calculateLocalPrediction } = await import("../services/clinicalEngine");
+    const case2Data = {
+      Age: 67,
+      Gender: 1,
+      SystolicBP: 142,
+      DiastolicBP: 84,
+      BMI: 27.5,
+      ComorbidityCount: 2,
+      SerumCreatinine: 1.8,
+      GFR: 48,
+      BUNLevels: 26,
+      ACR: 120,
+      SerumElectrolytesPotassium: 4.8,
+      SerumElectrolytesSodium: 137,
+      HemoglobinLevels: 11.5,
+      ProteinInUrine: 0.4,
+      PriorAdmissions: 1,
+      LengthOfStay: 4,
+      Diabetes: 1,
+      Hypertension: 1,
+      Smoking: 0,
+      FamilyHistoryKidneyDisease: 1,
+    };
+    const prediction = calculateLocalPrediction(case2Data);
+    expect(prediction.risk_level).toBe("Medium");
+    expect(prediction.probability).toBeGreaterThanOrEqual(40.0);
+    expect(prediction.probability).toBeLessThan(70.0);
+  });
 });
