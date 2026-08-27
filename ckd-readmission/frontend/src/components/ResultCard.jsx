@@ -540,69 +540,10 @@ export default function ResultCard({ result, onReset }) {
         </div>
       </section>
 
-      {/* What You Can Do Section (5 Actionable Cards) */}
-      <section className="what-you-can-do-card">
-        <h3 className="section-card-title">What You Can Do</h3>
-        <p className="card-sub-intro">
-          Simple steps that can help you feel better and lower your risk.
-        </p>
-
-        <div className="actionable-tiles-row">
-          {/* Tile 1 */}
-          <div className="action-tile-item">
-            <div className="action-tile-icon-wrap teal">
-              <BpMonitorIcon />
-            </div>
-            <strong className="action-tile-heading">Check Blood Pressure</strong>
-            <span className="action-tile-desc">Monitor at home regularly.</span>
-            <span className="action-pill-target green">Target: &lt;130/80 mmHg</span>
-          </div>
-
-          {/* Tile 2 */}
-          <div className="action-tile-item">
-            <div className="action-tile-icon-wrap amber">
-              <SaltIcon />
-            </div>
-            <strong className="action-tile-heading">Limit Salt</strong>
-            <span className="action-tile-desc">Eat less than 2.3g of salt per day.</span>
-            <span className="action-pill-target amber">Less salt, better health</span>
-          </div>
-
-          {/* Tile 3 */}
-          <div className="action-tile-item">
-            <div className="action-tile-icon-wrap orange">
-              <KidneyIcon />
-            </div>
-            <strong className="action-tile-heading">Follow Kidney-Friendly Diet</strong>
-            <span className="action-tile-desc">
-              Eat balanced meals. Limit potassium if advised.
-            </span>
-            <span className="action-pill-target teal">Eat smart</span>
-          </div>
-
-          {/* Tile 4 */}
-          <div className="action-tile-item">
-            <div className="action-tile-icon-wrap cyan">
-              <ActivityIcon />
-            </div>
-            <strong className="action-tile-heading">Stay Active</strong>
-            <span className="action-tile-desc">Walk or exercise for 30 minutes daily.</span>
-            <span className="action-pill-target cyan">Keep moving</span>
-          </div>
-
-          {/* Tile 5 */}
-          <div className="action-tile-item">
-            <div className="action-tile-icon-wrap blue">
-              <WaterIcon />
-            </div>
-            <strong className="action-tile-heading">Stay Hydrated</strong>
-            <span className="action-tile-desc">
-              Drink enough water unless restricted by your doctor.
-            </span>
-            <span className="action-pill-target blue">Stay hydrated</span>
-          </div>
-        </div>
-      </section>
+      {/* Clinical Recommendation Section (Prominently Swapped to Main View) */}
+      {result.clinical_recommendation && (
+        <RecommendationCard recommendation={result.clinical_recommendation} />
+      )}
 
       {/* Bottom Banners Row */}
       <section className="bottom-banners-grid">
@@ -640,17 +581,78 @@ export default function ResultCard({ result, onReset }) {
           onClick={() => setShowAdvanced((prev) => !prev)}
         >
           {showAdvanced
-            ? "Hide Institutional Clinical Analytics"
-            : "View Institutional Clinical Analytics & KDIGO Matrix"}
+            ? "Hide Institutional Clinical Analytics & Lifestyle Guide"
+            : "View Institutional Clinical Analytics & Patient Action Guide"}
         </button>
       </div>
 
       {showAdvanced && (
         <div className="advanced-clinical-section">
           <RiskCharts result={result} />
-          {result.clinical_recommendation && (
-            <RecommendationCard recommendation={result.clinical_recommendation} />
-          )}
+
+          {/* What You Can Do Section (Swapped to Advanced Section) */}
+          <section className="what-you-can-do-card">
+            <h3 className="section-card-title">What You Can Do</h3>
+            <p className="card-sub-intro">
+              Simple steps that can help you feel better and lower your risk.
+            </p>
+
+            <div className="actionable-tiles-row">
+              {/* Tile 1 */}
+              <div className="action-tile-item">
+                <div className="action-tile-icon-wrap teal">
+                  <BpMonitorIcon />
+                </div>
+                <strong className="action-tile-heading">Check Blood Pressure</strong>
+                <span className="action-tile-desc">Monitor at home regularly.</span>
+                <span className="action-pill-target green">Target: &lt;130/80 mmHg</span>
+              </div>
+
+              {/* Tile 2 */}
+              <div className="action-tile-item">
+                <div className="action-tile-icon-wrap amber">
+                  <SaltIcon />
+                </div>
+                <strong className="action-tile-heading">Limit Salt</strong>
+                <span className="action-tile-desc">Eat less than 2.3g of salt per day.</span>
+                <span className="action-pill-target amber">Less salt, better health</span>
+              </div>
+
+              {/* Tile 3 */}
+              <div className="action-tile-item">
+                <div className="action-tile-icon-wrap orange">
+                  <KidneyIcon />
+                </div>
+                <strong className="action-tile-heading">Follow Kidney-Friendly Diet</strong>
+                <span className="action-tile-desc">
+                  Eat balanced meals. Limit potassium if advised.
+                </span>
+                <span className="action-pill-target teal">Eat smart</span>
+              </div>
+
+              {/* Tile 4 */}
+              <div className="action-tile-item">
+                <div className="action-tile-icon-wrap cyan">
+                  <ActivityIcon />
+                </div>
+                <strong className="action-tile-heading">Stay Active</strong>
+                <span className="action-tile-desc">Walk or exercise for 30 minutes daily.</span>
+                <span className="action-pill-target cyan">Keep moving</span>
+              </div>
+
+              {/* Tile 5 */}
+              <div className="action-tile-item">
+                <div className="action-tile-icon-wrap blue">
+                  <WaterIcon />
+                </div>
+                <strong className="action-tile-heading">Stay Hydrated</strong>
+                <span className="action-tile-desc">
+                  Drink enough water unless restricted by your doctor.
+                </span>
+                <span className="action-pill-target blue">Stay hydrated</span>
+              </div>
+            </div>
+          </section>
         </div>
       )}
 
