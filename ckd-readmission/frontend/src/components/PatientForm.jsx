@@ -451,9 +451,6 @@ const defaultFallback = {
   ProteinInUrine: 0.1,
   PriorAdmissions: 1,
   LengthOfStay: 5,
-  HbA1c: 5.7,
-  FastingBloodSugar: 95,
-  CholesterolTotal: 180,
 };
 
 const toPredictionPayload = (formData) => {

@@ -121,6 +121,12 @@ export function calculateSeverityScore(data) {
   const hasDiabetes = parseNumeric(data.Diabetes || data.diabetes) > 0;
   if (hasDiabetes) score += 1;
 
+  const hasHypertension = parseNumeric(data.Hypertension || data.hypertension) > 0;
+  if (hasHypertension) score += 1;
+
+  const comorbidities = parseNumeric(data.ComorbidityCount || data.comorbidity_count);
+  if (comorbidities > 0) score += Math.min(2, comorbidities);
+
   if (parseNumeric(data.Smoking || data.smoking) > 0) score += 1;
   if (parseNumeric(data.PreviousAcuteKidneyInjury) > 0) score += 1;
   if (parseNumeric(data.Edema || data.edema) > 0) score += 1;
