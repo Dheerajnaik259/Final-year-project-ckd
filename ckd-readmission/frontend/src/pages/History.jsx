@@ -22,6 +22,26 @@ function FilterIcon() {
   );
 }
 
+function TrashIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <line x1="10" y1="11" x2="10" y2="17" />
+      <line x1="14" y1="11" x2="14" y2="17" />
+    </svg>
+  );
+}
+
 function EyeIcon() {
   return (
     <svg
@@ -202,7 +222,58 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
     fetchHistory();
   }, [user]);
 
-  // Statistics calculation
+  const handleDeleteSingle = async (row) => {
+    if (!window.confirm("Are you sure you want to delete this prediction record?")) return;
+
+    if (row.id) {
+      try {
+        await supabase.from("predictions").delete().eq("id", row.id);
+      } catch (err) {
+        console.warn("Supabase delete note:", err);
+      }
+    }
+
+    setPredictions((prev) => prev.filter((p) => (p.id ? p.id !== row.id : p !== row)));
+
+    try {
+      if (user?.id) {
+        const userKey = `ckd_history_${user.id}`;
+        const existingUser = JSON.parse(localStorage.getItem(userKey) || "[]");
+        localStorage.setItem(userKey, JSON.stringify(existingUser.filter((i) => i.id !== row.id)));
+      }
+      const fallbackRecs = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+      localStorage.setItem(
+        "ckd_local_prediction_history",
+        JSON.stringify(fallbackRecs.filter((i) => i.id !== row.id))
+      );
+    } catch (e) {
+      console.warn("Local storage delete note:", e);
+    }
+  };
+
+  const handleClearAll = async () => {
+    if (!window.confirm("Are you sure you want to delete ALL prediction history records?")) return;
+
+    if (user?.id) {
+      try {
+        await supabase.from("predictions").delete().eq("user_id", user.id);
+      } catch (err) {
+        console.warn("Supabase clear all note:", err);
+      }
+    }
+
+    setPredictions([]);
+
+    try {
+      if (user?.id) {
+        localStorage.removeItem(`ckd_history_${user.id}`);
+      }
+      localStorage.removeItem("ckd_local_prediction_history");
+    } catch (e) {
+      console.warn("Local storage clear note:", e);
+    }
+  };
+
   const totalCount = predictions.length;
   const modCount = predictions.filter(
     (p) => p.risk_level === "Medium" || p.risk_level === "Moderate"
@@ -210,15 +281,17 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
   const highCount = predictions.filter((p) => p.risk_level === "High").length;
   const lowCount = predictions.filter((p) => p.risk_level === "Low").length;
 
-  // Filtered dataset
   const filteredPredictions = useMemo(() => {
-    return predictions.filter((item) => {
-      if (filterRisk !== "ALL" && item.risk_level !== filterRisk) return false;
+    if (filterRisk === "ALL") return predictions;
+    return predictions.filter((p) => {
+      if (filterRisk === "HIGH") return p.risk_level === "High";
+      if (filterRisk === "MODERATE")
+        return p.risk_level === "Medium" || p.risk_level === "Moderate";
+      if (filterRisk === "LOW") return p.risk_level === "Low";
       return true;
     });
   }, [predictions, filterRisk]);
 
-  // Pagination slicing
   const totalPages = Math.ceil(filteredPredictions.length / rowsPerPage) || 1;
   const displayedPredictions = filteredPredictions.slice(
     (currentPage - 1) * rowsPerPage,
@@ -227,7 +300,6 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
 
   return (
     <div className="history-page-layout">
-      {/* Top Title & Search Action Bar */}
       <header className="history-header-bar">
         <div className="title-block">
           <h1 className="history-main-title">Prediction History</h1>
@@ -235,19 +307,25 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         </div>
 
         <div className="search-filter-block">
+          {predictions.length > 0 && (
+            <button
+              type="button"
+              className="filter-toggle-btn"
+              onClick={handleClearAll}
+              style={{ color: "#ef4444" }}
+            >
+              <TrashIcon />
+              <span>Clear History</span>
+            </button>
+          )}
           <button
             type="button"
             className="filter-toggle-btn"
             onClick={() => {
-              setFilterRisk((curr) =>
-                curr === "ALL"
-                  ? "High"
-                  : curr === "High"
-                    ? "Medium"
-                    : curr === "Medium"
-                      ? "Low"
-                      : "ALL"
-              );
+              const options = ["ALL", "HIGH", "MODERATE", "LOW"];
+              const nextIdx = (options.indexOf(filterRisk) + 1) % options.length;
+              setFilterRisk(options[nextIdx]);
+              setCurrentPage(1);
             }}
           >
             <FilterIcon />
@@ -438,8 +516,8 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
                       <span className="bp-sub-desc">{bpSub}</span>
                     </div>
 
-                    {/* Action Button */}
-                    <div className="td-cell action-col">
+                    {/* Action Buttons */}
+                    <div className="td-cell action-col" style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                       <button
                         type="button"
                         className="btn-view-record"
@@ -447,6 +525,20 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
                       >
                         <EyeIcon />
                         <span>View</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-view-record"
+                        style={{
+                          background: "rgba(239, 68, 68, 0.1)",
+                          color: "#ef4444",
+                          borderColor: "rgba(239, 68, 68, 0.3)",
+                          padding: "0.4rem 0.6rem",
+                        }}
+                        onClick={() => handleDeleteSingle(row)}
+                        title="Delete prediction"
+                      >
+                        <TrashIcon />
                       </button>
                     </div>
                   </div>
