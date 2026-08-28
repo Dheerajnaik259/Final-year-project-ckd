@@ -214,24 +214,26 @@ export default function App() {
           });
       }
 
-      // Also keep localStorage as fast local cache without duplicates
-      try {
-        if (session?.user?.id) {
-          const userKey = `ckd_history_${session.user.id}`;
-          const existingUser = JSON.parse(localStorage.getItem(userKey) || "[]");
-          const updatedUser = [newRecord, ...existingUser.filter((i) => i.id !== recordId)];
-          localStorage.setItem(userKey, JSON.stringify(deduplicatePredictions(updatedUser)));
+      // Only cache locally when the server did NOT save this prediction (offline fallback)
+      if (!isServerSaved) {
+        try {
+          if (session?.user?.id) {
+            const userKey = `ckd_history_${session.user.id}`;
+            const existingUser = JSON.parse(localStorage.getItem(userKey) || "[]");
+            const updatedUser = [newRecord, ...existingUser.filter((i) => i.id !== recordId)];
+            localStorage.setItem(userKey, JSON.stringify(deduplicatePredictions(updatedUser)));
+          }
+          const existingFallback = JSON.parse(
+            localStorage.getItem("ckd_local_prediction_history") || "[]"
+          );
+          const updatedFallback = [newRecord, ...existingFallback.filter((i) => i.id !== recordId)];
+          localStorage.setItem(
+            "ckd_local_prediction_history",
+            JSON.stringify(deduplicatePredictions(updatedFallback))
+          );
+        } catch (err) {
+          console.error("Failed to save local prediction history:", err);
         }
-        const existingFallback = JSON.parse(
-          localStorage.getItem("ckd_local_prediction_history") || "[]"
-        );
-        const updatedFallback = [newRecord, ...existingFallback.filter((i) => i.id !== recordId)];
-        localStorage.setItem(
-          "ckd_local_prediction_history",
-          JSON.stringify(deduplicatePredictions(updatedFallback))
-        );
-      } catch (err) {
-        console.error("Failed to save local prediction history:", err);
       }
     }
 

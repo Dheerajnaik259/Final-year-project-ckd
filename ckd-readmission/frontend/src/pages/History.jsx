@@ -423,8 +423,10 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
                   user?.user_metadata?.full_name ||
                   user?.email?.split("@")[0] ||
                   "Patient Record";
-                const patientId = row.id
-                  ? `CKD-${row.id.toString().substring(0, 6).toUpperCase()}`
+                const rawIdStr = row.id ? String(row.id) : "";
+                const cleanIdStr = rawIdStr.replace(/^pred_|^local_/, "");
+                const patientId = cleanIdStr
+                  ? `CKD-${cleanIdStr.slice(-6).toUpperCase()}`
                   : `CKD-8452${idx + 1}`;
                 const avatarInitials =
                   patientName
