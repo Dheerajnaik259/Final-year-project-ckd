@@ -124,6 +124,10 @@ def parse_patient_payload(raw: dict[str, Any]) -> dict[str, Any]:
     except PayloadValidationError:
         raise
     except ValidationError as exc:
+        for error in exc.errors():
+            ctx = error.get("ctx", {})
+            if isinstance(ctx.get("error"), PayloadValidationError):
+                raise ctx["error"] from exc
         messages = []
         for error in exc.errors():
             location = ".".join(str(part) for part in error.get("loc", []))

@@ -63,7 +63,7 @@ def test_parse_numeric_yes_no():
 def test_clinical_severity_score_is_elevated_for_advanced_ckd():
     score = clinical_severity_score(_high_risk_patient())
     assert score >= 12
-    assert clinical_probability_floor(score) == 0.70
+    assert clinical_probability_floor(score) == 0.75
 
 
 def test_kdigo_very_high_for_g5_a3():

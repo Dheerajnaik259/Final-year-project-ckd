@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Results from "./pages/Results";
 import History from "./pages/History";
 import { fetchPredictionDetail } from "./services/api";
+import { deduplicatePredictions } from "./services/deduplicate";
 
 // Icons for Topbar Tabs & User Dropdown
 function NavHomeIcon() {
@@ -176,10 +177,15 @@ export default function App() {
 
     // Persist prediction to Supabase (cross-device sync) and localStorage (fast local cache)
     if (data) {
+      const isServerSaved =
+        data.source === "server" ||
+        (data.prediction_id && String(data.prediction_id).includes("-"));
+
       const recordId = data.prediction_id || `pred_${Date.now()}`;
       const newRecord = {
+        id: recordId,
         user_id: session?.user?.id || null,
-        created_at: new Date().toISOString(),
+        created_at: data.created_at || new Date().toISOString(),
         patient_age: data.patient_data?.Age || data.patient_data?.age || 50,
         patient_gender: data.patient_data?.Gender || data.patient_data?.gender || 1,
         risk_level: data.risk_level,
@@ -194,29 +200,35 @@ export default function App() {
         top_factors: data.top_clinical_factors || [],
         clinical_recommendation: data.clinical_recommendation || {},
         full_result: data,
+        source: data.source || "offline_estimate",
       };
 
-      // Save to Supabase (async, non-blocking — enables cross-device history)
-      supabase
-        .from("predictions")
-        .insert([newRecord])
-        .then(({ error }) => {
-          if (error) console.warn("Supabase prediction save note:", error.message);
-          else console.log("Prediction saved to Supabase for cross-device sync.");
-        });
+      // Only save directly to Supabase if the backend DID NOT already save it (e.g. offline client fallback)
+      if (!isServerSaved && session?.user?.id) {
+        supabase
+          .from("predictions")
+          .insert([newRecord])
+          .then(({ error }) => {
+            if (error) console.warn("Supabase client prediction save note:", error.message);
+            else console.log("Fallback prediction saved to Supabase.");
+          });
+      }
 
-      // Also keep localStorage as fast local cache
+      // Also keep localStorage as fast local cache without duplicates
       try {
-        const localRecord = { ...newRecord, id: recordId };
         if (session?.user?.id) {
           const userKey = `ckd_history_${session.user.id}`;
           const existingUser = JSON.parse(localStorage.getItem(userKey) || "[]");
-          localStorage.setItem(userKey, JSON.stringify([localRecord, ...existingUser.filter((i) => i.id !== recordId)]));
+          const updatedUser = [newRecord, ...existingUser.filter((i) => i.id !== recordId)];
+          localStorage.setItem(userKey, JSON.stringify(deduplicatePredictions(updatedUser)));
         }
-        const existingFallback = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
+        const existingFallback = JSON.parse(
+          localStorage.getItem("ckd_local_prediction_history") || "[]"
+        );
+        const updatedFallback = [newRecord, ...existingFallback.filter((i) => i.id !== recordId)];
         localStorage.setItem(
           "ckd_local_prediction_history",
-          JSON.stringify([localRecord, ...existingFallback.filter((i) => i.id !== recordId)])
+          JSON.stringify(deduplicatePredictions(updatedFallback))
         );
       } catch (err) {
         console.error("Failed to save local prediction history:", err);

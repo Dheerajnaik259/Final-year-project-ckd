@@ -109,3 +109,22 @@ Use these calibrated clinical patient profiles during demonstration to test and 
 * **Hypertension history:** `Yes`
 * **Smoking history:** `Yes`
 * **Family kidney history:** `Yes`
+
+---
+
+## 4. 📊 Clinical Severity Score & Risk Floor Reference Matrix
+
+When presenting the clinical rules to the panel, use these exact calibrated score buckets (from `shared/clinical_config.json`):
+
+| Severity Score Bucket | Probability Floor | Risk Level Classification | Example Presentation Case |
+| :--- | :--- | :--- | :--- |
+| **Score ≥ 12** | **75.0% Floor** | **High Risk** | **Severity Score = 13** (eGFR <15 [+4], Creatinine >3.5 [+3], Potassium >5.5 [+2], Systolic BP >160 [+2], Diabetes [+1], Hypertension [+1]) |
+| **Score 8 – 11** | **60.0% Floor** | **Medium Risk (Upper)** | **Severity Score = 10** (eGFR 15–29 [+3], Creatinine 2.0–3.5 [+2], BUN >40 [+2], Diabetes [+1], Hypertension [+1], Smoking [+1]) |
+| **Score 4 – 7** | **45.0% Floor** | **Medium Risk (Standard)** | **Severity Score = 5** (eGFR 45–59 [+1], Creatinine 1.5–2.0 [+1], Protein >0.3 [+1], Diabetes [+1], Comorbidities [+1]) |
+| **Score 2 – 3** | **30.0% Floor** | **Low / Moderate Risk** | **Severity Score = 2** (eGFR 60–89 [+1], Hypertension [+1]) |
+| **Score < 2** | **15.0% Base** | **Low Risk** | **Severity Score = 0** (Normal healthy baseline) |
+
+> [!NOTE]
+> **Panel Defense Talking Point:**  
+> Use **Severity Score = 13** as your verbal example for the top-tier 75% risk floor (comfortably above the ≥12 threshold). This ensures your verbal explanation matches `shared/clinical_config.json` without edge-case boundary shifting.
+

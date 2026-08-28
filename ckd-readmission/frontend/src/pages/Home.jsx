@@ -49,33 +49,6 @@ export default function Home({ user, onResultsReady }) {
 
     try {
       const result = await predictReadmissionRisk(data, user?.id);
-
-      try {
-        const storageKey = user?.id ? `ckd_history_${user.id}` : "ckd_local_prediction_history";
-        const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
-        const recordId = result.prediction_id || `local_${Date.now()}`;
-        const newRecord = {
-          id: recordId,
-          user_id: user?.id,
-          created_at: new Date().toISOString(),
-          patient_age: data.age || data.Age || 45,
-          patient_gender: data.gender !== undefined ? data.gender : data.Gender || 0,
-          risk_level: result.risk_level,
-          probability: result.probability,
-          ckd_stage: result.clinical_assessment?.ckd_stage?.code?.replace("G", "") || "",
-          kdigo_risk: result.clinical_assessment?.kdigo_risk || "",
-          severity_score: result.clinical_assessment?.severity_score || 0,
-          full_result: result,
-          patient_data: data,
-        };
-        localStorage.setItem(
-          storageKey,
-          JSON.stringify([newRecord, ...existing.filter((item) => item.id !== recordId)])
-        );
-      } catch (err) {
-        console.warn("Failed to store local history snapshot:", err);
-      }
-
       onResultsReady(result);
     } catch (e) {
       setError(e.message || "Prediction failed. Check that backend is running.");

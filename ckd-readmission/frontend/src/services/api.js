@@ -71,7 +71,7 @@ export async function predictReadmissionRisk(patientData, userId = null) {
   // On Vercel without a cloud backend URL: use client-side fallback immediately
   if (!isLocalDev() && !hasRemoteBackend()) {
     const fallback = calculateLocalPrediction(patientData);
-    fallback.source = "client_engine";
+    fallback.source = "offline_estimate";
     return fallback;
   }
 
@@ -87,7 +87,7 @@ export async function predictReadmissionRisk(patientData, userId = null) {
   } catch (err) {
     console.warn("Backend API unreachable. Using client-side clinical prediction engine fallback.", err);
     const fallback = calculateLocalPrediction(patientData);
-    fallback.source = "client_engine";
+    fallback.source = "offline_estimate";
     return fallback;
   }
 }

@@ -168,8 +168,8 @@ export function SHAPBarChart({ factors = [] }) {
   return (
     <div className="shap-container">
       <div className="chart-title-row">
-        <span className="chart-heading">Top Risk Drivers (SHAP Analysis)</span>
-        <span className="chart-mono-tag">Feature Weight</span>
+        <span className="chart-heading">Top Clinical Risk Drivers</span>
+        <span className="chart-mono-tag">Clinical Weight</span>
       </div>
 
       <div className="shap-list">

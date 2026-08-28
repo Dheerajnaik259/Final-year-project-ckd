@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { fetchPredictionHistory } from "../services/api";
 import { supabase } from "../services/supabaseClient";
+import { deduplicatePredictions } from "../services/deduplicate";
 import "./History.css";
 
 
@@ -191,29 +192,9 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         localRecords = [];
       }
 
-      // Deduplicate records by fingerprint (timestamp + probability + risk_level) to eliminate duplicates
+      // Cleanly deduplicate records across database, server API, and local storage
       const allRecords = [...supabaseRecords, ...serverRecords, ...localRecords];
-      const seenFingerprints = new Set();
-      const uniqueRecords = [];
-
-      for (const item of allRecords) {
-        if (!item) continue;
-        if (user?.id && item.user_id && item.user_id !== user.id) continue;
-
-        const timeKey = item.created_at ? new Date(item.created_at).toISOString().slice(0, 16) : "";
-        const prob = item.probability ?? item.full_result?.probability ?? 0;
-        const risk = item.risk_level ?? item.full_result?.risk_level ?? "";
-        const fingerprint = item.id ? `${item.id}` : `${timeKey}_${prob}_${risk}`;
-
-        if (!seenFingerprints.has(fingerprint)) {
-          seenFingerprints.add(fingerprint);
-          uniqueRecords.push(item);
-        }
-      }
-
-      const combined = uniqueRecords.sort(
-        (a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now())
-      );
+      const combined = deduplicatePredictions(allRecords);
 
       setPredictions(combined);
       setLoading(false);

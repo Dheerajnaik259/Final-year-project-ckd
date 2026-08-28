@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabaseClient";
 import { fetchPredictionHistory } from "../services/api";
+import { deduplicatePredictions } from "../services/deduplicate";
 import "./Landing.css";
 
 // SVG Icons
@@ -443,27 +444,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
         }
 
         const allPreds = [...supabasePreds, ...serverPreds, ...localPreds];
-        const seenFingerprints = new Set();
-        const uniquePreds = [];
-
-        for (const item of allPreds) {
-          if (!item) continue;
-          if (user?.id && item.user_id && item.user_id !== user.id) continue;
-
-          const timeKey = item.created_at ? new Date(item.created_at).toISOString().slice(0, 16) : "";
-          const prob = item.probability ?? item.full_result?.probability ?? 0;
-          const risk = item.risk_level ?? item.full_result?.risk_level ?? "";
-          const fingerprint = item.id ? `${item.id}` : `${timeKey}_${prob}_${risk}`;
-
-          if (!seenFingerprints.has(fingerprint)) {
-            seenFingerprints.add(fingerprint);
-            uniquePreds.push(item);
-          }
-        }
-
-        const userPreds = uniquePreds.sort(
-          (a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now())
-        );
+        const userPreds = deduplicatePredictions(allPreds);
 
         setRecentPredictions(userPreds.slice(0, 3));
         setHistoryCount(userPreds.length);
