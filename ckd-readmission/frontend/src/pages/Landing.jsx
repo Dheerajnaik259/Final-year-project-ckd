@@ -533,20 +533,19 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
 
   const predAge = latestVitals?.Age ?? latestVitals?.age ?? latestVitals?.patient_age;
 
-  const predGenderVal =
-    latestVitals?.Gender ?? latestVitals?.gender ?? latestVitals?.patient_gender;
-
-  const formattedGender =
-    predGenderVal !== undefined && predGenderVal !== null
-      ? predGenderVal === 1 ||
-        predGenderVal === "1" ||
-        String(predGenderVal).toLowerCase() === "male"
-        ? "Male"
-        : "Female"
-      : null;
+  const formatSexOrGender = (val) => {
+    if (val === undefined || val === null || val === "") return null;
+    const str = String(val).trim().toLowerCase();
+    if (str === "1" || str === "male" || str === "m") return "Male";
+    if (str === "0" || str === "female" || str === "f") return "Female";
+    return String(val);
+  };
 
   const displayAge = profile?.age ? `${profile.age}` : predAge ? `${predAge}` : "Not specified";
-  const displayGender = profile?.sex || formattedGender || "Not specified";
+  const displayGender =
+    formatSexOrGender(profile?.sex) ||
+    formatSexOrGender(predGenderVal) ||
+    "Not specified";
 
   const getBpStatus = (sys, dia) => {
     if (sys === undefined || dia === undefined || sys === null || dia === null) {

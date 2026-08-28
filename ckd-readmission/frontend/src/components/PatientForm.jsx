@@ -396,7 +396,7 @@ const stepMeta = [
 
 const defaultValues = {
   Age: "",
-  Gender: 0,
+  Gender: 1,
   BMI: "",
   SystolicBP: "",
   DiastolicBP: "",
