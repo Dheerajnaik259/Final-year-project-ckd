@@ -442,6 +442,36 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
           localPreds = [];
         }
 
+        // Auto-sync unsynced local records up to Supabase cloud
+        if (user?.id && localPreds.length > 0) {
+          const supabaseIds = new Set(supabasePreds.map((r) => r.id));
+          const unsynced = localPreds.filter((item) => item && item.id && !supabaseIds.has(item.id));
+          if (unsynced.length > 0) {
+            const toInsert = unsynced.map((item) => ({
+              user_id: user.id,
+              created_at: item.created_at || new Date().toISOString(),
+              patient_age: item.patient_age || item.patient_data?.Age || item.patient_data?.age || 50,
+              patient_gender: item.patient_gender ?? item.patient_data?.Gender ?? item.patient_data?.gender ?? 1,
+              risk_level: item.risk_level || "Low",
+              probability: item.probability || 0,
+              ckd_stage: typeof item.ckd_stage === "object" ? item.ckd_stage?.code : item.ckd_stage || "G2",
+              kdigo_risk: item.kdigo_risk || "Moderate",
+              severity_score: item.severity_score || 0,
+              patient_data: item.patient_data || {},
+              top_factors: item.top_factors || item.full_result?.top_clinical_factors || [],
+              clinical_recommendation: item.clinical_recommendation || item.full_result?.clinical_recommendation || {},
+              full_result: item.full_result || item,
+            }));
+
+            supabase
+              .from("predictions")
+              .insert(toInsert)
+              .then(({ error }) => {
+                if (!error) console.log("Dashboard auto-synced local records to Supabase.");
+              });
+          }
+        }
+
         const mergedMap = new Map();
         [...supabasePreds, ...serverPreds, ...localPreds].forEach((item) => {
           if (item && (item.id || item.prediction_id)) {
