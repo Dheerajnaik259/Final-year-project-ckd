@@ -171,49 +171,27 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         localRecords = [];
       }
 
-      // Auto-sync unsynced local records up to Supabase cloud
-      if (user?.id && localRecords.length > 0) {
-        const supabaseIds = new Set(supabaseRecords.map((r) => r.id));
-        const unsynced = localRecords.filter((item) => item && item.id && !supabaseIds.has(item.id));
-        if (unsynced.length > 0) {
-          const toInsert = unsynced.map((item) => ({
-            user_id: user.id,
-            created_at: item.created_at || new Date().toISOString(),
-            patient_age: item.patient_age || item.patient_data?.Age || item.patient_data?.age || 50,
-            patient_gender: item.patient_gender ?? item.patient_data?.Gender ?? item.patient_data?.gender ?? 1,
-            risk_level: item.risk_level || "Low",
-            probability: item.probability || 0,
-            ckd_stage: typeof item.ckd_stage === "object" ? item.ckd_stage?.code : item.ckd_stage || "G2",
-            kdigo_risk: item.kdigo_risk || "Moderate",
-            severity_score: item.severity_score || 0,
-            patient_data: item.patient_data || {},
-            top_factors: item.top_factors || item.full_result?.top_clinical_factors || [],
-            clinical_recommendation: item.clinical_recommendation || item.full_result?.clinical_recommendation || {},
-            full_result: item.full_result || item,
-          }));
+      // Deduplicate records by fingerprint (timestamp + probability + risk_level) to eliminate duplicates
+      const allRecords = [...supabaseRecords, ...serverRecords, ...localRecords];
+      const seenFingerprints = new Set();
+      const uniqueRecords = [];
 
-          supabase
-            .from("predictions")
-            .insert(toInsert)
-            .then(({ error }) => {
-              if (!error) console.log("Synced local laptop records to Supabase for mobile view.");
-            });
+      for (const item of allRecords) {
+        if (!item) continue;
+        if (user?.id && item.user_id && item.user_id !== user.id) continue;
+
+        const timeKey = item.created_at ? new Date(item.created_at).toISOString().slice(0, 16) : "";
+        const prob = item.probability ?? item.full_result?.probability ?? 0;
+        const risk = item.risk_level ?? item.full_result?.risk_level ?? "";
+        const fingerprint = item.id ? `${item.id}` : `${timeKey}_${prob}_${risk}`;
+
+        if (!seenFingerprints.has(fingerprint)) {
+          seenFingerprints.add(fingerprint);
+          uniqueRecords.push(item);
         }
       }
 
-      const mergedMap = new Map();
-      [...supabaseRecords, ...serverRecords, ...localRecords].forEach((item) => {
-        if (item && (item.id || item.prediction_id)) {
-          const key = item.id || item.prediction_id;
-          if (!mergedMap.has(key)) {
-            if (!user?.id || !item.user_id || item.user_id === user.id) {
-              mergedMap.set(key, item);
-            }
-          }
-        }
-      });
-
-      const combined = Array.from(mergedMap.values()).sort(
+      const combined = uniqueRecords.sort(
         (a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now())
       );
 
