@@ -48,6 +48,13 @@ CREATE POLICY "Users can read own predictions"
   TO authenticated
   USING (auth.uid() = user_id);
 
+-- Authenticated users can delete their own predictions
+CREATE POLICY "Users can delete own predictions"
+  ON predictions FOR DELETE
+  TO authenticated
+  USING (auth.uid() = user_id OR user_id IS NULL);
+
+
 -- Allow anonymous inserts (backward compatibility for unauthenticated flow)
 CREATE POLICY "Allow anonymous inserts"
   ON predictions FOR INSERT

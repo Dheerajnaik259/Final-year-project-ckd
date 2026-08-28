@@ -227,7 +227,9 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
 
     if (row.id) {
       try {
-        await supabase.from("predictions").delete().eq("id", row.id);
+        const { error } = await supabase.from("predictions").delete().eq("id", row.id);
+        if (error) console.error("Supabase delete single error:", error.message);
+        else console.log("Prediction deleted from Supabase.");
       } catch (err) {
         console.warn("Supabase delete note:", err);
       }
@@ -256,7 +258,9 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
 
     if (user?.id) {
       try {
-        await supabase.from("predictions").delete().eq("user_id", user.id);
+        const { error } = await supabase.from("predictions").delete().eq("user_id", user.id);
+        if (error) console.error("Supabase clear all error:", error.message);
+        else console.log("All predictions cleared from Supabase.");
       } catch (err) {
         console.warn("Supabase clear all note:", err);
       }
