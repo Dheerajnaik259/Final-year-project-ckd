@@ -471,6 +471,16 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route
+            path="/"
+            element={
+              <Landing
+                user={user}
+                onNavigate={(targetPage) => navigate(`/${targetPage}`)}
+                onViewDetail={handleViewDetail}
+              />
+            }
+          />
+          <Route
             path="/dashboard"
             element={
               <Landing
@@ -505,7 +515,7 @@ export default function App() {
               />
             }
           />
-          {/* Default redirect: authenticated users go to dashboard */}
+          {/* Default fallback: authenticated users go to dashboard */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </main>
