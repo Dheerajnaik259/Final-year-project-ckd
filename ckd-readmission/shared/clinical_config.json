@@ -38,9 +38,10 @@
     "medium": 0.4
   },
   "probability_floors": [
-    { "min_score": 12, "floor": 0.7 },
-    { "min_score": 9, "floor": 0.6 },
-    { "min_score": 6, "floor": 0.4 }
+    { "min_score": 12, "floor": 0.75 },
+    { "min_score": 8, "floor": 0.60 },
+    { "min_score": 4, "floor": 0.45 },
+    { "min_score": 2, "floor": 0.30 }
   ],
   "clinical_markers": {
     "SerumCreatinine": { "normal_range": [0.6, 1.2], "weight": 0.25 },

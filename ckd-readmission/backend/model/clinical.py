@@ -112,12 +112,23 @@ def clinical_severity_score(patient_data: dict) -> int:
 
     has_diabetes = any(
         parse_numeric(patient_data.get(field)) > 0
-        for field in ("Diabetes", "FamilyHistoryDiabetes", "AntidiabeticMedications")
+        for field in ("Diabetes", "diabetes", "FamilyHistoryDiabetes", "AntidiabeticMedications")
     )
     if has_diabetes:
         score += SEVERITY_POINTS["diabetes"]
 
-    if parse_numeric(patient_data.get("Smoking")) > 0:
+    has_hypertension = any(
+        parse_numeric(patient_data.get(field)) > 0
+        for field in ("Hypertension", "hypertension", "FamilyHistoryHypertension")
+    )
+    if has_hypertension:
+        score += SEVERITY_POINTS.get("hypertension", 1)
+
+    comorbidities = parse_numeric(patient_data.get("ComorbidityCount") or patient_data.get("comorbidity_count"))
+    if comorbidities > 0:
+        score += min(2, int(comorbidities))
+
+    if parse_numeric(patient_data.get("Smoking") or patient_data.get("smoking")) > 0:
         score += SEVERITY_POINTS["smoking"]
     if parse_numeric(patient_data.get("PreviousAcuteKidneyInjury")) > 0:
         score += SEVERITY_POINTS["previous_aki"]

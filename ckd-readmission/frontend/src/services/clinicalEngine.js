@@ -223,9 +223,9 @@ export function calculateLocalPrediction(patientData) {
   let probability;
 
   if (severityScore >= 12) probability = 75.0;
-  else if (severityScore >= 9) probability = 60.0;
-  else if (severityScore >= 6) probability = 40.0;
-  else if (severityScore >= 3) probability = 25.0;
+  else if (severityScore >= 8) probability = 60.0;
+  else if (severityScore >= 4) probability = 45.0;
+  else if (severityScore >= 2) probability = 30.0;
   else probability = 15.0;
 
   // Add subtle variation based on prior admissions and eGFR

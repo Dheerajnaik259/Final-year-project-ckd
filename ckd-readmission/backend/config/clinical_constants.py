@@ -53,6 +53,7 @@ SEVERITY_POINTS = {
     "systolic_severe": 2,
     "systolic_elevated": 1,
     "diabetes": 1,
+    "hypertension": 1,
     "smoking": 1,
     "previous_aki": 1,
     "edema": 1,
