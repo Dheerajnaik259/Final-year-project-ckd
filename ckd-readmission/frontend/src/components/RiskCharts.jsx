@@ -133,7 +133,7 @@ export function SeverityMeter({ score = 4 }) {
 }
 
 /* ═══════════════════════════════════════════════
-   3. SHAP Feature Importance (Flat Mono Chart)
+   3. Clinical Risk Drivers Bar Chart (Flat Mono Chart)
    ═══════════════════════════════════════════════ */
 export function SHAPBarChart({ factors = [] }) {
   const sampleFactors = [
