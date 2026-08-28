@@ -1,5 +1,6 @@
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { supabase } from "./services/supabaseClient";
 import PublicLanding from "./pages/PublicLanding";
 import Login from "./pages/Login";
@@ -127,11 +128,21 @@ export default function App() {
   const [unauthMode, setUnauthMode] = useState("public");
   const [initialRegister, setInitialRegister] = useState(true);
 
-  // Authenticated workspace page: "landing" | "predict" | "results" | "history"
-  const [page, setPage] = useState("landing");
   const [result, setResult] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Derive current page from URL path
+  const currentPath = location.pathname;
+  const page = (() => {
+    if (currentPath === "/predict") return "predict";
+    if (currentPath === "/results") return "results";
+    if (currentPath === "/history") return "history";
+    return "landing"; // "/" and everything else
+  })();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -160,76 +171,88 @@ export default function App() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleResultsReady = (data) => {
+  const handleResultsReady = useCallback((data) => {
     setResult(data);
 
-    // Immediately persist to user-scoped and global local history snapshot
+    // Persist prediction to Supabase (cross-device sync) and localStorage (fast local cache)
     if (data) {
-      try {
-        const recordId = data.prediction_id || `pred_${Date.now()}`;
-        const newRecord = {
-          id: recordId,
-          user_id: session?.user?.id,
-          created_at: new Date().toISOString(),
-          patient_age: data.patient_data?.Age || data.patient_data?.age || 50,
-          patient_gender: data.patient_data?.Gender || data.patient_data?.gender || 1,
-          risk_level: data.risk_level,
-          probability: data.probability,
-          ckd_stage:
-            typeof data.clinical_assessment?.ckd_stage === "object"
-              ? data.clinical_assessment?.ckd_stage?.code
-              : data.clinical_assessment?.ckd_stage || "G2",
-          kdigo_risk: data.clinical_assessment?.kdigo_risk || "Moderate",
-          severity_score: data.clinical_assessment?.severity_score || 0,
-          patient_data: data.patient_data,
-          full_result: data,
-        };
+      const recordId = data.prediction_id || `pred_${Date.now()}`;
+      const newRecord = {
+        user_id: session?.user?.id || null,
+        created_at: new Date().toISOString(),
+        patient_age: data.patient_data?.Age || data.patient_data?.age || 50,
+        patient_gender: data.patient_data?.Gender || data.patient_data?.gender || 1,
+        risk_level: data.risk_level,
+        probability: data.probability,
+        ckd_stage:
+          typeof data.clinical_assessment?.ckd_stage === "object"
+            ? data.clinical_assessment?.ckd_stage?.code
+            : data.clinical_assessment?.ckd_stage || "G2",
+        kdigo_risk: data.clinical_assessment?.kdigo_risk || "Moderate",
+        severity_score: data.clinical_assessment?.severity_score || 0,
+        patient_data: data.patient_data,
+        top_factors: data.top_clinical_factors || [],
+        clinical_recommendation: data.clinical_recommendation || {},
+        full_result: data,
+      };
 
+      // Save to Supabase (async, non-blocking — enables cross-device history)
+      supabase
+        .from("predictions")
+        .insert([newRecord])
+        .then(({ error }) => {
+          if (error) console.warn("Supabase prediction save note:", error.message);
+          else console.log("Prediction saved to Supabase for cross-device sync.");
+        });
+
+      // Also keep localStorage as fast local cache
+      try {
+        const localRecord = { ...newRecord, id: recordId };
         if (session?.user?.id) {
           const userKey = `ckd_history_${session.user.id}`;
           const existingUser = JSON.parse(localStorage.getItem(userKey) || "[]");
-          localStorage.setItem(userKey, JSON.stringify([newRecord, ...existingUser.filter((i) => i.id !== recordId)]));
+          localStorage.setItem(userKey, JSON.stringify([localRecord, ...existingUser.filter((i) => i.id !== recordId)]));
         }
-
         const existingFallback = JSON.parse(localStorage.getItem("ckd_local_prediction_history") || "[]");
         localStorage.setItem(
           "ckd_local_prediction_history",
-          JSON.stringify([newRecord, ...existingFallback.filter((i) => i.id !== recordId)])
+          JSON.stringify([localRecord, ...existingFallback.filter((i) => i.id !== recordId)])
         );
       } catch (err) {
         console.error("Failed to save local prediction history:", err);
       }
     }
 
-    setPage("results");
-  };
+    navigate("/results");
+  }, [navigate, session]);
 
-  const handleReset = () => {
+
+  const handleReset = useCallback(() => {
     setResult(null);
-    setPage("landing");
-  };
+    navigate("/dashboard");
+  }, [navigate]);
 
-  const handleGoPredict = () => {
+  const handleGoPredict = useCallback(() => {
     setResult(null);
-    setPage("predict");
-  };
+    navigate("/predict");
+  }, [navigate]);
 
-  const handleGoHistory = () => {
-    setPage("history");
-  };
+  const handleGoHistory = useCallback(() => {
+    navigate("/history");
+  }, [navigate]);
 
-  const handleViewDetail = async (predictionArg) => {
+  const handleViewDetail = useCallback(async (predictionArg) => {
     try {
       // 1. If an object with full_result or prediction result fields is passed directly
       if (predictionArg && typeof predictionArg === "object") {
         if (predictionArg.full_result) {
           setResult(predictionArg.full_result);
-          setPage("results");
+          navigate("/results");
           return;
         }
         if (predictionArg.risk_level && predictionArg.probability) {
           setResult(predictionArg);
-          setPage("results");
+          navigate("/results");
           return;
         }
       }
@@ -264,12 +287,12 @@ export default function App() {
       if (foundLocal) {
         if (foundLocal.full_result) {
           setResult(foundLocal.full_result);
-          setPage("results");
+          navigate("/results");
           return;
         }
         if (foundLocal.risk_level && foundLocal.probability) {
           setResult(foundLocal);
-          setPage("results");
+          navigate("/results");
           return;
         }
       }
@@ -280,7 +303,7 @@ export default function App() {
           const data = await fetchPredictionDetail(predictionId);
           if (data && !data.error) {
             setResult(data);
-            setPage("results");
+            navigate("/results");
             return;
           }
         } catch (_err) {
@@ -291,7 +314,7 @@ export default function App() {
       // 4. Fallback: if prediction object was provided
       if (predictionArg && typeof predictionArg === "object") {
         setResult(predictionArg);
-        setPage("results");
+        navigate("/results");
         return;
       }
 
@@ -299,12 +322,13 @@ export default function App() {
     } catch (err) {
       alert("Failed to load historical prediction detail: " + err.message);
     }
-  };
+  }, [navigate, session]);
 
   const handleSignOut = async () => {
     setDropdownOpen(false);
     await supabase.auth.signOut();
     setUnauthMode("public");
+    navigate("/");
   };
 
   if (loadingAuth) {
@@ -340,7 +364,7 @@ export default function App() {
     return (
       <Login
         initialIsRegister={initialRegister}
-        onAuthSuccess={() => setPage("landing")}
+        onAuthSuccess={() => navigate("/dashboard")}
         onBackToLanding={() => setUnauthMode("public")}
       />
     );
@@ -416,7 +440,7 @@ export default function App() {
                 <button
                   className="dropdown-action-row"
                   onClick={() => {
-                    setPage("landing");
+                    navigate("/dashboard");
                     setDropdownOpen(false);
                   }}
                 >
@@ -445,23 +469,45 @@ export default function App() {
       </header>
 
       <main className="app-main">
-        {page === "landing" && (
-          <Landing
-            user={user}
-            onNavigate={(targetPage) => setPage(targetPage)}
-            onViewDetail={handleViewDetail}
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={
+              <Landing
+                user={user}
+                onNavigate={(targetPage) => navigate(`/${targetPage}`)}
+                onViewDetail={handleViewDetail}
+              />
+            }
           />
-        )}
-        {page === "predict" && <Home user={user} onResultsReady={handleResultsReady} />}
-        {page === "results" && result && <Results result={result} onReset={handleGoPredict} />}
-        {page === "history" && (
-          <History
-            user={user}
-            onBack={handleReset}
-            onNewPredict={handleGoPredict}
-            onViewDetail={handleViewDetail}
+          <Route
+            path="/predict"
+            element={<Home user={user} onResultsReady={handleResultsReady} />}
           />
-        )}
+          <Route
+            path="/results"
+            element={
+              result ? (
+                <Results result={result} onReset={handleGoPredict} />
+              ) : (
+                <Navigate to="/predict" replace />
+              )
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <History
+                user={user}
+                onBack={handleReset}
+                onNewPredict={handleGoPredict}
+                onViewDetail={handleViewDetail}
+              />
+            }
+          />
+          {/* Default redirect: authenticated users go to dashboard */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
       </main>
 
       <footer className="app-footer">

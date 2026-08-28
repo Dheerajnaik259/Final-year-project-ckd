@@ -418,6 +418,20 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
           console.warn("Could not fetch remote predictions for landing dashboard:", err);
         }
 
+        let supabasePreds = [];
+        if (user?.id) {
+          try {
+            const { data } = await supabase
+              .from("predictions")
+              .select("*")
+              .eq("user_id", user.id)
+              .order("created_at", { ascending: false });
+            if (data) supabasePreds = data;
+          } catch (_err) {
+            console.warn("Supabase landing predictions query note:", _err);
+          }
+        }
+
         let localPreds;
         try {
           const userKey = user?.id ? `ckd_history_${user.id}` : null;
@@ -429,7 +443,7 @@ export default function Landing({ user, onNavigate, onViewDetail }) {
         }
 
         const mergedMap = new Map();
-        [...serverPreds, ...localPreds].forEach((item) => {
+        [...supabasePreds, ...serverPreds, ...localPreds].forEach((item) => {
           if (item && (item.id || item.prediction_id)) {
             const key = item.id || item.prediction_id;
             if (!mergedMap.has(key)) {

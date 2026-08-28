@@ -38,33 +38,33 @@ Use these values during the review to test different risk predictions in the app
 
 ## 2. Medium Risk Test Case
 
-**Expected Result:** `Medium Risk` (Readmission probability ~40%)
+**Expected Result:** `Medium Risk` (Readmission probability ~40–55%)
 
 ### Step 1: Basic Info & Vitals
-* **Age:** `67`
+* **Age:** `54`
 * **Sex:** `Male`
-* **Systolic BP:** `142`
-* **Diastolic BP:** `84`
-* **BMI:** `27.5`
-* **Comorbidity count:** `2`
+* **Systolic BP:** `134`
+* **Diastolic BP:** `82`
+* **BMI:** `26.0`
+* **Comorbidity count:** `1`
 
 ### Step 2: Laboratory Panel
-* **Serum creatinine:** `1.8`
-* **eGFR:** `48`
-* **BUN:** `26`
-* **Urine ACR:** `120`
-* **Serum potassium:** `4.8`
-* **Serum sodium:** `137`
-* **Hemoglobin:** `11.5`
-* **Protein in urine:** `0.4`
+* **Serum creatinine:** `1.4`
+* **eGFR:** `58`
+* **BUN:** `22`
+* **Urine ACR:** `45`
+* **Serum potassium:** `4.5`
+* **Serum sodium:** `138`
+* **Hemoglobin:** `12.8`
+* **Protein in urine:** `0.2`
 
 ### Step 3: History & Risk Factors
 * **Prior admissions:** `1`
-* **Length of stay:** `4`
-* **Diabetes history:** `Yes`
+* **Length of stay:** `3`
+* **Diabetes history:** `No`
 * **Hypertension history:** `Yes`
 * **Smoking history:** `No`
-* **Family kidney history:** `Yes`
+* **Family kidney history:** `No`
 
 ---
 

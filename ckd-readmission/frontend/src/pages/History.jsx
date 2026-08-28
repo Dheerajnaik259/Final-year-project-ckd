@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { fetchPredictionHistory } from "../services/api";
+import { supabase } from "../services/supabaseClient";
 import "./History.css";
+
 
 // SVG Icons
 function FilterIcon() {
@@ -138,7 +140,25 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
         const data = await fetchPredictionHistory(100, 0, user?.id);
         serverRecords = data.predictions || [];
       } catch (e) {
-        console.warn("Could not fetch remote history, using local history fallback:", e);
+        console.warn("Could not fetch remote API history:", e);
+      }
+
+      let supabaseRecords = [];
+      if (user?.id) {
+        try {
+          const { data, error } = await supabase
+            .from("predictions")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
+          if (!error && data) {
+            supabaseRecords = data;
+          } else if (error) {
+            console.warn("Supabase history fetch note:", error.message);
+          }
+        } catch (err) {
+          console.warn("Supabase fetch exception:", err);
+        }
       }
 
       let localRecords;
@@ -152,11 +172,10 @@ export default function History({ user, onBack, onNewPredict, onViewDetail }) {
       }
 
       const mergedMap = new Map();
-      [...serverRecords, ...localRecords].forEach((item) => {
+      [...supabaseRecords, ...serverRecords, ...localRecords].forEach((item) => {
         if (item && (item.id || item.prediction_id)) {
           const key = item.id || item.prediction_id;
           if (!mergedMap.has(key)) {
-            // Keep record if no user isolation filter or if user_id matches
             if (!user?.id || !item.user_id || item.user_id === user.id) {
               mergedMap.set(key, item);
             }
